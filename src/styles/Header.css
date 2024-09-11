@@ -1,0 +1,47 @@
+header {
+  height: 68px;
+  margin: 0 auto;
+  padding: 0 70px;
+  display: flex;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.header-logo {
+  width: 155.17px;
+  height: 60px;
+}
+
+.login-btn {
+  line-height: 18px;
+  font-size: 16px;
+  border: 1px solid #1f1f23;
+  border-radius: 4px;
+  padding: 11px 20px;
+  margin: 14px 0;
+  color: #1f1f23;
+  text-decoration: none;
+}
+
+.divider {
+  border-right: 1px solid #d9d9d9;
+  margin: 14px 16px;
+  height: 40px;
+}
+
+.signup-btn {
+  line-height: 20px;
+  font-size: 16px;
+  border: 1px solid #1f1f23;
+  border-radius: 4px;
+  padding: 11px 20px;
+  margin: 14px 0;
+  color: #ffffff;
+  text-decoration: none;
+  background-color: #1f1f23;
+}
+
+.header-links {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}

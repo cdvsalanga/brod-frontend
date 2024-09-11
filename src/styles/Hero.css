@@ -1,0 +1,122 @@
+.hero {
+  margin: 68px auto 131px auto;
+  padding: 0 70px;
+}
+
+h1 {
+  font-family: "Instrument Sans Variable";
+  font-weight: 500;
+  font-size: 54px;
+  line-height: 65.88px;
+  color: #242424;
+  margin-bottom: 58px;
+}
+
+.hero-content {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 131px;
+}
+
+.hero-interact {
+  width: 619px;
+  padding: 0 32px 0 32px;
+  background-color: #fafafa;
+  height: 359.35px;
+}
+
+.hero-interact-btn {
+  display: flex;
+  background-color: #fafafa;
+}
+
+.hero-interact-content {
+  width: 100%;
+  margin-top: 32px;
+  background-color: #fafafa;
+}
+
+.hero-img {
+  width: 593.33px;
+  height: 360px;
+}
+
+.hire {
+  height: 22px;
+  font-size: 18px;
+  line-height: 21.78px;
+  padding: 8px 24px 16px 24px;
+  cursor: pointer;
+  background-color: #fafafa;
+  margin-top: 20px;
+}
+
+.trades-person {
+  font-size: 18px;
+  line-height: 21.78px;
+  height: 22px;
+  padding: 8px 24px 16px 24px;
+  cursor: pointer;
+  background-color: #fafafa;
+  margin-top: 20px;
+}
+
+.text-1 {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  color: #242424;
+  margin-bottom: 24px;
+  background-color: #fafafa;
+}
+
+.search {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 45px;
+  width: 555px;
+  height: 48.35px;
+  background-color: #fafafa;
+  width: 100%;
+}
+
+.text-2 {
+  line-height: 24px;
+  color: #242424;
+  background-color: #fafafa;
+  width: 520px;
+}
+
+.search-bar {
+  width: 100%;
+  border-radius: 5.04px;
+  border: 0.5px solid #bab4b4;
+  margin-right: 24.04px;
+  padding: 12.02px 12.02px 12.02px 52.09px;
+  font-size: 16.12px;
+  line-height: 19.5px;
+  background-image: url("../assets/images/search.png");
+  background-position: 12.02px 12.02px;
+  background-repeat: no-repeat;
+}
+
+.search-bar::placeholder {
+  height: 20px;
+  font-size: 16.12px;
+  line-height: 19.5px;
+}
+
+.search-btn {
+  border-radius: 4.03px;
+  background-color: #1f1f23;
+  color: #fff;
+  font-size: 18.13px;
+  line-height: 18.13px;
+  border: none;
+  padding: 12.09px 24.17px;
+  white-space: nowrap;
+}
+
+.location-bar {
+  background-image: url("../assets/images/location.png");
+}

@@ -4,33 +4,22 @@ import HeroImage from "../assets/images/hero-image.png";
 import "@fontsource-variable/instrument-sans";
 
 const Hero = () => {
-  let [select, setSelect] = useState(1);
+  const [select, setSelect] = useState(1);
 
   return (
     <div className="hero">
-      <h1>Hire Skilled Tradespeople in Your Area</h1>
+      <h1 className="hero-h1">Hire Skilled Tradespeople in Your Area</h1>
       <div className="hero-content">
         {select == 1 ? (
           <div className="hero-interact">
             <div className="hero-interact-btn">
-              <div
-                className="hire"
-                onClick={() => setSelect(1)}
-                style={{
-                  color: "#242424",
-                  borderBottom: "4px solid #1F1F23",
-                }}
-              >
+              <div className="hire active" onClick={() => setSelect(1)}>
                 Hire Someone
               </div>
 
               <div
-                className="trades-person"
+                className="trades-person inactive"
                 onClick={() => setSelect(2)}
-                style={{
-                  color: "#595959",
-                  borderBottom: "4px solid #D9D9D9",
-                }}
               >
                 Become a Tradeperson
               </div>
@@ -56,24 +45,13 @@ const Hero = () => {
         ) : (
           <div className="hero-interact">
             <div className="hero-interact-btn">
-              <div
-                className="hire"
-                onClick={() => setSelect(1)}
-                style={{
-                  color: "#595959",
-                  borderBottom: "4px solid #D9D9D9",
-                }}
-              >
+              <div className="hire inactive" onClick={() => setSelect(1)}>
                 Hire Someone
               </div>
 
               <div
-                className="trades-person"
+                className="trades-person active"
                 onClick={() => setSelect(2)}
-                style={{
-                  color: "#242424",
-                  borderBottom: "4px solid #1F1F23",
-                }}
               >
                 Become a Tradeperson
               </div>

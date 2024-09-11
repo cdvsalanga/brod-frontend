@@ -3,7 +3,7 @@
   padding: 0 70px;
 }
 
-h1 {
+.hero-h1 {
   font-family: "Instrument Sans Variable";
   font-weight: 500;
   font-size: 54px;
@@ -59,6 +59,16 @@ h1 {
   cursor: pointer;
   background-color: #fafafa;
   margin-top: 20px;
+}
+
+.active {
+  color: #242424;
+  border-bottom: 4px solid #1f1f23;
+}
+
+.inactive {
+  color: #242424;
+  border-bottom: 4px solid #d9d9d9;
 }
 
 .text-1 {

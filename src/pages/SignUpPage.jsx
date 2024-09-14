@@ -10,7 +10,7 @@ const SignupPage = () => {
 
   useEffect(() => {
     setChosen(search);
-  });
+  }, [search]);
   return (
     <>
       <Header notHidden={false} />

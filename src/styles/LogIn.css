@@ -50,6 +50,7 @@
   font-size: 18px;
   line-height: 21.78px;
   border: none;
+  cursor: pointer;
 }
 
 .to-signup {

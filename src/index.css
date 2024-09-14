@@ -4,3 +4,16 @@
   font-family: "Inter";
   background-color: #ffffff;
 }
+
+.show-pass {
+  position: absolute;
+  top: 12px;
+  left: 90%;
+  color: #8c8c8c;
+  cursor: pointer;
+}
+
+.input-pass::-ms-reveal,
+.input-pass::-ms-clear {
+  display: none;
+}

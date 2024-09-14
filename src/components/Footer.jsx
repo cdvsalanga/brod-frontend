@@ -1,8 +1,8 @@
 import React from "react";
 import "../styles/Footer.css";
-import logo from "../assets/images/footer-logo.png";
-import linkedin from "../assets/images/linkedin.png";
-import facebook from "../assets/images/facebook.png";
+import logo from "../assets/logos/footer.png";
+import linkedin from "../assets/logos/linkedin.svg";
+import facebook from "../assets/logos/facebook.svg";
 
 const Footer = () => {
   return (

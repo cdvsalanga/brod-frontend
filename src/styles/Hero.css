@@ -31,7 +31,6 @@
 }
 
 .hero-interact-content {
-  width: 100%;
   margin-top: 32px;
   background-color: #fafafa;
 }
@@ -84,7 +83,6 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 45px;
-  width: 555px;
   height: 48.35px;
   background-color: #fafafa;
   width: 100%;
@@ -102,18 +100,17 @@
   border-radius: 5.04px;
   border: 0.5px solid #bab4b4;
   margin-right: 24.04px;
-  padding: 12.02px 12.02px 12.02px 52.09px;
+  padding: 12.02px 37.02px 12.02px 12.02px;
   font-size: 16.12px;
   line-height: 19.5px;
-  background-image: url("../assets/images/search.png");
-  background-position: 12.02px 12.02px;
+  background-image: url("../assets/icons/search.svg");
+  background-position: 98% 12.02px;
   background-repeat: no-repeat;
 }
 
 .search-bar::placeholder {
   height: 20px;
   font-size: 16.12px;
-  line-height: 19.5px;
 }
 
 .search-btn {
@@ -128,5 +125,7 @@
 }
 
 .location-bar {
-  background-image: url("../assets/images/location.png");
+  background-image: url("../assets/icons/location.svg");
+  padding: 12.02px 12.02px 12.02px 52.09px;
+  background-position: 12.02px 12.02px;
 }

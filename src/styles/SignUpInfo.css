@@ -1,0 +1,88 @@
+.signup-info-box {
+  width: 620px;
+  margin: 82px auto;
+}
+
+.signup-info-h1 {
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 44.8px;
+  margin-bottom: 12px;
+}
+
+.signup-info-text {
+  font-weight: 500;
+  line-height: 24px;
+  color: #242424;
+  margin-bottom: 32px;
+}
+
+.signup-info-form {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.signup-info-maxw {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.signup-info-halfw {
+  width: 48.067%;
+  margin-bottom: 24px;
+}
+
+.signup-info-label {
+  display: block;
+  font-weight: 500;
+  line-height: 19.36px;
+  color: #242424;
+  margin-bottom: 12px;
+}
+
+.signup-info-input {
+  display: block;
+  width: 88.73%;
+  border: 1px solid #d9d9d9;
+  padding: 16px;
+  height: 16px;
+  font-size: 16px;
+}
+
+.signup-info-optional {
+  display: inline;
+  color: #595959;
+}
+
+.signup-info-btn {
+  width: 100%;
+  border-radius: 4px;
+  border: none;
+  padding: 12px 24px;
+  background-color: #1f1f23;
+  color: #fff;
+  font-size: 18px;
+  line-height: 21.78px;
+}
+
+.signup-info-rmfile {
+  display: none;
+}
+
+.signup-info-upload {
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  position: relative;
+  padding: 2px 0 2px 32px;
+}
+
+.signup-info-icon {
+  color: #8c8c8c;
+  position: absolute;
+  top: 0;
+  left: 0;
+}

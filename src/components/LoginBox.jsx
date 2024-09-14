@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "../styles/LoginBox.css";
+import "../styles/LogIn.css";
 import { Eye, EyeOff } from "lucide-react";
 
 const LoginBox = () => {
@@ -17,7 +17,7 @@ const LoginBox = () => {
         <div className="pos-relative">
           <input
             type={showPass ? "text" : "password"}
-            className="login-input m-24"
+            className="login-input m-24 input-pass"
           />
           {showPass ? (
             <Eye onClick={() => setShowPass(false)} className="show-pass" />
@@ -37,9 +37,9 @@ const LoginBox = () => {
         </Link>{" "}
       </div>
       <div className="login-separator">
-        <div className="separator-line" />
+        <div className="login-separator-line" />
         <div>OR</div>
-        <div className="separator-line" />
+        <div className="login-separator-line" />
       </div>
       {/* Google and apple logins */}
     </div>

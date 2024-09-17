@@ -9,7 +9,7 @@ const LoginBox = () => {
   const [showPass, setShowPass] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userInfo, setUserInfo] = useState();
+  const [userInfo, setUserInfo] = useState(localStorage.getItem("userInfo"));
 
   const navigate = useNavigate();
 

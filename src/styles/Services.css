@@ -1,0 +1,103 @@
+.services-header {
+  background-image: url("/src/assets/images/services-header-background.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  height: 144px;
+  padding: 53px 60px;
+}
+
+.services-header-h1 {
+  background-color: transparent;
+  color: #fff;
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 48.41px;
+  margin-bottom: 40px;
+}
+
+.services-header-form {
+  background-color: transparent;
+  position: relative;
+  display: inline-block;
+}
+
+.services-header-input {
+  width: 522.4px;
+  height: 46.75px;
+  border-radius: 4px;
+  border: 1px solid #f0f0f0;
+  padding: 4px 116.35px 4px 45.3px;
+  background-image: url("../assets/icons/search.svg");
+  background-repeat: no-repeat;
+  background-position: 17.3px;
+  font-size: 16px;
+}
+
+.services-header-input::placeholder {
+  font-size: 16.12px;
+  height: 19.5px;
+}
+
+.services-header-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  padding: 12.09px 24.17px;
+  background-color: #1f1f23;
+  color: #fff;
+  border: none;
+  border-radius: 4.03px;
+  font-size: 18.13px;
+  line-height: 18.13px;
+  width: 108.35px;
+  height: 48.35px;
+}
+
+.services {
+  padding: 40px;
+}
+
+.services-near {
+  position: relative;
+  margin-bottom: 100px;
+}
+
+.services-recommend {
+  margin-bottom: 48px;
+}
+
+.services-h1 {
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 48.81px;
+  color: #242424;
+  margin-bottom: 40px;
+}
+
+.services-btn {
+  border-radius: 2px;
+  border: 1px solid #1f1f23;
+  padding: 8px 16px;
+  font-size: 14px;
+  line-height: 16px;
+  color: #1f1f23;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 8px;
+  right: 0;
+  width: 98px;
+  height: 32px;
+  white-space: nowrap;
+}
+
+.services-icon {
+  margin-left: 4px;
+}
+
+.services-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}

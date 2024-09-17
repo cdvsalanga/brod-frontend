@@ -1,0 +1,87 @@
+.card {
+  width: 329px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+}
+
+.card-img {
+  width: 100%;
+  height: 163px;
+  object-fit: cover;
+}
+
+.card-contents {
+  padding: 16px;
+  position: relative;
+  color: #595959;
+}
+
+.card-h1 {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19.36px;
+  color: #242424;
+  margin-bottom: 6px;
+}
+
+.card-text {
+  font-size: 14px;
+  line-height: 16.94px;
+  margin-bottom: 6px;
+}
+
+.card-name {
+  font-weight: 500;
+  color: #242424;
+}
+
+.card-loc {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  line-height: 14.52px;
+  margin-bottom: 6px;
+}
+
+.card-loc-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 4px;
+}
+
+.card-review {
+  font-size: 12px;
+  line-height: 14.52px;
+  display: flex;
+  align-items: center;
+}
+
+.card-review-icon {
+  width: 20px;
+  height: 20px;
+  color: #1f1f23;
+  margin-right: 4px;
+}
+
+.card-review-rating {
+  color: #242424;
+  margin-right: 4px;
+}
+
+.card-heart {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  top: 10px;
+  right: 4px;
+}
+
+.card-rate {
+  position: absolute;
+  bottom: 16px;
+  right: 11px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19.36px;
+  color: #242424;
+}

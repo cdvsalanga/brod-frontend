@@ -4,10 +4,10 @@ import CardImage from "../assets/images/card-image.png";
 import Location from "../assets/icons/location.svg";
 import { Heart, Star } from "lucide-react";
 
-const Card = () => {
+const Card = ({ width }) => {
   const [favorite, setFavorite] = useState(false);
   return (
-    <div className="card">
+    <div className={width === "search" ? "card w-352" : "card"}>
       <img src={CardImage} className="card-img" />
       <div className="card-contents">
         <h1 className="card-h1">House Cleaning Service</h1>

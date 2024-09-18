@@ -60,7 +60,7 @@
 
 .services-near {
   position: relative;
-  margin-bottom: 100px;
+  margin-bottom: 20px;
 }
 
 .services-recommend {
@@ -72,10 +72,9 @@
   font-size: 40px;
   line-height: 48.81px;
   color: #242424;
-  margin-bottom: 40px;
 }
 
-.services-btn {
+.services-near-btn {
   border-radius: 2px;
   border: 1px solid #1f1f23;
   padding: 8px 16px;
@@ -92,7 +91,7 @@
   white-space: nowrap;
 }
 
-.services-icon {
+.services-near-icon {
   margin-left: 4px;
 }
 
@@ -100,4 +99,29 @@
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+}
+
+.services-search-btn {
+  margin: 32px auto;
+  border: 1px solid #1f1f23;
+  border-radius: 4px;
+  padding: 10px 20px;
+  display: block;
+  font-size: 16px;
+  line-height: 18px;
+  color: #1f1f23;
+}
+
+.services-search-results {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19.36px;
+  color: #595959;
+}
+
+.services-flex-h1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
 }

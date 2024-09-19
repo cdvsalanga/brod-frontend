@@ -40,8 +40,6 @@
 }
 
 .card-loc {
-  display: flex;
-  align-items: center;
   font-size: 12px;
   line-height: 14.52px;
   margin-bottom: 6px;
@@ -56,8 +54,6 @@
 .card-review {
   font-size: 12px;
   line-height: 14.52px;
-  display: flex;
-  align-items: center;
 }
 
 .card-review-icon {

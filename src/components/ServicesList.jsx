@@ -38,7 +38,7 @@ const ServicesList = ({ content }) => {
           <Card width={content === "search" ? "search" : ""} />
         </div>
         {content === "near" && (
-          <button className="services-near-btn">
+          <button className="services-near-btn flex-center">
             <span>See all</span>
             <ArrowRight className="services-near-icon" />
           </button>

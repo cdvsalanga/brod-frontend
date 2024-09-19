@@ -17,3 +17,13 @@
 .input-pass::-ms-clear {
   display: none;
 }
+
+.flex-center {
+  display: flex;
+  align-items: center;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+}

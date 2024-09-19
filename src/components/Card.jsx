@@ -14,11 +14,11 @@ const Card = ({ width }) => {
         <div className="card-text">
           Job ad by <span className="card-name">Jane Doe</span>
         </div>
-        <div className="card-loc">
+        <div className="card-loc flex-center">
           <img src={Location} className="card-loc-icon" />
           <span>Sydney, NSW 2000</span>
         </div>
-        <div className="card-review">
+        <div className="card-review flex-center">
           <Star fill="#1F1F23" className="card-review-icon" />
           <span className="card-review-rating">4.5</span>
           <span> (34 reviews)</span>

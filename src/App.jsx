@@ -12,6 +12,7 @@ import SignUpPage from "./pages/SignUpPage";
 import SignUpInfoPage from "./pages/SignUpInfoPage";
 import ServicesPage from "./pages/ServicesPage";
 import SearchPage from "./pages/SearchPage";
+import JobAdPage from "./pages/JobAdPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,6 +23,7 @@ const router = createBrowserRouter(
       <Route path="/signup/:id" element={<SignUpInfoPage />} />
       <Route path="/services" element={<ServicesPage />} />
       <Route path="/services/search" element={<SearchPage />} />
+      <Route path="/job-ad/:id" element={<JobAdPage />} />
     </Route>
   )
 );

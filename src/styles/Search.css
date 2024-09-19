@@ -134,11 +134,6 @@
   font-weight: 400;
 }
 
-.center {
-  display: flex;
-  align-items: center;
-}
-
 .search-job-more {
   color: #353535;
   text-decoration: underline;

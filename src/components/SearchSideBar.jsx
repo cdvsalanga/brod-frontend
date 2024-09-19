@@ -47,23 +47,23 @@ const SearchSideBar = () => {
           <ChevronUp color="#717171" />
         </div>
         <div>
-          <div className="search-mb-8 center">
+          <div className="search-mb-8 flex-center">
             <input type="checkbox" className="search-checkbox" />
             <label className="search-label">Aircon Installer</label>
           </div>
-          <div className="search-mb-8 center">
+          <div className="search-mb-8 flex-center">
             <input type="checkbox" className="search-checkbox" />
             <label className="search-label">Appliance Repair</label>
           </div>
-          <div className="search-mb-8 center">
+          <div className="search-mb-8 flex-center">
             <input type="checkbox" className="search-checkbox" />
             <label className="search-label">Builder</label>
           </div>
-          <div className="search-mb-8 center">
+          <div className="search-mb-8 flex-center">
             <input type="checkbox" className="search-checkbox" />
             <label className="search-label">Garage Builder</label>
           </div>
-          <div className="center">
+          <div className="flex-center">
             <input type="checkbox" className="search-checkbox" />
             <label className="search-label">Pest Control Services</label>
           </div>
@@ -92,23 +92,23 @@ const SearchSideBar = () => {
         </div>
         <div>
           <div className="search-label search-mb-12">Can start within</div>
-          <div className="search-mb-8 center">
+          <div className="search-mb-8 flex-center">
             <input type="checkbox" className="search-checkbox" />
             <label className="search-label">Today</label>
           </div>
-          <div className="search-mb-8 center">
+          <div className="search-mb-8 flex-center">
             <input type="checkbox" className="search-checkbox" />
             <label className="search-label">In 3 days</label>
           </div>
-          <div className="search-mb-8 center">
+          <div className="search-mb-8 flex-center">
             <input type="checkbox" className="search-checkbox" />
             <label className="search-label">Within a week</label>
           </div>
-          <div className="search-mb-8 center">
+          <div className="search-mb-8 flex-center">
             <input type="checkbox" className="search-checkbox" />
             <label className="search-label">Within a month</label>
           </div>
-          <div className="center">
+          <div className="flex-center">
             <input type="checkbox" className="search-checkbox" />
             <label className="search-label">Anytime</label>
           </div>
@@ -121,7 +121,7 @@ const SearchSideBar = () => {
           <ChevronUp color="#717171" />
         </div>
         <div>
-          <div className="search-mb-8 center">
+          <div className="search-mb-8 flex-center">
             <input type="checkbox" className="search-checkbox" />
             <label className="search-label">Call out rate</label>
           </div>
@@ -135,7 +135,7 @@ const SearchSideBar = () => {
               <div>$500</div>
             </div>
           </div>
-          <div className="search-mb-8 center">
+          <div className="search-mb-8 flex-center">
             <input type="checkbox" className="search-checkbox" />
             <label className="search-label">Anytime</label>
           </div>

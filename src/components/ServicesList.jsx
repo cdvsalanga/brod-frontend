@@ -12,6 +12,8 @@ const ServicesList = ({ content }) => {
             ? "services-near"
             : content === "recommend"
             ? "services-recommend"
+            : content === "favorites"
+            ? "services-favorites"
             : ""
         }
       >
@@ -23,6 +25,8 @@ const ServicesList = ({ content }) => {
               ? "Recommend"
               : content === "search"
               ? "Results for"
+              : content === "favorites"
+              ? "My Favorites"
               : ""}
           </h1>
           {content === "search" && (

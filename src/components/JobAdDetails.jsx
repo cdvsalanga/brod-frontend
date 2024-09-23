@@ -8,19 +8,19 @@ import Services from "../assets/images/services-header-background.png";
 const JobAdDetails = () => {
   return (
     <div className="job-details">
-      <div className="job-ad-mb-40">
-        <div className="job-ad-mb-24">
-          <div className="flex-between job-ad-mb-12">
+      <div className="mb-40">
+        <div className="mb-24">
+          <div className="flex-between mb-12">
             <div className="job-type">Painting</div>
             <div className="flex-center">
               <Heart className="job-heart" />
               <span className="job-fav">Favorite</span>
             </div>
           </div>
-          <h1 className="job-h1 job-ad-mb-24">All-Around Painting Services</h1>
+          <h1 className="job-h1 mb-24">All-Around Painting Services</h1>
         </div>
         <div>
-          <div className="job-ad-mb-24">
+          <div className="mb-24">
             Transform your home with the touch of a dedicated and skilled
             painter. I’m Yves, a professional painter with 7 years of
             experience, offering personalized house painting services tailored
@@ -28,22 +28,22 @@ const JobAdDetails = () => {
             room or update the entire exterior, I bring a meticulous approach to
             every project.
           </div>
-          <div className="job-ad-mb-24">My Services Include:</div>
-          <ul className="job-ad-mb-24 job-ad-ul">
-            <li className="job-ad-mb-8">
+          <div className="mb-24">My Services Include:</div>
+          <ul className="mb-24 job-ad-ul">
+            <li className="mb-8">
               Interior Painting: I provide clean, detailed interior painting
               services, using high-quality paints to create the perfect
               atmosphere in your home.
             </li>
-            <li className="job-ad-mb-8">
+            <li className="mb-8">
               Exterior Painting: Protect and enhance your home’s curb appeal
               with durable exterior painting that stands up to the elements.
             </li>
-            <li className="job-ad-mb-8">
+            <li className="mb-8">
               Color Consultation: Not sure what color to choose? I’ll help you
               select the perfect shades that complement your style and space.
             </li>
-            <li className="job-ad-mb-8">
+            <li className="mb-8">
               Surface Preparation: From repairing small cracks to sanding and
               priming, I handle all prep work to ensure a smooth, long-lasting
               finish.
@@ -53,13 +53,13 @@ const JobAdDetails = () => {
               ensuring a flawless finish that reflects my commitment to quality.
             </li>
           </ul>
-          <div className="job-ad-mb-24">Why Choose Me?</div>
-          <ul className="job-ad-mb-24 job-ad-ul">
-            <li className="job-ad-mb-8">
+          <div className="mb-24">Why Choose Me?</div>
+          <ul className="mb-24 job-ad-ul">
+            <li className="mb-8">
               One-on-One Service: As a solo painter, I provide personalized
               attention to every project, ensuring that your vision is realized.
             </li>
-            <li className="job-ad-mb-8">
+            <li className="mb-8">
               Reliable and On-Time: I value your time and work efficiently to
               complete projects on schedule, without compromising quality.
             </li>
@@ -76,21 +76,21 @@ const JobAdDetails = () => {
           </div>
         </div>
       </div>
-      <div className="job-ad-mb-40 job-line" />
-      <div className="job-ad-mb-40">
-        <h1 className="job-h1 job-ad-mb-24">Project Gallery</h1>
-        <img src={CardImage} className="job-big-img job-ad-mb-24" />
+      <div className="mb-40 job-line" />
+      <div className="mb-40">
+        <h1 className="job-h1 mb-24">Project Gallery</h1>
+        <img src={CardImage} className="job-big-img mb-24" />
         <div className="job-sm-images">
           <img src={CardImage} className="job-sm-img" />
           <img src={HeroImage} className="job-sm-img" />
           <img src={Services} className="job-sm-img" />
         </div>
       </div>
-      <div className="job-ad-mb-40 job-line" />
-      <div className="job-ad-mb-24">
-        <h1 className="job-h1 job-ad-mb-24">Reviews</h1>
+      <div className="mb-40 job-line" />
+      <div className="mb-24">
+        <h1 className="job-h1 mb-24">Reviews</h1>
         <div className="job-review">
-          <div className="flex-between job-ad-mb-8">
+          <div className="flex-between mb-8">
             <div className="flex-center">
               <div className="job-review-avatar">SC</div>
               <div className="job-review-name">Sean C.</div>
@@ -104,10 +104,10 @@ const JobAdDetails = () => {
             </div>
           </div>
           <div>
-            <div className="job-review-type job-ad-mb-8">
+            <div className="job-review-type mb-8">
               All-Around Painting Services
             </div>
-            <div className="flex-center job-review-location job-ad-mb-12">
+            <div className="flex-center job-review-location mb-12">
               <MapPin width={20} height={20} color="#8C8C8C" />
               Sydney, NSW 2000
             </div>

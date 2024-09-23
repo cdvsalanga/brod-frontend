@@ -9,42 +9,40 @@ import { ArrowUpRight, MapPin, Navigation, Mail } from "lucide-react";
 
 const JobAdSidebar = () => {
   return (
-    <div className="tradie-details tradie-background">
-      <div className="job-ad-mb-32 tradie-background">
-        <div className="job-ad-mb-24 tradie-background flex-center">
-          <img src={CardImage} className="tradie-img tradie-background" />
-          <div className="tradie-background">
-            <div className="tradie-background tradie-status flex-center">
-              <div className="tradie-background tradie-dot" />
+    <div className="tradie-details gray-bg">
+      <div className="mb-32 gray-bg">
+        <div className="mb-24 gray-bg flex-center">
+          <img src={CardImage} className="tradie-img gray-bg" />
+          <div className="gray-bg">
+            <div className="gray-bg tradie-status flex-center">
+              <div className="gray-bg tradie-dot" />
               Available for work
             </div>
-            <div className="tradie-background flex-center">
-              <span className="tradie-background tradie-rate-num">$18</span>
-              <span className="tradie-background tradie-rate-text">
-                Call out rate
-              </span>
+            <div className="gray-bg flex-center">
+              <span className="gray-bg tradie-rate-num">$18</span>
+              <span className="gray-bg tradie-rate-text">Call out rate</span>
             </div>
           </div>
         </div>
-        <div className="job-ad-mb-24 tradie-background">
-          <div className="flex-center tradie-background">
-            <span className="tradie-background tradie-name">Yves Vergara</span>
-            <span className="tradie-background tradie-view">View profile</span>
-            <ArrowUpRight className="tradie-background tradie-arrow" />
+        <div className="mb-24 gray-bg">
+          <div className="flex-center gray-bg">
+            <span className="gray-bg tradie-name">Yves Vergara</span>
+            <span className="gray-bg tradie-view">View profile</span>
+            <ArrowUpRight className="gray-bg tradie-arrow" />
           </div>
-          <div className="tradie-background tradie-location flex-center tradie-my-8">
-            <MapPin className="tradie-background" color="#8C8C8C" />
-            <span className="tradie-background">Sydney, NSW 2000</span>
+          <div className="gray-bg tradie-location flex-center tradie-my-8">
+            <MapPin className="gray-bg" color="#8C8C8C" />
+            <span className="gray-bg">Sydney, NSW 2000</span>
           </div>
-          <div className="tradie-background tradie-location flex-center">
-            <Navigation className="tradie-background" color="#8C8C8C" />
-            <span className="tradie-background">Can work within 50km</span>
+          <div className="gray-bg tradie-location flex-center">
+            <Navigation className="gray-bg" color="#8C8C8C" />
+            <span className="gray-bg">Can work within 50km</span>
           </div>
         </div>
 
-        <div className="tradie-background job-ad-mb-32">
+        <div className="gray-bg mb-32">
           <button className="tradie-btn tradie-btn-hire flex-center">
-            <img src={Briefcase} className="tradie-icon-case" />
+            <img src={Briefcase} className="icon-bg-black" />
             Hire
           </button>
           <button className="tradie-btn tradie-btn-chat flex-center">
@@ -53,19 +51,19 @@ const JobAdSidebar = () => {
           </button>
         </div>
       </div>
-      <div className="tradie-background">
-        <div className="tradie-background job-ad-mb-32">
-          <h2 className="tradie-background tradie-h2">About me</h2>
-          <div className="tradie-background tradie-about">
+      <div className="gray-bg">
+        <div className="gray-bg mb-32">
+          <h2 className="gray-bg tradie-h2">About me</h2>
+          <div className="gray-bg tradie-about">
             Skilled in painting and carpentry with 7 years of experience, I
             deliver quality craftsmanship in every project, from custom woodwork
             to flawless finishes. Your vision, brought to life with precision
             and care.
           </div>
         </div>
-        <div className="tradie-background job-ad-mb-32">
-          <h2 className="tradie-background tradie-h2">Services</h2>
-          <div className="tradie-background tradie-services">
+        <div className="gray-bg mb-32">
+          <h2 className="gray-bg tradie-h2">Services</h2>
+          <div className="gray-bg tradie-services">
             <span className="tradie-service">Painting</span>
             <span className="tradie-service">Lighting Expert</span>
             <span className="tradie-service">Floor Coating</span>
@@ -73,23 +71,23 @@ const JobAdSidebar = () => {
             <span className="tradie-service">Handyman</span>
           </div>
         </div>
-        <div className="tradie-background">
-          <h2 className="tradie-background tradie-h2">Contact and Socials</h2>
-          <div className="tradie-background tradie-contact flex-center">
+        <div className="gray-bg">
+          <h2 className="gray-bg tradie-h2">Contact and Socials</h2>
+          <div className="gray-bg tradie-contact flex-center">
             <img src={Phone} className="tradie-contact-icon" />
-            <span className="tradie-background">+61 412 456 789</span>
+            <span className="gray-bg">+61 412 456 789</span>
           </div>
-          <div className="tradie-background tradie-contact flex-center">
+          <div className="gray-bg tradie-contact flex-center">
             <Mail className="tradie-contact-icon" />
-            <span className="tradie-background">vergaraservices@gmail.com</span>
+            <span className="gray-bg">vergaraservices@gmail.com</span>
           </div>
-          <div className="tradie-background tradie-contact flex-center">
+          <div className="gray-bg tradie-contact flex-center">
             <img src={Facebook} className="tradie-contact-icon" />
-            <span className="tradie-background">yvesvergservices</span>
+            <span className="gray-bg">yvesvergservices</span>
           </div>
-          <div className="tradie-background tradie-contact flex-center">
+          <div className="gray-bg tradie-contact flex-center">
             <img src={Instagram} className="tradie-contact-icon" />
-            <span className="tradie-background">yvesvergservices</span>
+            <span className="gray-bg">yvesvergservices</span>
           </div>
         </div>
       </div>

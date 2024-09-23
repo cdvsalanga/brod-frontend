@@ -1,0 +1,201 @@
+.profile {
+  width: 1179px;
+  height: 100%;
+  margin: 42px auto;
+  display: flex;
+  justify-content: space-between;
+  column-gap: 64px;
+}
+
+.profile-sidebar {
+  width: 339px;
+  height: 100%;
+  padding: 24px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19.36px;
+  color: #242424;
+}
+
+.profile-img {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-name {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24.2px;
+}
+
+.profile-info {
+  color: #434343;
+  column-gap: 12px;
+}
+
+.profile-btn {
+  width: 100%;
+  border: 1px solid #1f1f23;
+  border-radius: 4px;
+  padding: 8px 16px;
+  justify-content: center;
+  column-gap: 12px;
+}
+
+.profile-edit {
+  font-weight: 500;
+  color: #1f1f23;
+  background-color: #fafafa;
+}
+
+.profile-trade {
+  background-color: #1f1f23;
+  color: #fff;
+}
+
+.profile-review-text {
+  font-weight: 500;
+}
+
+.profile-review-num {
+  margin-right: 2px;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 16.94px;
+}
+
+.profile-review-total {
+  text-decoration: underline;
+  font-size: 14px;
+  line-height: 16.94px;
+  color: #595959;
+}
+
+.profile-contents {
+  width: 728px;
+}
+
+.profile-content-h1 {
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 38.73px;
+  color: #242424;
+}
+
+.profile-navs {
+  display: flex;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19.36px;
+  color: #595959;
+}
+
+.profile-nav {
+  border-bottom: 4px solid #d9d9d9;
+  padding: 8px 16px 16px 16px;
+  cursor: pointer;
+}
+
+.profile-nav-active {
+  font-weight: 500;
+  color: #242424;
+  border-bottom: 4px solid #1f1f23;
+  padding: 8px 16px 16px 16px;
+  cursor: pointer;
+}
+
+.profile-item {
+  border: 1px solid #d9d9d9;
+  padding: 24px;
+  border-radius: 8px;
+}
+
+.profile-item-name {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 21.78px;
+  color: #242424;
+}
+
+.profile-item-date-text {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16.94px;
+  color: #242424;
+}
+
+.profile-item-date {
+  font-weight: 500;
+}
+
+.profile-job-details {
+  display: flex;
+  column-gap: 32px;
+}
+
+.profile-job-detail {
+  column-gap: 8px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16.94px;
+  color: #434343;
+}
+
+.profile-item-details {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+  color: #242424;
+}
+
+.profile-btn-cancel {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16.94px;
+  color: #820014;
+  column-gap: 8px;
+  border: none;
+}
+
+.profile-btn-black {
+  border: 1px solid #1f1f23;
+  border-radius: 4px;
+  padding: 8px 12px;
+  background-color: #1f1f23;
+  color: #fff;
+  column-gap: 8px;
+  width: 200px;
+  justify-content: center;
+}
+
+.profile-item-offer {
+  display: flex;
+  column-gap: 16px;
+}
+
+.profile-btn-offer {
+  border: 1px solid #1f1f23;
+  border-radius: 4px;
+  padding: 8px 12px;
+  color: #1f1f23;
+  column-gap: 8px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16.94px;
+  width: 200px;
+  justify-content: center;
+}
+
+.profile-complete-rated {
+  display: flex;
+  align-items: center;
+  column-gap: 12px;
+  color: #1f1f23;
+}
+
+.profile-rated-text {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16.94px;
+  text-decoration: underline;
+}

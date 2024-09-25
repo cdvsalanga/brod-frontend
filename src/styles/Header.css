@@ -3,6 +3,8 @@ header {
   margin: 0 auto;
   padding: 0 70px;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   border-bottom: 1px solid #f0f0f0;
 }
 
@@ -17,14 +19,12 @@ header {
   border: 1px solid #1f1f23;
   border-radius: 4px;
   padding: 11px 20px;
-  margin: 14px 0;
   color: #1f1f23;
   text-decoration: none;
 }
 
 .divider {
   border-right: 1px solid #d9d9d9;
-  margin: 14px 16px;
   height: 40px;
 }
 
@@ -34,14 +34,115 @@ header {
   border: 1px solid #1f1f23;
   border-radius: 4px;
   padding: 11px 20px;
-  margin: 14px 0;
   color: #ffffff;
   text-decoration: none;
   background-color: #1f1f23;
 }
 
-.header-links {
-  width: 100%;
+.header-btns {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  column-gap: 16px;
+  height: 100%;
+}
+
+.header-links {
+  display: flex;
+  align-items: center;
+  column-gap: 24px;
+  position: relative;
+}
+
+.header-img {
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.header-profile {
+  position: absolute;
+  bottom: -85px;
+  right: 0;
+  padding: 12px 20px;
+  border-radius: 4px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19.36px;
+  color: #242424;
+}
+
+.header-link {
+  cursor: pointer;
+}
+
+.header-hide {
+  display: none;
+}
+
+.notification {
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  position: fixed;
+  overflow: auto;
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.remove-notif {
+  width: 100%;
+  background-color: transparent;
+  position: relative;
+}
+
+.close-notif {
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  padding: 10px;
+  position: absolute;
+  top: 24px;
+  right: 8px;
+}
+
+.notif-contents {
+  padding: 24px 32px;
+  flex-shrink: 0;
+  width: 656px;
+}
+
+.notif-h1 {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 36px;
+  color: #000000;
+}
+
+.notif-separator {
+  border: 1px solid #e5e5e5;
+}
+
+.notif-items {
+  column-gap: 16px;
+}
+
+.notif-item-img {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.notif-item-text {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  color: #242424;
+}
+
+.notif-item-date {
+  font-size: 12px;
+  color: #717171;
+}
+
+.notif-delete {
+  flex-shrink: 0;
 }

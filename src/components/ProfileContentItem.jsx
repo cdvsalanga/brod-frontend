@@ -9,6 +9,7 @@ import {
   FileText,
   Mail,
   Star,
+  Bookmark,
 } from "lucide-react";
 
 const ProfileContentItem = ({ item }) => {
@@ -19,7 +20,7 @@ const ProfileContentItem = ({ item }) => {
           <div className="flex-between flex-center mb-12">
             <h2 className="profile-item-name">All-Around Painting Services</h2>
             <div className="profile-item-date-text">
-              {item === "job"
+              {item === "job" || item === "bookmark"
                 ? "Job accepted on"
                 : item === "offer"
                 ? "Inquiry Sent on"
@@ -49,12 +50,20 @@ const ProfileContentItem = ({ item }) => {
             room or update the entire exterior, I bring all-aroun...
           </div>
         </div>
-        <div className={item === "complete" ? "flex-end" : "flex-between"}>
-          {item !== "complete" && (
+        <div
+          className={
+            item === "complete" || item === "bookmark"
+              ? "flex-end"
+              : "flex-between"
+          }
+        >
+          {item === "job" || item === "offer" ? (
             <button className="profile-btn-cancel flex-center">
               <CircleX />
               Cancel job
             </button>
+          ) : (
+            <></>
           )}
           <div>
             {item === "job" ? (
@@ -73,7 +82,7 @@ const ProfileContentItem = ({ item }) => {
                   Chat
                 </button>
               </div>
-            ) : (
+            ) : item === "complete" ? (
               <button className="profile-btn-black flex-center">
                 <Star
                   width={20}
@@ -83,6 +92,11 @@ const ProfileContentItem = ({ item }) => {
                 />
                 Rate the service
               </button>
+            ) : (
+              <div className="profile-bookmark flex-center">
+                <Bookmark fill="#1F1F23" />
+                Bookmarked
+              </div>
             )}
           </div>
         </div>
@@ -122,12 +136,20 @@ const ProfileContentItem = ({ item }) => {
             room or update the entire exterior, I bring all-aroun...
           </div>
         </div>
-        <div className={item === "complete" ? "flex-end" : "flex-between"}>
-          {item !== "complete" && (
+        <div
+          className={
+            item === "complete" || item === "bookmark"
+              ? "flex-end"
+              : "flex-between"
+          }
+        >
+          {item === "job" || item === "offer" ? (
             <button className="profile-btn-cancel flex-center">
               <CircleX />
               Cancel job
             </button>
+          ) : (
+            <></>
           )}
           <div>
             {item === "job" ? (
@@ -146,7 +168,7 @@ const ProfileContentItem = ({ item }) => {
                   Chat
                 </button>
               </div>
-            ) : (
+            ) : item === "complete" ? (
               <div className="profile-complete-rated">
                 <div>
                   <Star fill="#1F1F23" />
@@ -156,6 +178,11 @@ const ProfileContentItem = ({ item }) => {
                   <Star fill="#1F1F23" />
                 </div>
                 <span className="profile-rated-text">See rating details</span>
+              </div>
+            ) : (
+              <div className="profile-bookmark flex-center">
+                <Bookmark fill="#1F1F23" />
+                Bookmarked
               </div>
             )}
           </div>

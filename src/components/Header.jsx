@@ -1,27 +1,98 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logos/header.png";
 import "../styles/Header.css";
+import { Bell, Heart, Mail, X } from "lucide-react";
+import CardImage from "../assets/images/card-image.png";
+import Notifications from "./Notifications";
 
 const Header = ({ notHidden = true }) => {
-  return (
-    <header>
-      <Link to="/">
-        <img src={logo} className="header-logo" />
-      </Link>
+  const [userInfo] = useState(JSON.parse(localStorage.getItem("userInfo")));
+  const [showProfile, setShowProfile] = useState(false);
+  const [showNotif, setShowNotif] = useState(false);
+  const navigate = useNavigate();
 
-      {notHidden && (
-        <div className="header-links">
-          <Link to="/login" className="login-btn">
-            Log in
-          </Link>
-          <span className="divider" />
-          <Link to="/signup" className="signup-btn">
-            Sign Up
-          </Link>
+  const logOutHandler = () => {
+    localStorage.removeItem("userInfo");
+    navigate("/");
+  };
+
+  return (
+    <>
+      {showNotif && (
+        <div className="notification scroll-lock">
+          <div className="remove-notif" onClick={() => setShowNotif(false)}>
+            <X
+              width={32}
+              height={32}
+              color="#717171"
+              className="close-notif pointer"
+            />
+          </div>
+          <Notifications />
         </div>
       )}
-    </header>
+      <header>
+        <Link to="/">
+          <img src={logo} className="header-logo" />
+        </Link>
+        {userInfo ? (
+          <div className="header-links">
+            <Bell
+              className="header-link"
+              width={32}
+              height={32}
+              color="#8C8C8C"
+              onClick={() => setShowNotif(!showNotif)}
+            />
+            <Mail
+              className="header-link"
+              width={32}
+              height={32}
+              color="#8C8C8C"
+            />
+            <Link to={"/favorites"}>
+              <Heart
+                className="header-link"
+                width={32}
+                height={32}
+                color="#5F6368"
+              />
+            </Link>
+            <img
+              src={CardImage}
+              width={32}
+              height={32}
+              className="header-img"
+              onClick={() => setShowProfile(!showProfile)}
+            />
+            <div className={showProfile ? "header-profile" : "header-hide"}>
+              <div
+                className="mb-16 header-link"
+                onClick={() => navigate(`/profile/${userInfo.userId}`)}
+              >
+                My Account
+              </div>
+              <div className="header-link" onClick={logOutHandler}>
+                Log out
+              </div>
+            </div>
+          </div>
+        ) : (
+          notHidden && (
+            <div className={"header-btns"}>
+              <Link to="/login" className="login-btn">
+                Log in
+              </Link>
+              <span className="divider" />
+              <Link to="/signup" className="signup-btn">
+                Sign Up
+              </Link>
+            </div>
+          )
+        )}
+      </header>
+    </>
   );
 };
 

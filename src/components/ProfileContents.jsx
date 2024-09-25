@@ -29,6 +29,14 @@ const ProfileContents = () => {
           >
             Completed (2)
           </div>
+          <div
+            className={
+              item === "bookmark" ? "profile-nav-active" : "profile-nav"
+            }
+            onClick={() => setItem("bookmark")}
+          >
+            Bookmarked (2)
+          </div>
         </div>
       </div>
       <ProfileContentItem item={item} />

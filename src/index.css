@@ -5,6 +5,10 @@
   background-color: #ffffff;
 }
 
+body:has(.scroll-lock) {
+  overflow: hidden;
+}
+
 .show-pass {
   position: absolute;
   top: 12px;
@@ -31,6 +35,10 @@
 .flex-end {
   display: flex;
   justify-content: end;
+}
+
+.mb-4 {
+  margin-bottom: 4px;
 }
 
 .mb-8 {
@@ -63,4 +71,8 @@
 
 .icon-bg-black {
   background-color: #1f1f23;
+}
+
+.pointer {
+  cursor: pointer;
 }

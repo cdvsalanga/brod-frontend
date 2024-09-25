@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/LogIn.css";
 import { Eye, EyeOff } from "lucide-react";
-import { login } from "../action/userAction";
+import { login } from "../action/userActions";
 import { useNavigate } from "react-router-dom";
 
 const LoginBox = () => {

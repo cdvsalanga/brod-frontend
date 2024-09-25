@@ -199,3 +199,11 @@
   line-height: 16.94px;
   text-decoration: underline;
 }
+
+.profile-bookmark {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19.36px;
+  color: #1f1f23;
+  column-gap: 4px;
+}

@@ -335,6 +335,12 @@
 .offer-budget-select {
   width: 100px;
   border-radius: 4px;
+  -moz-appearance: none; /* Firefox */
+  -webkit-appearance: none; /* Safari and Chrome */
+  appearance: none;
+  background-image: url("../assets/icons/dropdown.svg");
+  background-repeat: no-repeat;
+  background-position: 66px;
 }
 
 .offer-next-list {

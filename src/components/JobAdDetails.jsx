@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/JobAd.css";
 import { Heart, MapPin, Star } from "lucide-react";
 import CardImage from "../assets/images/card-image.png";
@@ -6,6 +6,7 @@ import HeroImage from "../assets/images/hero-image.png";
 import Services from "../assets/images/services-header-background.png";
 
 const JobAdDetails = () => {
+  const [favorite, setFavorite] = useState(false);
   return (
     <div className="job-details">
       <div className="mb-40">
@@ -13,7 +14,12 @@ const JobAdDetails = () => {
           <div className="flex-between mb-12">
             <div className="job-type">Painting</div>
             <div className="flex-center">
-              <Heart className="job-heart" />
+              <Heart
+                className="job-heart pointer"
+                fill={favorite ? "#1F1F23" : "none"}
+                color={favorite ? "#1F1F23" : "#D9D9D9"}
+                onClick={() => setFavorite(!favorite)}
+              />
               <span className="job-fav">Favorite</span>
             </div>
           </div>

@@ -15,6 +15,8 @@ import SearchPage from "./pages/SearchPage";
 import JobAdPage from "./pages/JobAdPage";
 import FavoritesPage from "./pages/FavoritesPage";
 import ProfilePage from "./pages/ProfilePage";
+import ApplicationReviewPage from "./pages/ApplicationReviewPage";
+import DashboardTradiePage from "./pages/DashboardTradiePage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -28,6 +30,14 @@ const router = createBrowserRouter(
       <Route path="/job-ad/:id" element={<JobAdPage />} />
       <Route path="/favorites" element={<FavoritesPage />} />
       <Route path="/profile/:id" element={<ProfilePage />} />
+      <Route
+        path="/login/application-under-review"
+        element={<ApplicationReviewPage />}
+      />
+      <Route
+        path="/tradesperson/dashboard/:id"
+        element={<DashboardTradiePage />}
+      />
     </Route>
   )
 );

@@ -88,3 +88,12 @@ body:has(.scroll-lock) {
 .transparent {
   background-color: transparent;
 }
+
+.green-dot {
+  border: 4px solid #3e8629;
+  border-radius: 50%;
+  width: 0.2px;
+  height: 0.2px;
+  background-color: #3e8629;
+  margin-right: 4.5px;
+}

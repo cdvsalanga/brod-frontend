@@ -23,7 +23,7 @@ const JobAdSidebar = () => {
           <img src={CardImage} className="tradie-img gray-bg" />
           <div className="gray-bg">
             <div className="gray-bg tradie-status flex-center">
-              <div className="gray-bg tradie-dot" />
+              <div className="gray-bg green-dot" />
               Available for work
             </div>
             <div className="gray-bg flex-center">

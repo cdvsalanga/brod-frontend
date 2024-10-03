@@ -2,20 +2,36 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/LogIn.css";
 import { Eye, EyeOff } from "lucide-react";
-import { login } from "../action/userActions";
+import { getUserDetails, login } from "../action/userActions";
 import { useNavigate } from "react-router-dom";
 
 const LoginBox = () => {
   const [showPass, setShowPass] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userInfo, setUserInfo] = useState(localStorage.getItem("userInfo"));
+  const [userInfo, setUserInfo] = useState(
+    JSON.parse(localStorage.getItem("userInfo"))
+  );
 
   const navigate = useNavigate();
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/services");
+      const userDetails = getUserDetails(userInfo.userId);
+      userDetails.then((res) => {
+        console.log(res.role);
+        if (res.role === "Admin") {
+          navigate("/admin");
+        } else if (res.role === "Tradie") {
+          if (res.status === "Approved") {
+            navigate(`/tradesperson/dashboard/${userInfo.userId}`);
+          } else {
+            navigate("/login/application-under-review");
+          }
+        } else {
+          navigate("/services");
+        }
+      });
     }
   }, [userInfo]);
 

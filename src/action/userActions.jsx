@@ -12,3 +12,15 @@ export const login = async (email, password) => {
     console.error(error);
   }
 };
+
+export const getUserDetails = async (userId) => {
+  try {
+    const { data } = await axios.get(
+      `http://localhost:26602/api/Auth/userDetails?id=${userId}`
+    );
+
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};

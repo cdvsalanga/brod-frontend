@@ -66,17 +66,19 @@ const Header = ({ notHidden = true }) => {
               className="header-img"
               onClick={() => setShowProfile(!showProfile)}
             />
-            <div className={showProfile ? "header-profile" : "header-hide"}>
-              <div
-                className="mb-16 header-link"
-                onClick={() => navigate(`/profile/${userInfo.userId}`)}
-              >
-                My Account
+            {showProfile && (
+              <div className="header-profile">
+                <div
+                  className="mb-16 header-link"
+                  onClick={() => navigate(`/profile/${userInfo.userId}`)}
+                >
+                  My Account
+                </div>
+                <div className="header-link" onClick={logOutHandler}>
+                  Log out
+                </div>
               </div>
-              <div className="header-link" onClick={logOutHandler}>
-                Log out
-              </div>
-            </div>
+            )}
           </div>
         ) : (
           notHidden && (

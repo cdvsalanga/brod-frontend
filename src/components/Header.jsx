@@ -14,7 +14,7 @@ const Header = ({ notHidden = true }) => {
 
   const logOutHandler = () => {
     localStorage.removeItem("userInfo");
-    navigate("/");
+    navigate("/login");
   };
 
   return (

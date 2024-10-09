@@ -7,14 +7,13 @@
   font-weight: 500;
   font-size: 32px;
   line-height: 44.8px;
-  margin-bottom: 12px;
 }
 
 .signup-info-text {
   font-weight: 500;
+  font-size: 16px;
   line-height: 24px;
   color: #242424;
-  margin-bottom: 32px;
 }
 
 .signup-info-form {
@@ -46,8 +45,24 @@
   width: 88.73%;
   border: 1px solid #d9d9d9;
   padding: 16px;
-  height: 16px;
-  font-size: 16px;
+}
+
+.singup-info-select {
+  width: 100%;
+  -moz-appearance: none; /* Firefox */
+  -webkit-appearance: none; /* Safari and Chrome */
+  appearance: none;
+  background-image: url("../assets/icons/dropdown.svg");
+  background-repeat: no-repeat;
+  background-position: 270px 20px;
+}
+
+.signup-info-choose {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16.94px;
+  color: #242424;
+  margin-top: 6px;
 }
 
 .signup-info-optional {
@@ -85,4 +100,87 @@
   position: absolute;
   top: 0;
   left: 0;
+}
+
+.signup-info-status {
+  background-color: #d5eff6cc;
+  border-radius: 99px;
+  padding: 8px 12px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #2f5763;
+}
+
+.signup-info-btns-box {
+  width: 100%;
+  column-gap: 16px;
+}
+
+.signup-info-btns {
+  width: 150px;
+  justify-content: center;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+}
+
+.singup-info-decline {
+  border: 1px solid #820014;
+  color: #820014;
+}
+
+.singup-info-approve {
+  border: 1px solid #1f1f23;
+  color: #ffffff;
+  background-color: #1f1f23;
+}
+
+.modal-decline {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.modal-decline-box {
+  width: 620px;
+  border: 0.5px solid #b3b2b5;
+  border-radius: 4px;
+  padding: 32px;
+  margin: 48px auto;
+}
+
+.modal-required {
+  font-weight: 400;
+  font-size: 14px;
+  color: #a8071a;
+}
+
+.modal-textarea {
+  resize: none;
+  padding: 16px;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  width: 586.4px;
+  height: 146.4px;
+}
+
+.modal-btns {
+  border: 1px solid #1f1f23;
+  border-radius: 4px;
+  padding: 10px 20px;
+  width: 302px;
+  color: #1f1f23;
+  font-size: 16px;
+}
+
+.modal-black-btn {
+  background-color: #1f1f23;
+  color: #ffffff;
+  margin-left: 16px;
 }

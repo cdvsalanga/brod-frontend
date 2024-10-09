@@ -39,7 +39,7 @@ const LoginBox = () => {
     e.preventDefault();
     await login(email, password);
 
-    setUserInfo(localStorage.getItem("userInfo"));
+    setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
   };
 
   return (

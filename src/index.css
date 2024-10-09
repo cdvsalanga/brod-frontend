@@ -69,6 +69,10 @@ body:has(.scroll-lock) {
   margin-bottom: 40px;
 }
 
+.mb-42 {
+  margin-bottom: 42px;
+}
+
 .mb-48 {
   margin-bottom: 48px;
 }

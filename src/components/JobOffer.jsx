@@ -17,7 +17,7 @@ const JobOffer = () => {
               Provide Job Details and Make an Offer
             </h1>
             <div className="mb-24">
-              <label className="offer-label mb-12">Job Ad Title</label>
+              <label className="block mb-12">Job Ad Title</label>
               <input
                 className="offer-title offer-input"
                 type="text"
@@ -26,15 +26,15 @@ const JobOffer = () => {
               />
             </div>
             <div className="mb-24">
-              <label className="offer-label mb-12">
+              <label className="block mb-12">
                 Detailed description of the service you need.{" "}
                 <span className="offer-required">(required)</span>
               </label>
               <textarea className="offer-textbox offer-input" />
             </div>
             <div className="mb-24 flex-between">
-              <div className="offer-half">
-                <label className="offer-label mb-12">
+              <div className="half-inputs">
+                <label className="block mb-12">
                   Your Postcode{" "}
                   <span className="offer-required">(required)</span>
                 </label>
@@ -44,8 +44,8 @@ const JobOffer = () => {
                   placeholder="0000"
                 />
               </div>
-              <div className="offer-half">
-                <label className="offer-label mb-12">
+              <div className="half-inputs">
+                <label className="block mb-12">
                   Contact Number{" "}
                   <span className="offer-required">(required)</span>
                 </label>
@@ -53,23 +53,23 @@ const JobOffer = () => {
               </div>
             </div>
             <div className="mb-24 flex-between">
-              <div className="offer-half">
-                <label className="offer-label mb-12">
+              <div className="half-inputs">
+                <label className="block mb-12">
                   Target Start Date{" "}
                   <span className="offer-required">(required)</span>
                 </label>
                 <input type="date" className="offer-input offer-input-half" />
               </div>
-              <div className="offer-half">
-                <label className="offer-label mb-12">
+              <div className="half-inputs">
+                <label className="block mb-12">
                   Target Completion Date{" "}
                   <span className="offer-required">(required)</span>
                 </label>
                 <input type="date" className="offer-input offer-input-half" />
               </div>
             </div>
-            <div className="mb-32 offer-half">
-              <label className="offer-label mb-12">Your Budget</label>
+            <div className="mb-32 half-inputs">
+              <label className="block mb-12">Your Budget</label>
               <div>
                 <input
                   type="text"

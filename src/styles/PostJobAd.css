@@ -1,0 +1,105 @@
+.job-form {
+  width: 620px;
+  margin: 42px auto;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19.36px;
+  color: #242424;
+}
+
+.job-form-h1 {
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 38.73px;
+}
+
+.job-form-input {
+  width: 586.4px;
+  padding: 16px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+}
+
+.job-form-select {
+  width: 100%;
+  -moz-appearance: none; /* Firefox */
+  -webkit-appearance: none; /* Safari and Chrome */
+  appearance: none;
+  background-image: url("../assets/icons/dropdown.svg");
+  background-repeat: no-repeat;
+  background-position: 264px;
+}
+
+.job-form-half-input {
+  width: 264.4px;
+}
+
+.job-form-textarea {
+  resize: none;
+  height: 418.4px;
+}
+
+.job-form-price {
+  display: flex;
+  column-gap: 8px;
+}
+
+.job-form-price-text {
+  width: 156.4px;
+}
+
+.job-form-price-select {
+  width: 100px;
+  -moz-appearance: none; /* Firefox */
+  -webkit-appearance: none; /* Safari and Chrome */
+  appearance: none;
+  background-image: url("../assets/icons/dropdown.svg");
+  background-repeat: no-repeat;
+  background-position: 66px;
+}
+
+.job-form-btns {
+  column-gap: 16px;
+}
+
+.job-form-btn {
+  border: 1px solid #1f1f23;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #1f1f23;
+}
+
+.job-form-btn-black {
+  background-color: #1f1f23;
+  color: #ffffff;
+}
+
+.job-form-optional {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16.94px;
+  color: #595959;
+}
+
+.job-form-status {
+  border-radius: 99px;
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 16.94px;
+}
+
+.job-form-publish {
+  background-color: #daf5da;
+  color: #3e8629;
+}
+
+.job-form-unpublish {
+  background-color: #e5e5e5;
+  color: #676767;
+}
+
+.job-form-btn-red {
+  border: 1px solid #820014;
+  color: #820014;
+}

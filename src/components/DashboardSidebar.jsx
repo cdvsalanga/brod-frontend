@@ -13,7 +13,7 @@ const DashboardSidebar = () => {
             width={100}
             height={100}
           />
-          <div className="dashboard-sidebar-availability flex-center">
+          <div className="status-available flex-center">
             <div className="green-dot" />
             Available for work
           </div>

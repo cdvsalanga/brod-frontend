@@ -25,17 +25,6 @@
   margin-right: 24px;
 }
 
-.tradie-status {
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 16.94px;
-  color: #3e8629;
-  background-color: #daf5da;
-  padding: 8px 16px;
-  border-radius: 99px;
-  margin-bottom: 16px;
-}
-
 .tradie-rate-num {
   font-weight: 500;
   font-size: 20px;
@@ -280,10 +269,6 @@
   line-height: 33.89px;
 }
 
-.offer-label {
-  display: block;
-}
-
 .offer-input {
   border: 1px solid #d9d9d9;
   padding: 16px;
@@ -308,10 +293,6 @@
   font-size: 14px;
   line-height: 16.94px;
   color: #a8071a;
-}
-
-.offer-half {
-  width: 298px;
 }
 
 .offer-input-half {

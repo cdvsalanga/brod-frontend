@@ -95,5 +95,23 @@ body:has(.scroll-lock) {
   width: 0.2px;
   height: 0.2px;
   background-color: #3e8629;
-  margin-right: 4.5px;
+  margin-right: 8px;
+}
+
+.status-available {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16.94px;
+  color: #3e8629;
+  background-color: #daf5da;
+  padding: 8px 16px;
+  border-radius: 99px;
+}
+
+.half-inputs {
+  width: 298px;
+}
+
+.block {
+  display: block;
 }

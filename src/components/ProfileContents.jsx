@@ -1,45 +1,97 @@
 import React, { useState } from "react";
 import "../styles/Profile.css";
 import ProfileContentItem from "./ProfileContentItem";
+import { useNavigate } from "react-router-dom";
 
-const ProfileContents = () => {
-  const [item, setItem] = useState("job");
+const ProfileContents = ({ role }) => {
+  const [item, setItem] = useState(() => {
+    if (role === "Client") {
+      return "job";
+    } else if (role === "Tradie") {
+      return "publish";
+    }
+  });
+
+  const navigate = useNavigate();
   return (
     <div className="profile-contents">
-      <div className="mb-16">
-        <h1 className="profile-content-h1 mb-16">My Account</h1>
-        <div className="profile-navs">
-          <div
-            className={item === "job" ? "profile-nav-active" : "profile-nav"}
-            onClick={() => setItem("job")}
-          >
-            In Progress Jobs (2)
-          </div>
-          <div
-            className={item === "offer" ? "profile-nav-active" : "profile-nav"}
-            onClick={() => setItem("offer")}
-          >
-            Sent Offers (2)
-          </div>
-          <div
-            className={
-              item === "complete" ? "profile-nav-active" : "profile-nav"
-            }
-            onClick={() => setItem("complete")}
-          >
-            Completed (2)
-          </div>
-          <div
-            className={
-              item === "bookmark" ? "profile-nav-active" : "profile-nav"
-            }
-            onClick={() => setItem("bookmark")}
-          >
-            Bookmarked (2)
+      {role === "Client" ? (
+        <div className="mb-16">
+          <h1 className="profile-content-h1 mb-16">My Account</h1>
+          <div className="profile-navs">
+            <div
+              className={item === "job" ? "profile-nav-active" : "profile-nav"}
+              onClick={() => setItem("job")}
+            >
+              In Progress Jobs (2)
+            </div>
+            <div
+              className={
+                item === "offer" ? "profile-nav-active" : "profile-nav"
+              }
+              onClick={() => setItem("offer")}
+            >
+              Sent Offers (2)
+            </div>
+            <div
+              className={
+                item === "complete" ? "profile-nav-active" : "profile-nav"
+              }
+              onClick={() => setItem("complete")}
+            >
+              Completed (2)
+            </div>
+            <div
+              className={
+                item === "bookmark" ? "profile-nav-active" : "profile-nav"
+              }
+              onClick={() => setItem("bookmark")}
+            >
+              Bookmarked (2)
+            </div>
           </div>
         </div>
-      </div>
-      <ProfileContentItem item={item} />
+      ) : (
+        <div className="mb-16">
+          <div className="flex-between mb-16">
+            <h1 className="profile-content-h1">My Account</h1>
+            <button
+              className="profile-post-btn pointer"
+              onClick={() => navigate("/tradesperson/post-job-ad")}
+            >
+              Post a job ad
+            </button>
+          </div>
+          <div className="profile-navs">
+            <div
+              className={
+                item === "publish" ? "profile-nav-active" : "profile-nav"
+              }
+              onClick={() => setItem("publish")}
+            >
+              Published Ads (1)
+            </div>
+            <div
+              className={
+                item === "unpublish" ? "profile-nav-active" : "profile-nav"
+              }
+              onClick={() => setItem("unpublish")}
+            >
+              Unpublished Ads (1)
+            </div>
+            <div
+              className={
+                item === "complete" ? "profile-nav-active" : "profile-nav"
+              }
+              onClick={() => setItem("complete")}
+            >
+              Completed Jobs (1)
+            </div>
+          </div>
+        </div>
+      )}
+
+      <ProfileContentItem item={item} role={role} />
     </div>
   );
 };

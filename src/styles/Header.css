@@ -1,11 +1,15 @@
+.header {
+  width: 100%;
+  border-bottom: 1px solid #f0f0f0;
+}
+
 header {
+  width: 1300px;
   height: 68px;
   margin: 0 auto;
-  padding: 0 70px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #f0f0f0;
 }
 
 .header-logo {
@@ -61,7 +65,7 @@ header {
 
 .header-profile {
   position: absolute;
-  bottom: -85px;
+  top: 39px;
   right: 0;
   z-index: 1;
   padding: 12px 20px;
@@ -72,8 +76,8 @@ header {
   color: #242424;
 }
 
-.header-link {
-  cursor: pointer;
+.header-w-91 {
+  width: 91px;
 }
 
 .notification {

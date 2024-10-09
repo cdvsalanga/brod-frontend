@@ -13,6 +13,7 @@
 .dashboard-sidebar-img {
   border-radius: 50%;
   object-fit: cover;
+  margin-right: 24px;
 }
 
 .dashboard-sidebar-h1 {

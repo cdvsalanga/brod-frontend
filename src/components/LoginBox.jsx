@@ -19,7 +19,9 @@ const LoginBox = () => {
     if (userInfo) {
       const userDetails = getUserDetails(userInfo.userId);
       userDetails.then((res) => {
-        console.log(res.role);
+        setUserInfo((userInfo.role = res.role), (userInfo.status = res.status));
+        localStorage.setItem("userInfo", JSON.stringify(userInfo));
+
         if (res.role === "Admin") {
           navigate("/admin");
         } else if (res.role === "Tradie") {

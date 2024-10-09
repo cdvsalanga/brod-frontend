@@ -18,68 +18,99 @@ const Header = ({ notHidden = true }) => {
   };
 
   return (
-    <>
-      {showNotif && (
-        <div className="notification scroll-lock">
-          <div className="remove-notif" onClick={() => setShowNotif(false)}>
-            <X
-              width={32}
-              height={32}
-              color="#717171"
-              className="close-notif pointer"
-            />
-          </div>
-          <Notifications />
-        </div>
-      )}
+    <div className="header">
       <header>
-        <Link to="/">
+        <Link
+          to={
+            userInfo
+              ? userInfo.role === "Client"
+                ? "/services"
+                : userInfo.role === "Tradie"
+                ? `/tradesperson/dashboard/${userInfo.userId}`
+                : "/admin"
+              : "/"
+          }
+        >
           <img src={logo} className="header-logo" />
         </Link>
         {userInfo ? (
-          <div className="header-links">
-            <Bell
-              className="header-link"
-              width={32}
-              height={32}
-              color="#8C8C8C"
-              onClick={() => setShowNotif(!showNotif)}
-            />
-            <Mail
-              className="header-link"
-              width={32}
-              height={32}
-              color="#8C8C8C"
-            />
-            <Link to={"/favorites"}>
-              <Heart
-                className="header-link"
+          userInfo.role === "Admin" || userInfo.status !== "Approved" ? (
+            <div className="header-links">
+              <img
+                src={CardImage}
                 width={32}
                 height={32}
-                color="#5F6368"
+                className="header-img"
+                onClick={() => setShowProfile(!showProfile)}
               />
-            </Link>
-            <img
-              src={CardImage}
-              width={32}
-              height={32}
-              className="header-img"
-              onClick={() => setShowProfile(!showProfile)}
-            />
-            {showProfile && (
-              <div className="header-profile">
-                <div
-                  className="mb-16 header-link"
-                  onClick={() => navigate(`/profile/${userInfo.userId}`)}
-                >
-                  My Account
+              {showProfile &&
+                (userInfo.role === "Admin" || userInfo.status !== "Approved" ? (
+                  <div className="header-profile header-w-91">
+                    <div className="pointer" onClick={logOutHandler}>
+                      Log out
+                    </div>
+                  </div>
+                ) : (
+                  <div className="header-profile">
+                    <div
+                      className="mb-16 pointer"
+                      onClick={() => navigate(`/profile/${userInfo.userId}`)}
+                    >
+                      My Account
+                    </div>
+                    <div className="pointer" onClick={logOutHandler}>
+                      Log out
+                    </div>
+                  </div>
+                ))}
+            </div>
+          ) : (
+            <div className="header-links">
+              <Bell
+                className="pointer"
+                width={32}
+                height={32}
+                color="#8C8C8C"
+                onClick={() => setShowNotif(!showNotif)}
+              />
+              <Mail
+                className="pointer"
+                width={32}
+                height={32}
+                color="#8C8C8C"
+              />
+              {userInfo.role === "Client" && (
+                <Link to={"/favorites"}>
+                  <Heart
+                    className="pointer"
+                    width={32}
+                    height={32}
+                    color="#5F6368"
+                  />
+                </Link>
+              )}
+              <img
+                src={CardImage}
+                width={32}
+                height={32}
+                className="header-img"
+                onClick={() => setShowProfile(!showProfile)}
+              />
+              {showProfile && (
+                <div className="header-profile">
+                  <div
+                    className="mb-16 pointer"
+                    onClick={() => navigate(`/profile/${userInfo.userId}`)}
+                  >
+                    My Account
+                  </div>
+                  <div className="pointer" onClick={logOutHandler}>
+                    Log out
+                  </div>
                 </div>
-                <div className="header-link" onClick={logOutHandler}>
-                  Log out
-                </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )
         ) : (
           notHidden && (
             <div className={"header-btns"}>
@@ -94,7 +125,20 @@ const Header = ({ notHidden = true }) => {
           )
         )}
       </header>
-    </>
+      {showNotif && (
+        <div className="notification scroll-lock">
+          <div className="remove-notif" onClick={() => setShowNotif(false)}>
+            <X
+              width={32}
+              height={32}
+              color="#717171"
+              className="close-notif pointer"
+            />
+          </div>
+          <Notifications />
+        </div>
+      )}
+    </div>
   );
 };
 

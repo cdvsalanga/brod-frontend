@@ -34,7 +34,8 @@ const Header = ({ notHidden = true }) => {
           <img src={logo} className="header-logo" />
         </Link>
         {userInfo ? (
-          userInfo.role === "Admin" || userInfo.status !== "Approved" ? (
+          userInfo.role === "Admin" ||
+          (userInfo.status !== "Approved" && userInfo.role === "Tradie") ? (
             <div className="header-links">
               <img
                 src={CardImage}
@@ -44,7 +45,9 @@ const Header = ({ notHidden = true }) => {
                 onClick={() => setShowProfile(!showProfile)}
               />
               {showProfile &&
-                (userInfo.role === "Admin" || userInfo.status !== "Approved" ? (
+                (userInfo.role === "Admin" ||
+                (userInfo.status !== "Approved" &&
+                  userInfo.role === "Tradie") ? (
                   <div className="header-profile header-w-91">
                     <div className="pointer" onClick={logOutHandler}>
                       Log out

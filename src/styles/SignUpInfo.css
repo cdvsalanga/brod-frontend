@@ -47,6 +47,10 @@
   padding: 16px;
 }
 
+.signup-info-input-maxw {
+  width: 586.4px;
+}
+
 .singup-info-select {
   width: 100%;
   -moz-appearance: none; /* Firefox */
@@ -65,10 +69,10 @@
   margin-top: 6px;
 }
 
-.signup-info-optional {
+/* .signup-info-optional {
   display: inline;
   color: #595959;
-}
+} */
 
 .signup-info-btn {
   width: 100%;

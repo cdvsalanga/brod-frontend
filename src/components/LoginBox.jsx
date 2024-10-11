@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 const LoginBox = () => {
   const [showPass, setShowPass] = useState(false);
+  const [showError, setShowError] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userInfo, setUserInfo] = useState(
@@ -39,7 +40,11 @@ const LoginBox = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    await login(email, password);
+    const error = await login(email, password);
+
+    if (error) {
+      setShowError(true);
+    }
 
     setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
   };
@@ -47,12 +52,18 @@ const LoginBox = () => {
   return (
     <div className="login-box">
       <h1 className="login-h1">Log in</h1>
+      {showError && (
+        <div className="show-error mb-20">
+          You have entered an invalid username or password.
+        </div>
+      )}
       <form onSubmit={submitHandler}>
         <label className="login-label">Email address</label>
         <input
-          type="text"
+          type="email"
           className="login-input"
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
 
         <label className="login-label">Password</label>
@@ -61,6 +72,7 @@ const LoginBox = () => {
             type={showPass ? "text" : "password"}
             className="login-input m-24 input-pass"
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
           {showPass ? (
             <Eye onClick={() => setShowPass(false)} className="show-pass" />

@@ -119,3 +119,11 @@ body:has(.scroll-lock) {
 .block {
   display: block;
 }
+
+.show-error {
+  font-weight: 400;
+  font-size: 14px;
+  color: #871400e5;
+  background-color: #f9dedcbf;
+  padding: 16px;
+}

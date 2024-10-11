@@ -2,8 +2,15 @@ import React from "react";
 import "../styles/LogIn.css";
 import Header from "../components/Header";
 import UnderReview from "../assets/images/under-review.svg";
+import { useNavigate } from "react-router-dom";
 
 const ApplicationReviewPage = () => {
+  const navigate = useNavigate();
+
+  const logOutHandler = () => {
+    localStorage.removeItem("userInfo");
+    navigate("/login");
+  };
   return (
     <>
       <Header />
@@ -17,7 +24,9 @@ const ApplicationReviewPage = () => {
               need further clarification.
             </div>
           </div>
-          <button className="under-review-btn">Close</button>
+          <button className="under-review-btn pointer" onClick={logOutHandler}>
+            Close
+          </button>
         </div>
       </div>
     </>

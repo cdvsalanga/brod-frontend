@@ -1,9 +1,81 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/PostJobAd.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { addTradieJobAd } from "../action/tradieActions";
+import { Upload, X } from "lucide-react";
 
 const JobAdForm = () => {
+  const [userInfo] = useState(JSON.parse(localStorage.getItem("userInfo")));
+  const [token, setToken] = useState();
+  const [userID, setUserID] = useState();
+  const [businessPostcode, setBusinessPostcode] = useState("");
+  const [jobCategory, setJobCategory] = useState("");
+  const [jobAdTitle, setJobAdTitle] = useState("");
+  const [descriptionOfService, setDescriptionOfService] = useState("");
+  const [pricingOption, setPricingOption] = useState("");
+  const [pricingStartsAt, setPricingStartsAt] = useState("");
+  const [currency, setCurrency] = useState("AUD");
+  const [thumbnailImage, setThumbnailImage] = useState("");
+  const [projectGallery, setProjectGallery] = useState([]);
+
+  const navigate = useNavigate();
+
   const { status } = useParams();
+
+  useEffect(() => {
+    if (userInfo) {
+      setToken(userInfo.token);
+      setUserID(userInfo.userId);
+    } else {
+      navigate("/login");
+    }
+  }, []);
+
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+    });
+
+  const projectGalleryUpload = async (e) => {
+    const uploadedBase64 = [...projectGallery];
+    const file = e.target.files[0];
+
+    await toBase64(file).then((res) => {
+      if (!uploadedBase64.includes(res)) {
+        uploadedBase64.push(res);
+      }
+    });
+
+    setProjectGallery(uploadedBase64);
+  };
+
+  const removeFile = (i) => {
+    const uploadedBase64 = [...projectGallery];
+
+    uploadedBase64.splice(i, 1);
+
+    setProjectGallery(uploadedBase64);
+  };
+
+  const AddJobHandler = async () => {
+    await addTradieJobAd(
+      userID,
+      businessPostcode,
+      jobCategory,
+      jobAdTitle,
+      descriptionOfService,
+      pricingOption,
+      pricingStartsAt,
+      currency,
+      thumbnailImage,
+      projectGallery,
+      token
+    );
+  };
+
   return (
     <form className="job-form">
       <div className="mb-40">
@@ -25,22 +97,178 @@ const JobAdForm = () => {
         <div className="flex-between mb-24">
           <div className="half-inputs">
             <label className="block mb-12">Business Postcode</label>
-            <input className="job-form-input job-form-half-input" type="text" />
+            <input
+              className="job-form-input job-form-half-input"
+              type="text"
+              onChange={(e) => setBusinessPostcode(e.target.value)}
+              required
+            />
           </div>
           <div className="half-inputs">
             <label className="block mb-12 mb-12">Job Category</label>
-            <select className="job-form-input job-form-select">
-              <option>Select</option>
+            <select
+              className="job-form-input job-form-select"
+              defaultValue={""}
+              onChange={(e) => setJobCategory(e.target.value)}
+              required
+            >
+              <option value={""} disabled hidden>
+                Select
+              </option>
+              <option>Air Conditioning Installer / Supplier</option>
+              <option>Antenna Installer / Supplier</option>
+              <option>Appliance Installer</option>
+              <option>Appliance Repairer</option>
+              <option>Arborist</option>
+              <option>Architect</option>
+              <option>Asbestos Removal Expert</option>
+              <option>Awning Installer / Supplier</option>
+              <option>Balustrading Installer</option>
+              <option>Bamboo Flooring Installer / Supplier</option>
+              <option>Bath and Basin Resurfacing</option>
+              <option>Bathroom Building / Renovation</option>
+              <option>Blinds Installer / Supplier</option>
+              <option>Bricklayer</option>
+              <option>Builder</option>
+              <option>Building Certifier</option>
+              <option>Building Consultant</option>
+              <option>Building Designer</option>
+              <option>Building Inspector</option>
+              <option>Building Surveyor</option>
+              <option>Cabinet Maker</option>
+              <option>Carpenter</option>
+              <option>Carpet / Upholstery Cleaning</option>
+              <option>Carpet Layer / Repairs</option>
+              <option>Carport Builder</option>
+              <option>Chimney Installer</option>
+              <option>House Cleaning Services</option>
+              <option>Commercial Cleaning Services</option>
+              <option>Concrete Kerb Builder</option>
+              <option>Concrete Resurfacer</option>
+              <option>Concretor</option>
+              <option>Curtain Installer / Supplier</option>
+              <option>Custom Furniture Designer</option>
+              <option>Damp Proofing Services</option>
+              <option>Deck Builder</option>
+              <option>Deep Cleaning</option>
+              <option>Demolition Services</option>
+              <option>Door Installer / Supplier</option>
+              <option>Drafter</option>
+              <option>Drains Installer / Maintenance</option>
+              <option>Electrician</option>
+              <option>Equipment Hire Supplier</option>
+              <option>EV Charger Installation</option>
+              <option>Excavation Services</option>
+              <option>Renovation and Extensions Builder</option>
+              <option>Fence Builder</option>
+              <option>Floor Coating</option>
+              <option>Floor Sanding and Polishing Services</option>
+              <option>Fly Screen Installer / Supplier</option>
+              <option>Frame and Truss Maintenance</option>
+              <option>Removalist</option>
+              <option>Garage Builder</option>
+              <option>Garden Designer</option>
+              <option>Gardener</option>
+              <option>Gas Fitter</option>
+              <option>Gate Insaller / Supplier</option>
+              <option>Gazebo Builder / Supplier</option>
+              <option>Glazier</option>
+              <option>Glass Balustrade Installer / Supplier</option>
+              <option>Gutter Installer / Maintenance / Supplier</option>
+              <option>Handyman</option>
+              <option>Heating System Installer / Supplier</option>
+              <option>Hot Water System Installer / Supplier</option>
+              <option>Hybrid Flooring</option>
+              <option>IKEA Kitchen Installer</option>
+              <option>Insulation Installer / Supplier</option>
+              <option>Interior Decorator</option>
+              <option>Interior Designer</option>
+              <option>Irrigation System Expert</option>
+              <option>Joiner</option>
+              <option>Kitchen Designer</option>
+              <option>Kitchen Building / Renovations</option>
+              <option>Landscape Architect</option>
+              <option>Landscaper</option>
+              <option>Lawn and Turf Installer / Supplier</option>
+              <option>Lawn Mowing Services</option>
+              <option>Leak Detection</option>
+              <option>Lighting Expert</option>
+              <option>Locksmith</option>
+              <option>Mattres Cleaning</option>
+              <option>Painter</option>
+              <option>Patio Builder</option>
+              <option>Paving Supplier</option>
+              <option>Paving</option>
+              <option>Pergola Builder</option>
+              <option>Pest Control Services</option>
+              <option>Pest Inspector</option>
+              <option>Plasterer</option>
+              <option>Plumber</option>
+              <option>Pool Builder</option>
+              <option>Pool Fence Installer / Maintenance</option>
+              <option>Pool Maintenance Services</option>
+              <option>Pressure Cleaning Services</option>
+              <option>Construction Project Manager</option>
+              <option>Rainwater Tanks Installer / Supplier</option>
+              <option>Renderer</option>
+              <option>Reproduction Stone Supplier</option>
+              <option>Retaining Wall Builder</option>
+              <option>Roller Door Installer / Supplier</option>
+              <option>Roofer</option>
+              <option>Rubbish Removal Services</option>
+              <option>Scaffolding Services</option>
+              <option>Screen Enclosure Supplier</option>
+              <option>Security Screen Installer / Supplier</option>
+              <option>Security Systems Specialist</option>
+              <option>Shade and Sail Installer / Supplier</option>
+              <option>Shed Builder / Supplier</option>
+              <option>Shopfitter</option>
+              <option>Shower Screen Installer / Supplier</option>
+              <option>Skip and Truck Hire Services</option>
+              <option>Skylight Installer / Supplier</option>
+              <option>Soil Testing</option>
+              <option>Solar Power Installer / Maintenance</option>
+              <option>Splashback Intaller / Supplier</option>
+              <option>Stonemason</option>
+              <option>Storage Services</option>
+              <option>Structural Engineer</option>
+              <option>Surveyor</option>
+              <option>Tile Supplier</option>
+              <option>Tiler</option>
+              <option>Timber Floor Installation / Repairs</option>
+              <option>Town Planner</option>
+              <option>Tree Feller</option>
+              <option>Underfloor Heating Installer / Supplier</option>
+              <option>Underpinning Services</option>
+              <option>Upholstery Repairer</option>
+              <option>Ventilation System Specialists</option>
+              <option>Vinyl and Laminate Installer</option>
+              <option>Wallpaper Installer / Supplier</option>
+              <option>Wardrobe Builder</option>
+              <option>Waterproofer</option>
+              <option>Window Cleaning Services</option>
+              <option>Window Installer / Repairs</option>
+              <option>Window Shutter Installer / Supplier</option>
+              <option>Window Tinting Services</option>
             </select>
           </div>
         </div>
         <div className="mb-24">
           <label className="block mb-12">Job Ad Title</label>
-          <input type="text" className="job-form-input" />
+          <input
+            type="text"
+            className="job-form-input"
+            onChange={(e) => setJobAdTitle(e.target.value)}
+            required
+          />
         </div>
         <div className="mb-24">
           <label className="block mb-12">Description of your service</label>
-          <textarea className="job-form-input job-form-textarea" />
+          <textarea
+            className="job-form-input job-form-textarea"
+            onChange={(e) => setDescriptionOfService(e.target.value)}
+            required
+          />
         </div>
         <div className="flex-between mb-24">
           <div className="half-inputs">
@@ -48,8 +276,16 @@ const JobAdForm = () => {
               Pricing option{" "}
               <span className="job-form-optional">(optional)</span>
             </label>
-            <select className="job-form-input job-form-select">
-              <option>Select</option>
+            <select
+              defaultValue={""}
+              className="job-form-input job-form-select"
+              onChange={(e) => setPricingOption(e.target.value)}
+            >
+              <option value={""} disabled hidden>
+                Select
+              </option>
+              <option>Per hour</option>
+              <option>Per day</option>
             </select>
           </div>
           <div className="half-inputs">
@@ -62,24 +298,99 @@ const JobAdForm = () => {
                 type="text"
                 className="job-form-input job-form-price-text"
                 placeholder="00"
+                onChange={(e) => setPricingStartsAt(e.target.value)}
               />
-              <select className="job-form-input job-form-price-select">
+              <select
+                defaultValue={"AUD"}
+                className="job-form-input job-form-price-select"
+              >
                 <option>AUD</option>
               </select>
             </div>
           </div>
         </div>
-        <div className="mb-24">
+        <div className="job-form-files flex-center mb-24">
           <label>Thumbnail Image</label>
-          <input type="file" />
+          {thumbnailImage ? (
+            <div className="job-form-imgs">
+              <img
+                src={thumbnailImage}
+                width={60}
+                height={50}
+                className="job-form-img"
+              />
+              <X
+                width={16}
+                height={16}
+                color="#717171"
+                className="job-form-x pointer"
+                onClick={() => setThumbnailImage("")}
+              />
+            </div>
+          ) : (
+            <>
+              <label
+                className="flex-center gap pointer job-form-upload"
+                htmlFor="thumbnailImg"
+              >
+                <Upload color="#8C8C8C" />
+                Upload
+              </label>
+              <input
+                type="file"
+                className="none"
+                id="thumbnailImg"
+                accept="image/*"
+                onChange={(e) =>
+                  toBase64(e.target.files[0]).then((res) =>
+                    setThumbnailImage(res)
+                  )
+                }
+              />
+            </>
+          )}
         </div>
-        <div>
+        <div className="job-form-files flex-center">
           <label>
             Project Gallery{" "}
             <span className="job-form-optional">(optional)</span>
           </label>
-          <input type="file" />
+          <label
+            className="flex-center gap pointer job-form-upload"
+            htmlFor="projectGallery"
+          >
+            <Upload color="#8C8C8C" />
+            Upload
+          </label>
+          <input
+            type="file"
+            className="none"
+            id="projectGallery"
+            accept="image/*"
+            onChange={projectGalleryUpload}
+          />
         </div>
+        {projectGallery.length > 0 && (
+          <div className="job-form-gallery">
+            {projectGallery.map((pic, i) => (
+              <div className="job-form-imgs" key={i}>
+                <img
+                  src={pic}
+                  width={60}
+                  height={50}
+                  className="job-form-img"
+                />
+                <X
+                  width={16}
+                  height={16}
+                  color="#717171"
+                  className="job-form-x pointer"
+                  onClick={() => removeFile(i)}
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       {status === "publish" ? (
         <div className="flex-end">
@@ -92,8 +403,20 @@ const JobAdForm = () => {
         </div>
       ) : (
         <div className="job-form-btns flex-end">
-          <button className="job-form-btn">Save as unpublished</button>
-          <button className="job-form-btn job-form-btn-black">Publish</button>
+          <button
+            type="button"
+            onClick={() => AddJobHandler()}
+            className="job-form-btn pointer"
+          >
+            Save as unpublished
+          </button>
+          <button
+            type="button"
+            onClick={() => AddJobHandler()}
+            className="job-form-btn job-form-btn-black pointer"
+          >
+            Publish
+          </button>
         </div>
       )}
     </form>

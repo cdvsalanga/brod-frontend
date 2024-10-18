@@ -103,3 +103,38 @@
   border: 1px solid #820014;
   color: #820014;
 }
+
+.job-form-files {
+  column-gap: 40px;
+}
+
+.job-form-upload {
+  font-size: 14px;
+  line-height: 20px;
+  text-decoration: underline;
+}
+
+.job-form-imgs {
+  position: relative;
+}
+
+.job-form-img {
+  border: 1px solid #595959;
+  border-radius: 2px;
+  object-fit: cover;
+}
+
+.job-form-x {
+  border-radius: 50%;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+}
+
+.job-form-gallery {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 16px;
+}

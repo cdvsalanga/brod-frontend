@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../styles/DashboardTradie.css";
 import DashboardContentItem from "./DashboardContentItem";
+import { Link } from "react-router-dom";
 
 const DashboardContents = () => {
   const [item, setItem] = useState("job");
@@ -9,7 +10,11 @@ const DashboardContents = () => {
       <div className="mb-16">
         <div className="flex-between mb-16">
           <h1 className="dashboard-content-h1">Dashboard</h1>
-          <button className="dashboard-content-btn">Post a job ad</button>
+          <Link to={"/tradesperson/post-job-ad"} className="link-none">
+            <button className="dashboard-content-btn pointer">
+              Post a job ad
+            </button>
+          </Link>
         </div>
         <div className="flex-center">
           <div

@@ -1,5 +1,6 @@
 import React from "react";
 import "../styles/Profile.css";
+import DefaultProfilePicture from "../assets/images/default-profile-picture.png";
 import CardImage from "../assets/images/card-image.png";
 import Facebook from "../assets/icons/facebook.svg";
 import Instagram from "../assets/icons/instagram.svg";
@@ -13,37 +14,55 @@ import {
   Star,
   UserRoundSearch,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
-const ProfileSideBar = ({ role }) => {
+const ProfileSideBar = ({ role, profile }) => {
   if (role === "Client") {
     return (
       <div className="profile-sidebar gray-bg">
-        <img
-          src={CardImage}
-          width={100}
-          height={100}
-          className="profile-img mb-24"
-        />
+        {profile.profilePicture ? (
+          <img
+            src={CardImage}
+            width={100}
+            height={100}
+            className="profile-img mb-24"
+          />
+        ) : (
+          <img
+            src={DefaultProfilePicture}
+            width={100}
+            height={100}
+            className="profile-img mb-24"
+          />
+        )}
         <div className="mb-24 gray-bg">
-          <h1 className="profile-name mb-8 gray-bg">Ian Arceta</h1>
+          <h1 className="profile-name mb-8 gray-bg">
+            {profile.firstName} {profile.lastName}
+          </h1>
           <div className="flex-center mb-8 profile-info gray-bg">
             <Phone color="#8C8C8C" className="gray-bg" />
-            +61 234 567 890
+            {profile.contactNumber}
           </div>
           <div className="flex-center mb-8 profile-info gray-bg">
             <Mail color="#8C8C8C" className="gray-bg" />
-            ianarceta@gmail.com
+            {profile.email}
           </div>
           <div className="flex-center profile-info gray-bg">
             <MapPin color="#8C8C8C" className="gray-bg" />
-            Fremantle, WA 6160
+            {profile.city && profile.city + ","} {profile.state}{" "}
+            {profile.postalCode}
           </div>
         </div>
         <div className="mb-24">
-          <button className="mb-12 flex-center profile-btn profile-edit">
-            <Pencil color="#8C8C8C" className="gray-bg" />
-            Edit profile
-          </button>
+          <Link
+            to={profile && `/profile/${profile._id}/edit`}
+            className="link-none"
+          >
+            <button className="mb-12 flex-center profile-btn profile-sidebar-edit pointer">
+              <Pencil color="#8C8C8C" className="gray-bg" />
+              Edit profile
+            </button>
+          </Link>
           <button className="mb-12 flex-center profile-btn profile-trade">
             <Briefcase color="#FFFFFF" className="profile-trade" />
             Become a tradesperson
@@ -67,7 +86,7 @@ const ProfileSideBar = ({ role }) => {
         <div className="mb-32 gray-bg">
           <div className="flex-center gray-bg mb-24">
             <img
-              src={CardImage}
+              src={DefaultProfilePicture}
               width={100}
               height={100}
               className="profile-img"
@@ -144,10 +163,15 @@ const ProfileSideBar = ({ role }) => {
           </div>
         </div>
         <div className="gray-bg">
-          <button className="profile-btn profile-edit flex-center mb-12">
-            <Pencil color="#8C8C8C" />
-            Edit profile
-          </button>
+          <Link
+            to={profile && `/profile/${profile._id}/edit`}
+            className="link-none"
+          >
+            <button className="mb-12 flex-center profile-btn profile-sidebar-edit pointer">
+              <Pencil color="#8C8C8C" className="gray-bg" />
+              Edit profile
+            </button>
+          </Link>
           <button className="profile-btn profile-trade flex-center">
             <UserRoundSearch color="#FFFFFF" className="icon-bg-black" />
             Switch to hiring someone

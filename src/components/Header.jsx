@@ -1,16 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logos/header.png";
 import "../styles/Header.css";
 import { Bell, Heart, Mail, X } from "lucide-react";
 import CardImage from "../assets/images/card-image.png";
+import DefaultProfilePicture from "../assets/images/default-profile-picture.png";
 import Notifications from "./Notifications";
+import { getUserDetails } from "../action/userActions";
 
 const Header = ({ notHidden = true }) => {
-  const [userInfo] = useState(JSON.parse(localStorage.getItem("userInfo")));
+  const [userInfo, setUserInfo] = useState(
+    JSON.parse(localStorage.getItem("userInfo"))
+  );
   const [showProfile, setShowProfile] = useState(false);
   const [showNotif, setShowNotif] = useState(false);
+  const [profilePicture, setProfilePicture] = useState();
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userInfo) {
+      setProfilePicture(
+        JSON.parse(localStorage.getItem("userInfo")).profilePicture
+      );
+    }
+    // setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
+  }, [userInfo]);
 
   const logOutHandler = () => {
     localStorage.removeItem("userInfo");
@@ -38,7 +53,7 @@ const Header = ({ notHidden = true }) => {
           (userInfo.status !== "Approved" && userInfo.role === "Tradie") ? (
             <div className="header-links">
               <img
-                src={CardImage}
+                src={DefaultProfilePicture}
                 width={32}
                 height={32}
                 className="header-img"
@@ -55,12 +70,12 @@ const Header = ({ notHidden = true }) => {
                   </div>
                 ) : (
                   <div className="header-profile">
-                    <div
-                      className="mb-16 pointer"
-                      onClick={() => navigate(`/profile/${userInfo.userId}`)}
+                    <Link
+                      to={`/profile/${userInfo.userId}`}
+                      className="link-none mb-16"
                     >
                       My Account
-                    </div>
+                    </Link>
                     <div className="pointer" onClick={logOutHandler}>
                       Log out
                     </div>
@@ -92,21 +107,31 @@ const Header = ({ notHidden = true }) => {
                   />
                 </Link>
               )}
-              <img
-                src={CardImage}
-                width={32}
-                height={32}
-                className="header-img"
-                onClick={() => setShowProfile(!showProfile)}
-              />
+              {userInfo.profilePicture ? (
+                <img
+                  src={profilePicture}
+                  width={32}
+                  height={32}
+                  className="header-img"
+                  onClick={() => setShowProfile(!showProfile)}
+                />
+              ) : (
+                <img
+                  src={DefaultProfilePicture}
+                  width={32}
+                  height={32}
+                  className="header-img"
+                  onClick={() => setShowProfile(!showProfile)}
+                />
+              )}
               {showProfile && (
                 <div className="header-profile">
-                  <div
-                    className="mb-16 pointer"
-                    onClick={() => navigate(`/profile/${userInfo.userId}`)}
+                  <Link
+                    to={`/profile/${userInfo.userId}`}
+                    className="link-none block mb-16"
                   >
                     My Account
-                  </div>
+                  </Link>
                   <div className="pointer" onClick={logOutHandler}>
                     Log out
                   </div>

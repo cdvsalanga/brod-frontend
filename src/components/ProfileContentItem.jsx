@@ -12,12 +12,10 @@ import {
   Bookmark,
   X,
 } from "lucide-react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const ProfileContentItem = ({ item, role }) => {
   const [openModal, setOpenModal] = useState(false);
-
-  const navigate = useNavigate();
 
   const { id } = useParams();
 
@@ -419,32 +417,31 @@ const ProfileContentItem = ({ item, role }) => {
     );
   } else if (role === "Tradie") {
     return (
-      <div
-        className="profile-item mb-16 pointer"
-        onClick={() => navigate(`/tradie/profile/${id}/${item}/1`)}
-      >
-        <div>
-          <h2 className="profile-item-name mb-12">Painting Services</h2>
-          <div className="mb-12 profile-job-details">
-            <div className="profile-item-service">Painting</div>
-            <div className="flex-center profile-job-detail">
-              <MapPin width={20} height={20} color="#8C8C8C" />
-              Sydney, NSW 2000
+      <Link to={`/tradie/profile/${id}/${item}/1`} className="link-none">
+        <div className="profile-item mb-16">
+          <div>
+            <h2 className="profile-item-name mb-12">Painting Services</h2>
+            <div className="mb-12 profile-job-details">
+              <div className="profile-item-service">Painting</div>
+              <div className="flex-center profile-job-detail">
+                <MapPin width={20} height={20} color="#8C8C8C" />
+                Sydney, NSW 2000
+              </div>
+              <div className="flex-center profile-job-detail">
+                <Navigation width={20} height={20} color="#8C8C8C" />
+                Can work within 50km
+              </div>
             </div>
-            <div className="flex-center profile-job-detail">
-              <Navigation width={20} height={20} color="#8C8C8C" />
-              Can work within 50km
+            <div className="profile-item-details">
+              Transform your home with the touch of a dedicated and skilled
+              painter. I'm Yves, a professional painter with 7 years of
+              experience, offering personalized house painting services tailored
+              to your unique needs. Whether you're looking to refresh a single
+              room or update the entire exterior, I bring all-aroun...
             </div>
-          </div>
-          <div className="profile-item-details">
-            Transform your home with the touch of a dedicated and skilled
-            painter. I'm Yves, a professional painter with 7 years of
-            experience, offering personalized house painting services tailored
-            to your unique needs. Whether you're looking to refresh a single
-            room or update the entire exterior, I bring all-aroun...
           </div>
         </div>
-      </div>
+      </Link>
     );
   }
 };

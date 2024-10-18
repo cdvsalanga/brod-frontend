@@ -1,18 +1,10 @@
 import React, { useState } from "react";
 import "../styles/Profile.css";
 import ProfileContentItem from "./ProfileContentItem";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const ProfileContents = ({ role }) => {
-  const [item, setItem] = useState(() => {
-    if (role === "Client") {
-      return "job";
-    } else if (role === "Tradie") {
-      return "publish";
-    }
-  });
-
-  const navigate = useNavigate();
+  const [item, setItem] = useState(role === "Client" ? "job" : "publish");
   return (
     <div className="profile-contents">
       {role === "Client" ? (
@@ -55,12 +47,11 @@ const ProfileContents = ({ role }) => {
         <div className="mb-16">
           <div className="flex-between mb-16">
             <h1 className="profile-content-h1">My Account</h1>
-            <button
-              className="profile-post-btn pointer"
-              onClick={() => navigate("/tradesperson/post-job-ad")}
-            >
-              Post a job ad
-            </button>
+            <Link to={"/tradesperson/post-job-ad"} className="link-none">
+              <button className="profile-post-btn pointer">
+                Post a job ad
+              </button>
+            </Link>
           </div>
           <div className="profile-navs">
             <div

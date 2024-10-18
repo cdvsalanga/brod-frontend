@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import "../styles/Hero.css";
 import HeroImage from "../assets/images/hero-image.png";
 import "@fontsource-variable/instrument-sans";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
   const [select, setSelect] = useState(1);
+  const [search, setSearch] = useState("");
+
+  const navigate = useNavigate();
 
   return (
     <div className="hero">
@@ -26,13 +30,22 @@ const Hero = () => {
             </div>
             <div className="hero-interact-content">
               <div className="text-1">What do you need help with?</div>
-              <form className="search">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  navigate(`/services/search?search=${search}`);
+                }}
+                className="search"
+              >
                 <input
                   type="text"
                   className="search-bar"
                   placeholder="Search for a service (e.g., Electrician)"
+                  onChange={(e) => setSearch(e.target.value)}
                 />
-                <button className="search-btn">Search</button>
+                <button className="search-btn pointer" type="submit">
+                  Search
+                </button>
               </form>
               <div className="text-2">
                 Hire the best trade people in your area. We connect homeowners

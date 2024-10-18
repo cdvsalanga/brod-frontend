@@ -2,8 +2,14 @@ import React from "react";
 import "../styles/Services.css";
 import Card from "./Card";
 import { ArrowRight } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
-const ServicesList = ({ content }) => {
+const ServicesList = ({ content, services }) => {
+  const { search } = useLocation();
+
+  const searchSplit = search.split("=");
+
+  const searchResult = searchSplit[1];
   return (
     <div className="services">
       <div
@@ -24,7 +30,7 @@ const ServicesList = ({ content }) => {
               : content === "recommend"
               ? "Recommend"
               : content === "search"
-              ? "Results for"
+              ? `Results for ${searchResult}`
               : content === "favorites"
               ? "My Favorites"
               : ""}

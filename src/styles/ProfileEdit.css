@@ -1,0 +1,103 @@
+.profile-edit {
+  width: 620px;
+  margin: 32px auto;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 19.36px;
+  color: #242424;
+}
+
+.profile-edit-h1 {
+  font-size: 32px;
+  line-height: 44.8px;
+  color: #000;
+}
+
+.profile-edit-half {
+  width: 298px;
+}
+
+.profile-edit-input {
+  border: 1px solid #d9d9d9;
+  padding: 16px;
+}
+
+.profile-edit-half-input {
+  width: 264.4px;
+}
+
+.profile-edit-full-input {
+  width: 586.4px;
+}
+
+.profile-edit-btn {
+  width: 100%;
+  border: 1px solid #1f1f23;
+  background-color: #1f1f23;
+  border-radius: 4px;
+  padding: 12px 24px;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 21.78px;
+  color: #fff;
+}
+
+.profile-edit-select {
+  width: 100%;
+  -moz-appearance: none; /* Firefox */
+  -webkit-appearance: none; /* Safari and Chrome */
+  appearance: none;
+  background-image: url("../assets/icons/dropdown.svg");
+  background-repeat: no-repeat;
+}
+
+.profile-edit-select-full {
+  background-position: 592px 20px;
+}
+
+.profile-edit-select-half {
+  background-position: 270px 20px;
+}
+
+.profile-edit-optional {
+  color: #595959;
+  font-weight: 400;
+}
+
+.profile-edit-textarea {
+  resize: none;
+  height: 116.4px;
+}
+
+.profile-edit-pic-btns {
+  display: flex;
+  justify-content: center;
+  column-gap: 16px;
+}
+
+.profile-edit-img {
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+.profile-edit-pic-btn {
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.profile-edit-update-btn {
+  border: 1px solid #1f1f23;
+  color: #1f1f23;
+}
+
+.profile-edit-remove-btn {
+  border: 1px solid #820014;
+  color: #820014;
+}
+
+.profile-edit-file {
+  display: none;
+}

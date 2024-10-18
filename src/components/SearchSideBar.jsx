@@ -13,8 +13,8 @@ const SearchSideBar = () => {
           <ChevronUp color="#717171" />
         </div>
         <div>
-          <select className="search-select">
-            <option disabled selected hidden>
+          <select defaultValue={""} className="search-select">
+            <option value={""} disabled hidden>
               Select Postcode
             </option>
             <option>1000</option>
@@ -67,7 +67,7 @@ const SearchSideBar = () => {
             <input type="checkbox" className="search-checkbox" />
             <label className="search-label">Pest Control Services</label>
           </div>
-          <div className="search-job-more">See more</div>
+          <div className="search-job-more pointer">See more</div>
         </div>
       </div>
 

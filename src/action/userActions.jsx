@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const login = async (email, password) => {
   try {
-    const { data } = await axios.post("http://localhost:26602/api/Auth/login", {
+    const { data } = await axios.post("https://localhost:7127/api/Auth/login", {
       email,
       password,
     });
@@ -13,94 +13,40 @@ export const login = async (email, password) => {
   }
 };
 
-export const clientSignup = async (email, password, role) => {
+export const signup = async (email, password, role) => {
   try {
-    await axios.post("http://localhost:26602/api/Auth/signup", {
+    await axios.post("https://localhost:7127/api/Auth/signup", {
       _id: "",
-      username: "string",
+      username: "",
       email,
       password,
       role,
-      businessPostCode: "string",
-      firstName: "string",
-      lastName: "string",
-      contactNumber: "string",
-      city: "string",
-      state: "string",
-      postalCode: "string",
-      proximityToWork: "string",
-      registeredBusinessName: "string",
-      australianBusinessNumber: "string",
-      typeofWork: "string",
+      businessPostCode: "",
+      firstName: "",
+      lastName: "",
+      contactNumber: "",
+      city: "",
+      state: "",
+      postalCode: "",
+      proximityToWork: "",
+      registeredBusinessName: "",
+      australianBusinessNumber: "",
+      typeofWork: "",
       status: "New",
-      reasonforDeclinedApplication: "string",
-      aboutMeDescription: "string",
-      website: "string",
-      facebookAccount: "string",
-      igAccount: "string",
-      services: ["string"],
-      profilePicture: "string",
-      certificationFilesUploaded: ["string"],
-      availabilityToWork: "string",
+      reasonforDeclinedApplication: "",
+      aboutMeDescription: "",
+      website: "",
+      facebookAccount: "",
+      igAccount: "",
+      services: [],
+      profilePicture: "",
+      certificationFilesUploaded: [],
+      availabilityToWork: "",
       activeJobs: 0,
       pendingOffers: 0,
       completedJobs: 0,
       estimatedEarnings: 0,
-      callOutRate: "string",
-      publishedAds: 0,
-    });
-
-    await login(email, password);
-  } catch (error) {
-    return error;
-  }
-};
-
-export const tradieSignup = async (
-  email,
-  password,
-  role,
-  businessPostCode,
-  firstName,
-  lastName,
-  contactNumber,
-  registeredBusinessName,
-  australianBusinessNumber,
-  certificationFilesUploaded
-) => {
-  try {
-    await axios.post("http://localhost:26602/api/Auth/signup", {
-      _id: "",
-      username: "string",
-      email,
-      password,
-      role,
-      businessPostCode,
-      firstName,
-      lastName,
-      contactNumber,
-      city: "string",
-      state: "string",
-      postalCode: "string",
-      proximityToWork: "string",
-      registeredBusinessName,
-      australianBusinessNumber,
-      typeofWork: "string",
-      status: "New",
-      reasonforDeclinedApplication: "string",
-      aboutMeDescription: "string",
-      website: "string",
-      facebookAccount: "string",
-      igAccount: "string",
-      services: ["string"],
-      profilePicture: "string",
-      certificationFilesUploaded,
-      availabilityToWork: "string",
-      activeJobs: 0,
-      pendingOffers: 0,
-      completedJobs: 0,
-      estimatedEarnings: 0,
-      callOutRate: "string",
+      callOutRate: "",
       publishedAds: 0,
     });
 
@@ -113,7 +59,19 @@ export const tradieSignup = async (
 export const getUserDetails = async (userId) => {
   try {
     const { data } = await axios.get(
-      `http://localhost:26602/api/Auth/userDetails?id=${userId}`
+      `https://localhost:7127/api/Auth/userDetails?id=${userId}`
+    );
+
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getAllServices = async () => {
+  try {
+    const { data } = await axios.get(
+      `https://localhost:7127/api/Auth/allServices`
     );
 
     return data;

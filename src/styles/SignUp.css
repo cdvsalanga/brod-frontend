@@ -150,20 +150,3 @@
   border-top: 1px solid #d9d9d9;
   align-self: center;
 }
-
-.signup-files {
-  display: flex;
-  column-gap: 8px;
-  margin-top: 16px;
-}
-
-.signup-file {
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  padding: 6px 10px;
-  display: flex;
-  align-items: center;
-  column-gap: 4px;
-  font-size: 14px;
-  color: #242424;
-}

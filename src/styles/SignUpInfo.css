@@ -85,27 +85,6 @@
   line-height: 21.78px;
 }
 
-.signup-info-rmfile {
-  display: none;
-}
-
-.signup-info-upload {
-  cursor: pointer;
-  text-decoration: underline;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
-  position: relative;
-  padding: 2px 0 2px 32px;
-}
-
-.signup-info-icon {
-  color: #8c8c8c;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
 .signup-info-status {
   background-color: #d5eff6cc;
   border-radius: 99px;

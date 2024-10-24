@@ -17,10 +17,11 @@ const ProfilePage = () => {
 
   const getProfileDetails = async () => {
     setLoading(true);
-    const userDetails = await getUserDetails(id);
-    setRole(userDetails.role);
-    setProfileDetails(userDetails);
-    setLoading(false);
+    await getUserDetails(id).then((res) => {
+      setRole(res.role);
+      setProfileDetails(res);
+      setLoading(false);
+    });
   };
 
   useEffect(() => {
@@ -39,7 +40,11 @@ const ProfilePage = () => {
       ) : (
         <div className="profile">
           <ProfileSideBar role={role} profile={profileDetails} />
-          <ProfileContents role={role} />
+          <ProfileContents
+            role={role}
+            userInfo={userInfo}
+            profile={profileDetails}
+          />
         </div>
       )}
     </div>

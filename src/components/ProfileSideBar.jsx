@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../styles/Profile.css";
 import DefaultProfilePicture from "../assets/images/default-profile-picture.png";
 import CardImage from "../assets/images/card-image.png";
@@ -17,6 +17,10 @@ import {
 import { Link } from "react-router-dom";
 
 const ProfileSideBar = ({ role, profile }) => {
+  useEffect(() => {
+    console.log(profile);
+  }, []);
+
   if (role === "Client") {
     return (
       <div className="profile-sidebar gray-bg">
@@ -85,12 +89,21 @@ const ProfileSideBar = ({ role, profile }) => {
       <div className="profile-sidebar gray-bg">
         <div className="mb-32 gray-bg">
           <div className="flex-center gray-bg mb-24">
-            <img
-              src={DefaultProfilePicture}
-              width={100}
-              height={100}
-              className="profile-img"
-            />
+            {profile && profile.profilePicture ? (
+              <img
+                src={profile.profilePicture}
+                width={100}
+                height={100}
+                className="profile-img"
+              />
+            ) : (
+              <img
+                src={DefaultProfilePicture}
+                width={100}
+                height={100}
+                className="profile-img"
+              />
+            )}
             <div className="profile-status gray-bg">
               <div className="gray-bg status-available flex-center mb-16">
                 <div className="gray-bg green-dot" />
@@ -109,14 +122,17 @@ const ProfileSideBar = ({ role, profile }) => {
             </div>
           </div>
           <div className="gray-bg">
-            <h1 className="profile-name gray-bg mb-8">Yves Vergara</h1>
+            <h1 className="profile-name gray-bg mb-8">
+              {profile && profile.firstName + " " + profile.lastName}
+            </h1>
             <div className="profile-info flex-center gray-bg mb-8">
               <MapPin color="#8C8C8C" className="gray-bg" />
-              Sydney, NSW 2000
+              {profile &&
+                profile.businessAddress + " " + profile.businessPostCode}
             </div>
             <div className="profile-info flex-center gray-bg">
               <Navigation color="#8C8C8C" className="gray-bg" />
-              Can work within 50km
+              {profile && profile.proximityToWork}
             </div>
           </div>
         </div>
@@ -124,20 +140,18 @@ const ProfileSideBar = ({ role, profile }) => {
           <div className="gray-bg mb-32">
             <h2 className="profile-font-w-500 gray-bg mb-12">About me</h2>
             <div className="profile-about-text gray-bg">
-              Skilled in painting and carpentry with 7 years of experience, I
-              deliver quality craftsmanship in every project, from custom
-              woodwork to flawless finishes. Your vision, brought to life with
-              precision and care.
+              {profile && profile.aboutMeDescription}
             </div>
           </div>
           <div className="gray-bg mb-32">
             <h2 className="profile-font-w-500 gray-bg mb-12">Services</h2>
             <div className="profile-services gray-bg">
-              <span className="profile-service">Painting</span>
-              <span className="profile-service">Lighting Expert</span>
-              <span className="profile-service">Floor Coating</span>
-              <span className="profile-service">Carpenter</span>
-              <span className="profile-service">Handyman</span>
+              {profile &&
+                profile.services.map((service, i) => (
+                  <span className="profile-service" key={i}>
+                    {service}
+                  </span>
+                ))}
             </div>
           </div>
           <div className="gray-bg">
@@ -146,19 +160,19 @@ const ProfileSideBar = ({ role, profile }) => {
             </h2>
             <div className="profile-contacts flex-center gray-bg mb-8">
               <Phone color="#595959" className="gray-bg" />
-              +61 412 456 789
+              {profile && profile.contactNumber}
             </div>
             <div className="profile-contacts flex-center gray-bg mb-8">
               <Mail color="#595959" className="gray-bg" />
-              vergaraservices@gmail.com
+              {profile && profile.email}
             </div>
             <div className="profile-contacts flex-center gray-bg mb-8">
               <img width={24} height={24} src={Facebook} className="gray-bg" />
-              yvesvergservices
+              {profile && profile.facebookAccount}
             </div>
             <div className="profile-contacts flex-center gray-bg">
               <img width={24} height={24} src={Instagram} className="gray-bg" />
-              yvesvergservices
+              {profile && profile.igAccount}
             </div>
           </div>
         </div>

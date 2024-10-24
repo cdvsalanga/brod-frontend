@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/Profile.css";
 import {
   User,
@@ -14,10 +14,14 @@ import {
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 
-const ProfileContentItem = ({ item, role }) => {
+const ProfileContentItem = ({ item, role, data, profile }) => {
   const [openModal, setOpenModal] = useState(false);
 
   const { id } = useParams();
+
+  useEffect(() => {
+    console.log(data);
+  }, []);
 
   if (role === "Client") {
     return (
@@ -417,31 +421,35 @@ const ProfileContentItem = ({ item, role }) => {
     );
   } else if (role === "Tradie") {
     return (
-      <Link to={`/tradie/profile/${id}/${item}/1`} className="link-none">
-        <div className="profile-item mb-16">
-          <div>
-            <h2 className="profile-item-name mb-12">Painting Services</h2>
-            <div className="mb-12 profile-job-details">
-              <div className="profile-item-service">Painting</div>
-              <div className="flex-center profile-job-detail">
-                <MapPin width={20} height={20} color="#8C8C8C" />
-                Sydney, NSW 2000
+      data &&
+      data.map((res) => (
+        <Link
+          to={`/tradie/profile/${id}/${item}/${res._id}`}
+          className="link-none"
+          key={res._id}
+        >
+          <div className="profile-item mb-16">
+            <div>
+              <h2 className="profile-item-name mb-12">{res.jobAdTitle}</h2>
+              <div className="mb-12 profile-job-details">
+                <div className="profile-item-service">{res.jobCategory}</div>
+                <div className="flex-center profile-job-detail">
+                  <MapPin width={20} height={20} color="#8C8C8C" />
+                  {profile &&
+                    profile.businessAddress + " " + profile.businessPostCode}
+                </div>
+                <div className="flex-center profile-job-detail">
+                  <Navigation width={20} height={20} color="#8C8C8C" />
+                  {profile && profile.proximityToWork}
+                </div>
               </div>
-              <div className="flex-center profile-job-detail">
-                <Navigation width={20} height={20} color="#8C8C8C" />
-                Can work within 50km
+              <div className="profile-item-details">
+                {res.descriptionOfService}
               </div>
-            </div>
-            <div className="profile-item-details">
-              Transform your home with the touch of a dedicated and skilled
-              painter. I'm Yves, a professional painter with 7 years of
-              experience, offering personalized house painting services tailored
-              to your unique needs. Whether you're looking to refresh a single
-              room or update the entire exterior, I bring all-aroun...
             </div>
           </div>
-        </div>
-      </Link>
+        </Link>
+      ))
     );
   }
 };

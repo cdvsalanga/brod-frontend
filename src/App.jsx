@@ -45,7 +45,7 @@ const router = createBrowserRouter(
       />
       <Route path="/tradesperson/post-job-ad" element={<PostJobAdPage />} />
       <Route
-        path="/tradie/profile/:id/:status/:id"
+        path="/tradie/profile/:id/:status/:serviceId"
         element={<PostJobAdPage />}
       />
       <Route path="/admin" element={<DashboardAdminPage />} />

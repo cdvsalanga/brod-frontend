@@ -5,7 +5,7 @@ export const updateTradieProfile = async (user, token) => {
     console.log(user, token);
 
     await axios.put(
-      "https://localhost:7127/api/Tradie/update-tradie-profile",
+      "http://18.141.207.215/api/Tradie/update-tradie-profile",
       user,
       {
         headers: {
@@ -30,7 +30,8 @@ export const addTradieJobAd = async (
   currency,
   thumbnailImage,
   projectGallery,
-  token
+  token,
+  isActive
 ) => {
   try {
     console.log(
@@ -44,11 +45,12 @@ export const addTradieJobAd = async (
       currency,
       thumbnailImage,
       projectGallery,
-      token
+      token,
+      isActive
     );
 
     await axios.post(
-      "https://localhost:7127/api/Tradie/add-tradie-job-ad",
+      "http://18.141.207.215/api/Tradie/add-tradie-job-ad",
       {
         _id: "",
         userID,
@@ -61,7 +63,7 @@ export const addTradieJobAd = async (
         currency,
         thumbnailImage,
         projectGallery,
-        isActive: true,
+        isActive,
         clientReviews: [
           {
             reviewDescription: "",
@@ -74,6 +76,110 @@ export const addTradieJobAd = async (
           },
         ],
       },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getPublishedAds = async (userId, token) => {
+  try {
+    console.log({ userId, token });
+
+    const { data } = await axios.get(
+      `http://18.141.207.215/api/Tradie/publishedAds?userId=${userId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getUnPublishedAds = async (userId, token) => {
+  try {
+    console.log({ userId, token });
+
+    const { data } = await axios.get(
+      `http://18.141.207.215/api/Tradie/unpublishedAds?userId=${userId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getJobAdDetailsByServiceId = async (serviceID, token) => {
+  try {
+    console.log({ serviceID, token });
+
+    const { data } = await axios.post(
+      "http://18.141.207.215/api/Tradie/job-ad-getDetails-byServiceID",
+      {
+        serviceID,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const updateIsActive = async (jobID, isActive, token) => {
+  try {
+    console.log({ jobID, isActive, token });
+
+    await axios.put(
+      "http://18.141.207.215/api/Tradie/job-ads/update-isActive",
+      {
+        jobID,
+        isActive,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  } catch (error) {
+    return error;
+  }
+};
+
+export const updateJobAdDetails = async (jobAdData, token) => {
+  try {
+    console.log({ jobAdData, token });
+
+    await axios.put(
+      "http://18.141.207.215/api/Tradie/update-job-ad-Details",
+      jobAdData,
       {
         headers: {
           "Content-Type": "application/json",

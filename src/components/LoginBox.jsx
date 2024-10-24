@@ -2,8 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/LogIn.css";
 import { Eye, EyeOff } from "lucide-react";
-import { getUserDetails, login } from "../action/userActions";
+import {
+  getUserDetails,
+  googleLoginClient,
+  login,
+} from "../action/userActions";
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 
 const LoginBox = () => {
   const [showPass, setShowPass] = useState(false);
@@ -102,6 +108,10 @@ const LoginBox = () => {
         <div className="login-separator-line" />
       </div>
       {/* Google and apple logins */}
+      <GoogleLogin
+        onSuccess={(res) => console.log(jwtDecode(res.credential))}
+        onError={() => console.log("Login Failed")}
+      />
     </div>
   );
 };

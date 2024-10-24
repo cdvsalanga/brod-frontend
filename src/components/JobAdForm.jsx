@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from "react";
 import "../styles/PostJobAd.css";
 import { useNavigate, useParams } from "react-router-dom";
-import { addTradieJobAd } from "../action/tradieActions";
+import {
+  addTradieJobAd,
+  getJobAdDetailsByServiceId,
+  updateIsActive,
+  updateJobAdDetails,
+} from "../action/tradieActions";
 import { Upload, X } from "lucide-react";
 
 const JobAdForm = () => {
   const [userInfo] = useState(JSON.parse(localStorage.getItem("userInfo")));
+  const [loading, setLoading] = useState(false);
+  const [jobAdData, setJobAdData] = useState();
   const [token, setToken] = useState();
   const [userID, setUserID] = useState();
   const [businessPostcode, setBusinessPostcode] = useState("");
@@ -18,14 +25,37 @@ const JobAdForm = () => {
   const [thumbnailImage, setThumbnailImage] = useState("");
   const [projectGallery, setProjectGallery] = useState([]);
 
+  let isActive;
+
   const navigate = useNavigate();
 
-  const { status } = useParams();
+  const { status, serviceId } = useParams();
+
+  const getJobAdDetailsByServiceIdData = async () => {
+    await getJobAdDetailsByServiceId(serviceId, userInfo.token).then((res) => {
+      console.log(res);
+      setJobAdData(res);
+      setBusinessPostcode(res.businessPostcode);
+      setJobCategory(res.jobCategory);
+      setJobAdTitle(res.jobAdTitle);
+      setDescriptionOfService(res.descriptionOfService);
+      setPricingOption(res.pricingOption);
+      setPricingStartsAt(res.pricingStartsAt);
+      setCurrency(res.currency);
+      setThumbnailImage(res.thumbnailImage);
+      setProjectGallery(res.projectGallery);
+      setLoading(false);
+    });
+  };
 
   useEffect(() => {
     if (userInfo) {
       setToken(userInfo.token);
       setUserID(userInfo.userId);
+      if (serviceId) {
+        setLoading(true);
+        getJobAdDetailsByServiceIdData();
+      }
     } else {
       navigate("/login");
     }
@@ -60,7 +90,7 @@ const JobAdForm = () => {
     setProjectGallery(uploadedBase64);
   };
 
-  const AddJobHandler = async () => {
+  const AddJobHandler = async (isActive) => {
     await addTradieJobAd(
       userID,
       businessPostcode,
@@ -72,11 +102,42 @@ const JobAdForm = () => {
       currency,
       thumbnailImage,
       projectGallery,
-      token
+      token,
+      isActive
     );
   };
 
-  return (
+  const updateToUnpublishedHandler = async () => {
+    await updateIsActive(serviceId, (isActive = false), token).then(() => {
+      navigate(`/profile/${userID}`);
+    });
+  };
+
+  const updateToPublishedHandler = async () => {
+    await updateIsActive(serviceId, (isActive = true), token).then(() => {
+      navigate(`/profile/${userID}`);
+    });
+  };
+
+  const updateJobAdHandler = async (e) => {
+    e.preventDefault();
+
+    jobAdData.businessPostcode = businessPostcode;
+    jobAdData.jobCategory = jobCategory;
+    jobAdData.jobAdTitle = jobAdTitle;
+    jobAdData.descriptionOfService = descriptionOfService;
+    jobAdData.pricingOption = pricingOption;
+    jobAdData.pricingStartsAt = pricingStartsAt;
+    jobAdData.currency = currency;
+    jobAdData.thumbnailImage = thumbnailImage;
+    jobAdData.projectGallery = projectGallery;
+
+    await updateJobAdDetails(jobAdData, token);
+  };
+
+  return loading ? (
+    <div>Loading</div>
+  ) : (
     <form className="job-form">
       <div className="mb-40">
         {status === "publish" ? (
@@ -101,6 +162,8 @@ const JobAdForm = () => {
               className="job-form-input job-form-half-input"
               type="text"
               onChange={(e) => setBusinessPostcode(e.target.value)}
+              defaultValue={businessPostcode}
+              disabled={status === "publish" ? true : false}
               required
             />
           </div>
@@ -108,8 +171,9 @@ const JobAdForm = () => {
             <label className="block mb-12 mb-12">Job Category</label>
             <select
               className="job-form-input job-form-select"
-              defaultValue={""}
+              defaultValue={jobCategory}
               onChange={(e) => setJobCategory(e.target.value)}
+              disabled={status === "publish" ? true : false}
               required
             >
               <option value={""} disabled hidden>
@@ -258,7 +322,9 @@ const JobAdForm = () => {
           <input
             type="text"
             className="job-form-input"
+            defaultValue={jobAdTitle}
             onChange={(e) => setJobAdTitle(e.target.value)}
+            disabled={status === "publish" ? true : false}
             required
           />
         </div>
@@ -266,7 +332,9 @@ const JobAdForm = () => {
           <label className="block mb-12">Description of your service</label>
           <textarea
             className="job-form-input job-form-textarea"
+            defaultValue={descriptionOfService}
             onChange={(e) => setDescriptionOfService(e.target.value)}
+            disabled={status === "publish" ? true : false}
             required
           />
         </div>
@@ -277,9 +345,10 @@ const JobAdForm = () => {
               <span className="job-form-optional">(optional)</span>
             </label>
             <select
-              defaultValue={""}
+              defaultValue={pricingOption}
               className="job-form-input job-form-select"
               onChange={(e) => setPricingOption(e.target.value)}
+              disabled={status === "publish" ? true : false}
             >
               <option value={""} disabled hidden>
                 Select
@@ -298,11 +367,14 @@ const JobAdForm = () => {
                 type="text"
                 className="job-form-input job-form-price-text"
                 placeholder="00"
+                defaultValue={pricingStartsAt}
                 onChange={(e) => setPricingStartsAt(e.target.value)}
+                disabled={status === "publish" ? true : false}
               />
               <select
-                defaultValue={"AUD"}
+                defaultValue={currency}
                 className="job-form-input job-form-price-select"
+                disabled={status === "publish" ? true : false}
               >
                 <option>AUD</option>
               </select>
@@ -319,13 +391,15 @@ const JobAdForm = () => {
                 height={50}
                 className="job-form-img"
               />
-              <X
-                width={16}
-                height={16}
-                color="#717171"
-                className="job-form-x pointer"
-                onClick={() => setThumbnailImage("")}
-              />
+              {status !== "publish" && (
+                <X
+                  width={16}
+                  height={16}
+                  color="#717171"
+                  className="job-form-x pointer"
+                  onClick={() => setThumbnailImage("")}
+                />
+              )}
             </div>
           ) : (
             <>
@@ -355,20 +429,24 @@ const JobAdForm = () => {
             Project Gallery{" "}
             <span className="job-form-optional">(optional)</span>
           </label>
-          <label
-            className="flex-center gap pointer job-form-upload"
-            htmlFor="projectGallery"
-          >
-            <Upload color="#8C8C8C" />
-            Upload
-          </label>
-          <input
-            type="file"
-            className="none"
-            id="projectGallery"
-            accept="image/*"
-            onChange={projectGalleryUpload}
-          />
+          {status !== "publish" && (
+            <>
+              <label
+                className="flex-center gap pointer job-form-upload"
+                htmlFor="projectGallery"
+              >
+                <Upload color="#8C8C8C" />
+                Upload
+              </label>
+              <input
+                type="file"
+                className="none"
+                id="projectGallery"
+                accept="image/*"
+                onChange={projectGalleryUpload}
+              />
+            </>
+          )}
         </div>
         {projectGallery.length > 0 && (
           <div className="job-form-gallery">
@@ -380,13 +458,15 @@ const JobAdForm = () => {
                   height={50}
                   className="job-form-img"
                 />
-                <X
-                  width={16}
-                  height={16}
-                  color="#717171"
-                  className="job-form-x pointer"
-                  onClick={() => removeFile(i)}
-                />
+                {status !== "publish" && (
+                  <X
+                    width={16}
+                    height={16}
+                    color="#717171"
+                    className="job-form-x pointer"
+                    onClick={() => removeFile(i)}
+                  />
+                )}
               </div>
             ))}
           </div>
@@ -394,25 +474,43 @@ const JobAdForm = () => {
       </div>
       {status === "publish" ? (
         <div className="flex-end">
-          <button className="job-form-btn job-form-btn-red">Unpublished</button>
+          <button
+            type="button"
+            onClick={updateToUnpublishedHandler}
+            className="job-form-btn job-form-btn-red pointer"
+          >
+            Unpublished
+          </button>
         </div>
       ) : status === "unpublish" ? (
         <div className="job-form-btns flex-end">
-          <button className="job-form-btn">Save</button>
-          <button className="job-form-btn job-form-btn-black">Publish</button>
+          <button
+            type="submit"
+            className="job-form-btn pointer"
+            onClick={updateJobAdHandler}
+          >
+            Save
+          </button>
+          <button
+            type="button"
+            className="job-form-btn job-form-btn-black pointer"
+            onClick={updateToPublishedHandler}
+          >
+            Publish
+          </button>
         </div>
       ) : (
         <div className="job-form-btns flex-end">
           <button
             type="button"
-            onClick={() => AddJobHandler()}
+            onClick={() => AddJobHandler((isActive = false))}
             className="job-form-btn pointer"
           >
             Save as unpublished
           </button>
           <button
             type="button"
-            onClick={() => AddJobHandler()}
+            onClick={() => AddJobHandler((isActive = true))}
             className="job-form-btn job-form-btn-black pointer"
           >
             Publish

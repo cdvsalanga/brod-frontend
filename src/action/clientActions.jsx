@@ -4,7 +4,7 @@ export const updateClientProfile = async (profileDetails, token) => {
   try {
     console.log(profileDetails);
     await axios.put(
-      "https://localhost:7127/api/Client/update-profile",
+      "http://18.141.207.215/api/Client/update-profile",
       profileDetails,
       {
         headers: {

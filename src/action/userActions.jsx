@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const login = async (email, password) => {
   try {
-    const { data } = await axios.post("https://localhost:7127/api/Auth/login", {
+    const { data } = await axios.post("http://18.141.207.215/api/Auth/login", {
       email,
       password,
     });
@@ -15,7 +15,7 @@ export const login = async (email, password) => {
 
 export const signup = async (email, password, role) => {
   try {
-    await axios.post("https://localhost:7127/api/Auth/signup", {
+    await axios.post("http://18.141.207.215/api/Auth/signup", {
       _id: "",
       username: "",
       email,
@@ -59,7 +59,7 @@ export const signup = async (email, password, role) => {
 export const getUserDetails = async (userId) => {
   try {
     const { data } = await axios.get(
-      `https://localhost:7127/api/Auth/userDetails?id=${userId}`
+      `http://18.141.207.215/api/Auth/userDetails?id=${userId}`
     );
 
     return data;
@@ -71,11 +71,26 @@ export const getUserDetails = async (userId) => {
 export const getAllServices = async () => {
   try {
     const { data } = await axios.get(
-      `https://localhost:7127/api/Auth/allServices`
+      `http://18.141.207.215/api/Auth/allServices`
     );
 
     return data;
   } catch (error) {
     console.error(error);
+  }
+};
+
+export const googleLoginClient = async (idToken) => {
+  try {
+    const { data } = await axios.post(
+      "http://18.141.207.215/api/Auth/google-login-client",
+      {
+        idToken,
+      }
+    );
+
+    console.log(data);
+  } catch (error) {
+    return error;
   }
 };

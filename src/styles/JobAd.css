@@ -63,6 +63,7 @@
 
 .tradie-location {
   color: #434343;
+  column-gap: 8px;
 }
 
 .tradie-my-8 {
@@ -188,6 +189,10 @@
 .job-sm-images {
   display: flex;
   gap: 12px;
+}
+
+.job-selected-img {
+  border: 3px solid #434343;
 }
 
 .job-sm-img {
@@ -356,7 +361,7 @@
 .offer-complete {
   padding: 54.5px 43px;
   width: 554px;
-  margin: 250px auto;
+  margin: 32px auto;
   text-align: center;
   font-weight: 400;
   font-size: 16px;

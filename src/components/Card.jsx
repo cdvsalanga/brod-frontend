@@ -1,36 +1,70 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/Card.css";
 import CardImage from "../assets/images/card-image.png";
 import Location from "../assets/icons/location.svg";
 import { Heart, Star } from "lucide-react";
 import { Link } from "react-router-dom";
+import { getUserDetails } from "../action/userActions";
 
-const Card = ({ width }) => {
+const Card = ({ width, service }) => {
   const [favorite, setFavorite] = useState(false);
+  const [tradieDetails, setTradieDetails] = useState();
+  const [totalStarRating, setTotalStarRating] = useState(0);
+
+  const getTradieDetails = async () => {
+    await getUserDetails(service.userID).then((res) => {
+      setTradieDetails(res);
+      console.log(res);
+    });
+  };
+
+  useEffect(() => {
+    if (service) {
+      service.clientReviews.forEach((review) => {
+        setTotalStarRating(review.starRating + totalStarRating);
+      });
+      getTradieDetails();
+    }
+  }, []);
 
   const addFavorite = (e) => {
     e.stopPropagation();
     setFavorite(!favorite);
   };
   return (
-    <Link to={"/job-ad/1"} className="link-none">
+    <Link to={service && `/job-ad/${service._id}`} className="link-none">
       <div
         className={width === "search" ? "card w-352 pointer" : "card pointer"}
       >
         <img src={CardImage} className="card-img" />
         <div className="card-contents">
-          <h1 className="card-h1">House Cleaning Service</h1>
+          <h1 className="card-h1">{service && service.jobAdTitle}</h1>
           <div className="card-text">
-            Job ad by <span className="card-name">Jane Doe</span>
+            Job ad by{" "}
+            <span className="card-name">
+              {tradieDetails &&
+                tradieDetails.firstName + " " + tradieDetails.lastName}
+            </span>
           </div>
           <div className="card-loc flex-center">
             <img src={Location} className="card-loc-icon" />
-            <span>Sydney, NSW 2000</span>
+            <span>{service && service.businessPostcode}</span>
           </div>
           <div className="card-review flex-center">
             <Star fill="#1F1F23" className="card-review-icon" />
-            <span className="card-review-rating">4.5</span>
-            <span> (34 reviews)</span>
+            <span className="card-review-rating">
+              {service && totalStarRating}
+            </span>
+            <span>
+              {" "}
+              ({service && service.clientReviews.length}
+              {service && service.clientReviews.length < 2
+                ? " review"
+                : service.clientReviews.length === 0
+                ? " no review"
+                : " reviews"}
+              )
+            </span>
           </div>
 
           <Heart
@@ -39,7 +73,10 @@ const Card = ({ width }) => {
             className="card-heart pointer"
             onClick={addFavorite}
           />
-          <div className="card-rate">$15/hr</div>
+          <div className="card-rate">
+            {service && "$" + service.pricingStartsAt + "/"}
+            {service && service.pricingOption === "Per hour" ? "hr" : "day"}
+          </div>
         </div>
       </div>
     </Link>

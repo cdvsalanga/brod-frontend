@@ -59,11 +59,11 @@ const SignUpChoose = () => {
           </div>
         </div>
         {chosen === "client" ? (
-          <Link to={"/signup?client"} className="signup-btn-link">
+          <Link to={"/signup?role=client"} className="signup-btn-link">
             Create account as client
           </Link>
         ) : chosen === "trade" ? (
-          <Link to={"/signup?tradesperson"} className="signup-btn-link">
+          <Link to={"/signup?role=tradesperson"} className="signup-btn-link">
             Create account as tradesperson
           </Link>
         ) : (

@@ -30,6 +30,7 @@ const LoginBox = () => {
           (userInfo.role = res.role),
           (userInfo.status = res.status),
           (userInfo.postalCode = res.postalCode),
+          (userInfo.contactNumber = res.contactNumber),
           (userInfo.profilePicture = res.profilePicture)
         );
         localStorage.setItem("userInfo", JSON.stringify(userInfo));

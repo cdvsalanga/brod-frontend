@@ -30,7 +30,7 @@ const ProfilePage = () => {
     } else {
       navigate("/login");
     }
-  }, [userInfo]);
+  }, []);
 
   return (
     <div>

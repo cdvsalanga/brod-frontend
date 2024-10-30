@@ -94,3 +94,20 @@ export const googleLoginClient = async (idToken) => {
     return error;
   }
 };
+
+export const getJobPostDetails = async (id) => {
+  try {
+    console.log({ id });
+
+    const { data } = await axios.post(
+      "http://18.141.207.215/api/Auth/JobPostDetails",
+      {
+        id,
+      }
+    );
+
+    return data;
+  } catch (error) {
+    return error;
+  }
+};

@@ -1,15 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/Services.css";
 import Card from "./Card";
 import { ArrowRight } from "lucide-react";
 import { useLocation } from "react-router-dom";
 
-const ServicesList = ({ content, services }) => {
+const ServicesList = ({ content, services, userInfo }) => {
+  const [loading, setLoading] = useState(false);
+  const [recommendedServices, setRecommendedServices] = useState([]);
+  const [nearServices, setNearServices] = useState([]);
+
   const { search } = useLocation();
 
   const searchSplit = search.split("=");
 
   const searchResult = searchSplit[1];
+
+  useEffect(() => {
+    if (services) {
+      console.log(services);
+      if (content === "recommend") {
+        const randomServices = [...recommendedServices];
+        for (let i = 0; i < 5; i++) {
+          const random = Math.floor(Math.random() * services.length);
+          if (!randomServices.includes(services[random])) {
+            randomServices.push(services[random]);
+          }
+        }
+        console.log(randomServices);
+        setRecommendedServices(randomServices);
+      } else if (content === "near") {
+        setNearServices(
+          services.filter(
+            (service) => service.businessPostcode === userInfo.postCode
+          )
+        );
+      }
+    }
+  }, []);
   return (
     <div className="services">
       <div
@@ -40,12 +67,40 @@ const ServicesList = ({ content, services }) => {
           )}
         </div>
         <div className="services-cards">
-          <Card width={content === "search" ? "search" : ""} />
-          <Card width={content === "search" ? "search" : ""} />
-          <Card width={content === "search" ? "search" : ""} />
-          <Card width={content === "search" ? "search" : ""} />
-          <Card width={content === "search" ? "search" : ""} />
-          <Card width={content === "search" ? "search" : ""} />
+          {content === "recommend"
+            ? recommendedServices &&
+              recommendedServices.map((service) => (
+                <Card
+                  width={content === "search" ? "search" : ""}
+                  service={service}
+                  key={service._id}
+                />
+              ))
+            : content === "near"
+            ? nearServices &&
+              nearServices.map((service) => (
+                <Card
+                  width={content === "search" ? "search" : ""}
+                  service={service}
+                  key={service._id}
+                />
+              ))
+            : services &&
+              services.map((service) => (
+                <Card
+                  width={content === "search" ? "search" : ""}
+                  service={service}
+                  key={service._id}
+                />
+              ))}
+          {/* {services &&
+            services.map((service) => (
+              <Card
+                width={content === "search" ? "search" : ""}
+                service={service}
+                key={service._id}
+              />
+            ))} */}
         </div>
         {content === "near" && (
           <button className="services-near-btn flex-center">

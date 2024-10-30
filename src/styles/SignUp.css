@@ -150,3 +150,47 @@
   border-top: 1px solid #d9d9d9;
   align-self: center;
 }
+
+.signup-otp-btn {
+  border-radius: 4px;
+  padding: 12px 0;
+  background-color: #1f1f23;
+  color: #fff;
+  text-decoration: none;
+  text-align: center;
+  font-size: 18px;
+  line-height: 21.78px;
+  border: none;
+  width: 100%;
+}
+
+.signup-otp {
+  text-align: center;
+  color: #242424;
+}
+
+.signup-otp-h1 {
+  font-weight: bold;
+}
+
+.signup-otp-label {
+  display: block;
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.signup-otp-chosen {
+  font-weight: 500;
+}
+
+.signup-otp-input {
+  height: 50px;
+  border: 1px solid #1f1f23;
+  border-radius: 8px;
+  font-size: 25px;
+}
+
+.signup-otp-resend {
+  text-decoration: underline;
+  font-weight: 500;
+}

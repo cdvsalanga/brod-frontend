@@ -1,11 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/DashboardTradie.css";
 import DashboardContentItem from "./DashboardContentItem";
 import { Link } from "react-router-dom";
+import { getJobsByStatus } from "../action/tradieActions";
 
-const DashboardContents = () => {
+const DashboardContents = ({ userInfo }) => {
   const [item, setItem] = useState("job");
-  return (
+  const [loading, setLoading] = useState(false);
+  const [token] = useState(userInfo && userInfo.token);
+  const [userId] = useState(userInfo && userInfo.userId);
+  const [inProgressJobs, setInProgressJobs] = useState();
+  const [pendingOffers, setPendingOffers] = useState();
+
+  const getJobData = async () => {
+    let status;
+    await getJobsByStatus(userId, (status = "In Progress"), token).then(
+      (res) => {
+        setInProgressJobs(res);
+      }
+    );
+
+    await getJobsByStatus(userId, (status = "Pending"), token).then((res) => {
+      setPendingOffers(res);
+    });
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    getJobData();
+  }, []);
+
+  return loading ? (
+    <div>Loading</div>
+  ) : (
     <div className="dashboard-contents">
       <div className="mb-16">
         <div className="flex-between mb-16">
@@ -25,7 +53,7 @@ const DashboardContents = () => {
             }
             onClick={() => setItem("job")}
           >
-            In Progress Jobs (1)
+            In Progress Jobs ({inProgressJobs && inProgressJobs.length})
           </div>
           <div
             className={
@@ -35,11 +63,15 @@ const DashboardContents = () => {
             }
             onClick={() => setItem("offer")}
           >
-            Pending Offers (1)
+            Pending Offers ({pendingOffers && pendingOffers.length})
           </div>
         </div>
       </div>
-      <DashboardContentItem item={item} />
+      <DashboardContentItem
+        item={item}
+        data={item === "job" ? inProgressJobs : pendingOffers}
+        userInfo={userInfo}
+      />
     </div>
   );
 };

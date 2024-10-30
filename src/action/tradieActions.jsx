@@ -191,3 +191,43 @@ export const updateJobAdDetails = async (jobAdData, token) => {
     return error;
   }
 };
+
+export const getJobsByStatus = async (userID, status, token) => {
+  try {
+    console.log({ userID, status, token });
+
+    const { data } = await axios.post(
+      "http://18.141.207.215/api/Tradie/GetJobsByStatus",
+      { userID, status },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const updateJobStatus = async (tradieID, jobID, status, token) => {
+  try {
+    console.log({ tradieID, jobID, status, token });
+
+    await axios.put(
+      "http://18.141.207.215/api/Tradie/UpdateJobStatus",
+      { tradieID, jobID, status, token },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  } catch (error) {
+    return error;
+  }
+};

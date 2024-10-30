@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import "../styles/Profile.css";
 import ProfileContentItem from "./ProfileContentItem";
 import { Link } from "react-router-dom";
-import { getPublishedAds, getUnPublishedAds } from "../action/tradieActions";
+import {
+  getJobsByStatus,
+  getPublishedAds,
+  getUnPublishedAds,
+} from "../action/tradieActions";
 
 const ProfileContents = ({ role, userInfo, profile }) => {
   const [item, setItem] = useState(role === "Client" ? "job" : "publish");
@@ -11,6 +15,7 @@ const ProfileContents = ({ role, userInfo, profile }) => {
   const [userId, setUserId] = useState(userInfo.userId);
   const [publishedData, setPublishedData] = useState();
   const [unpublishedData, setUnpublishedData] = useState();
+  const [completedJobs, setCompletedJobs] = useState();
 
   const getJobAdData = async () => {
     await getPublishedAds(userId, token).then((res) => {
@@ -19,6 +24,12 @@ const ProfileContents = ({ role, userInfo, profile }) => {
 
     await getUnPublishedAds(userId, token).then((res) => {
       setUnpublishedData(res);
+    });
+
+    const status = "Completed";
+
+    await getJobsByStatus(userId, status, token).then((res) => {
+      setCompletedJobs(res);
     });
 
     setLoading(false);
@@ -117,7 +128,7 @@ const ProfileContents = ({ role, userInfo, profile }) => {
               }
               onClick={() => setItem("complete")}
             >
-              Completed Jobs (1)
+              Completed Jobs ({completedJobs && completedJobs.length})
             </div>
           </div>
         </div>
@@ -128,7 +139,13 @@ const ProfileContents = ({ role, userInfo, profile }) => {
         <ProfileContentItem
           item={item}
           role={role}
-          data={item === "publish" ? publishedData : unpublishedData}
+          data={
+            item === "publish"
+              ? publishedData
+              : item === "unpublish"
+              ? unpublishedData
+              : completedJobs
+          }
           profile={profile}
         />
       )}

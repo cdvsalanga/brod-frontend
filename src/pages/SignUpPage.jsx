@@ -9,15 +9,15 @@ const SignupPage = () => {
   const [chosen, setChosen] = useState("");
 
   useEffect(() => {
-    setChosen(search);
+    setChosen(search.split("=")[1]);
   }, [search]);
   return (
     <>
       <Header notHidden={false} />
-      {chosen === "?client" ? (
-        <SignUpBox chosen="client" />
-      ) : chosen === "?tradesperson" ? (
-        <SignUpBox chosen="tradesperson" />
+      {chosen === "client" ? (
+        <SignUpBox chosen={chosen} />
+      ) : chosen === "tradesperson" ? (
+        <SignUpBox chosen={chosen} />
       ) : (
         <SignUpChoose />
       )}

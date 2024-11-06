@@ -22,7 +22,6 @@ const SignUpBox = ({ chosen }) => {
   const [registeredBusinessName, setRegisteredBusinessName] = useState("");
   const [australianBusinessNumber, setAustralianBusinessNumber] = useState("");
   const [typeofWork, setTypeofWork] = useState("");
-  const [credentials, setCredentials] = useState([]);
   const [certificationFilesUploaded, setCertificationFilesUploaded] = useState(
     []
   );
@@ -75,29 +74,23 @@ const SignUpBox = ({ chosen }) => {
     });
 
   const fileHandler = async (e) => {
-    const uploaded = [...credentials];
     const uploadedBase64 = [...certificationFilesUploaded];
     const file = e.target.files[0];
 
     await toBase64(file).then((res) => {
       if (!uploadedBase64.includes(file.name.replace(/\s/g, "") + " " + res)) {
-        uploaded.push(file.name.replace(/\s/g, ""));
         uploadedBase64.push(file.name.replace(/\s/g, "") + " " + res);
       }
     });
 
-    setCredentials(uploaded);
     setCertificationFilesUploaded(uploadedBase64);
   };
 
   const removeFile = (i) => {
-    const uploaded = [...credentials];
     const uploadedBase64 = [...certificationFilesUploaded];
 
-    uploaded.splice(i, 1);
     uploadedBase64.splice(i, 1);
 
-    setCredentials(uploaded);
     setCertificationFilesUploaded(uploadedBase64);
   };
 
@@ -165,7 +158,7 @@ const SignUpBox = ({ chosen }) => {
           <div className="pos-relative">
             <input
               type={showConfirmPass ? "text" : "password"}
-              className="signup-input"
+              className="signup-input mb-24"
               onChange={(e) => setConfirmPassword(e.target.value)}
               // required
             />
@@ -201,7 +194,7 @@ const SignUpBox = ({ chosen }) => {
   } else if (page === "clientDetails") {
     return (
       <div className="signup-info-box">
-        <h1 className="signup-info-h1 mb-32">Client Information</h1>
+        <h1 className="signup-info-h1">Client Information</h1>
         <form className="signup-info-form">
           <div className="signup-info-halfw">
             <label className="signup-info-label">First Name</label>
@@ -509,9 +502,9 @@ const SignUpBox = ({ chosen }) => {
               onChange={fileHandler}
             />
             <div className="files">
-              {credentials.map((credential, i) => (
+              {certificationFilesUploaded.map((file, i) => (
                 <div key={i} className="file">
-                  {credential}
+                  {file.split(" ")[0]}
                   <X
                     width={20}
                     height={20}
@@ -634,7 +627,7 @@ const SignUpBox = ({ chosen }) => {
           numInputs={6}
           renderSeparator={<span className="signup-otp-separator" />}
           renderInput={(props) => {
-            props.style.width = "50px";
+            props.style.width = "48.4px";
             return <input {...props} className="signup-otp-input mb-24" />;
           }}
         />

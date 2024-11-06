@@ -42,7 +42,11 @@ const JobAdPage = () => {
             jobAdDetails={jobAdDetails}
             userInfo={userInfo}
           />
-          <JobAdDetails jobAdDetails={jobAdDetails} />
+          <JobAdDetails
+            jobAdDetails={jobAdDetails}
+            userDetails={userDetails}
+            userInfo={userInfo}
+          />
         </div>
       )}
     </div>

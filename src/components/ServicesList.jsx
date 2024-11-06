@@ -19,8 +19,9 @@ const ServicesList = ({ content, services, userInfo }) => {
     if (services) {
       console.log(services);
       if (content === "recommend") {
+        setLoading(true);
         const randomServices = [...recommendedServices];
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 8; i++) {
           const random = Math.floor(Math.random() * services.length);
           if (!randomServices.includes(services[random])) {
             randomServices.push(services[random]);
@@ -28,6 +29,7 @@ const ServicesList = ({ content, services, userInfo }) => {
         }
         console.log(randomServices);
         setRecommendedServices(randomServices);
+        setLoading(false);
       } else if (content === "near") {
         setNearServices(
           services.filter(
@@ -37,7 +39,9 @@ const ServicesList = ({ content, services, userInfo }) => {
       }
     }
   }, []);
-  return (
+  return loading ? (
+    <div>Loading</div>
+  ) : (
     <div className="services">
       <div
         className={

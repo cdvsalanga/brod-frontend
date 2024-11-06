@@ -23,7 +23,7 @@ const ProfileEditPage = () => {
   const [state, setState] = useState();
   const [postalCode, setPostalCode] = useState();
   const [businessPostCode, setBusinessPostCode] = useState();
-  const [proximityToWork, setProximityToWork] = useState();
+  const [proximityToWork, setProximityToWork] = useState("");
   const [businessAddress, setBusinessAddress] = useState();
   const [aboutMeDescription, setAboutMeDescription] = useState();
   const [services, setServices] = useState();
@@ -92,7 +92,7 @@ const ProfileEditPage = () => {
 
       localStorage.setItem("userInfo", JSON.stringify(userInfo));
 
-      window.location.reload();
+      getProfileDetails();
     });
   };
 
@@ -122,7 +122,7 @@ const ProfileEditPage = () => {
 
       localStorage.setItem("userInfo", JSON.stringify(userInfo));
 
-      window.location.reload();
+      getProfileDetails();
     });
   };
 
@@ -370,7 +370,7 @@ const ProfileEditPage = () => {
                 <div className="profile-edit-half">
                   <label className="block mb-12">Can work within</label>
                   <select
-                    defaultValue={""}
+                    defaultValue={proximityToWork}
                     className="profile-edit-select profile-edit-select-half profile-edit-input"
                     onChange={(e) => setProximityToWork(e.target.value)}
                   >

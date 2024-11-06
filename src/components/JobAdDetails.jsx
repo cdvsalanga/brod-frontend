@@ -4,12 +4,41 @@ import { Heart, MapPin, Star } from "lucide-react";
 import CardImage from "../assets/images/card-image.png";
 import HeroImage from "../assets/images/hero-image.png";
 import Services from "../assets/images/services-header-background.png";
+import { bookmarkJob } from "../action/clientActions";
 
-const JobAdDetails = ({ jobAdDetails }) => {
+const JobAdDetails = ({ jobAdDetails, userDetails, userInfo }) => {
   const [favorite, setFavorite] = useState(false);
   const [previewImg, setPreviewImg] = useState();
 
-  if (jobAdDetails) {
+  const addJobFavorite = async () => {
+    const status = "Bookmarked";
+    const date = new Date();
+
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    // This arrangement can be altered based on how we want the date's format to appear.
+    const currentDate = `${year}-${month}-${day}`;
+    console.log(currentDate);
+
+    await bookmarkJob(
+      userInfo.userId,
+      userDetails._id,
+      jobAdDetails.jobAdTitle,
+      jobAdDetails._id,
+      status,
+      jobAdDetails.descriptionOfService,
+      userInfo.contactNumber,
+      userInfo.postalCode,
+      currentDate,
+      userInfo.token
+    ).then(() => {
+      setFavorite(!favorite);
+    });
+  };
+
+  if (jobAdDetails && userDetails) {
     if (!previewImg) {
       setPreviewImg(jobAdDetails.thumbnailImage);
     }
@@ -34,7 +63,7 @@ const JobAdDetails = ({ jobAdDetails }) => {
                   className="job-heart pointer"
                   fill={favorite ? "#1F1F23" : "none"}
                   color={favorite ? "#1F1F23" : "#D9D9D9"}
-                  onClick={() => setFavorite(!favorite)}
+                  onClick={addJobFavorite}
                 />
                 <span className="job-fav">Favorite</span>
               </div>

@@ -63,7 +63,7 @@ const LoginBox = () => {
 
   return (
     <div className="login-box">
-      <h1 className="login-h1">Log in</h1>
+      <h1 className="login-h1 mb-24">Log in</h1>
       {showError && (
         <div className="show-error mb-20">
           You have entered an invalid username or password.
@@ -82,7 +82,7 @@ const LoginBox = () => {
         <div className="pos-relative">
           <input
             type={showPass ? "text" : "password"}
-            className="login-input m-24 input-pass"
+            className="login-input mb-24 input-pass"
             onChange={(e) => setPassword(e.target.value)}
             required
           />
@@ -93,7 +93,7 @@ const LoginBox = () => {
           )}
         </div>
 
-        <button type="submit" className="login-button m-24">
+        <button type="submit" className="login-button mb-24">
           Log in
         </button>
       </form>
@@ -103,7 +103,7 @@ const LoginBox = () => {
           Sign Up
         </Link>{" "}
       </div>
-      <div className="login-separator">
+      <div className="login-separator mb-32">
         <div className="login-separator-line" />
         <div>OR</div>
         <div className="login-separator-line" />

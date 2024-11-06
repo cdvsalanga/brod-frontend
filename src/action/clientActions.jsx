@@ -31,6 +31,7 @@ export const hireTradie = async (
   completionDate,
   clientBudget,
   budgetCurrency,
+  jobActionDate,
   token
 ) => {
   try {
@@ -47,6 +48,7 @@ export const hireTradie = async (
       completionDate,
       clientBudget,
       budgetCurrency,
+      jobActionDate,
       token,
     });
 
@@ -65,6 +67,7 @@ export const hireTradie = async (
         completionDate,
         clientBudget,
         budgetCurrency,
+        jobActionDate,
       },
       {
         headers: {
@@ -73,6 +76,84 @@ export const hireTradie = async (
         },
       }
     );
+  } catch (error) {
+    return error;
+  }
+};
+
+export const bookmarkJob = async (
+  clientID,
+  tradieID,
+  jobAdTitle,
+  serviceID,
+  status,
+  descriptionServiceNeeded,
+  clientContactNumber,
+  clientPostCode,
+  jobActionDate,
+  token
+) => {
+  try {
+    console.log({
+      clientID,
+      tradieID,
+      jobAdTitle,
+      serviceID,
+      status,
+      descriptionServiceNeeded,
+      clientContactNumber,
+      clientPostCode,
+      jobActionDate,
+      startDate: "",
+      completionDate: "",
+      clientBudget: 0,
+      budgetCurrency: "",
+      token,
+    });
+    await axios.post(
+      "http://18.141.207.215/api/Client/BookmarkJob",
+      {
+        clientID,
+        tradieID,
+        jobAdTitle,
+        serviceID,
+        status,
+        descriptionServiceNeeded,
+        clientContactNumber,
+        clientPostCode,
+        jobActionDate,
+        startDate: "",
+        completionDate: "",
+        clientBudget: 0,
+        budgetCurrency: "",
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getJobsByStatusClient = async (userID, status, token) => {
+  try {
+    console.log({ userID, status, token });
+    const { data } = await axios.post(
+      "http://18.141.207.215/api/Client/GetJobsByStatus",
+      { userID, status },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return data;
   } catch (error) {
     return error;
   }

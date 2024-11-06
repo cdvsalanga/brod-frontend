@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "../styles/SignUpInfo.css";
-import { Check, Upload, X, XCircle } from "lucide-react";
+import { Check, Download, Upload, X, XCircle } from "lucide-react";
 import { updateTradieProfile } from "../action/tradieActions";
 import { getUserDetails } from "../action/userActions";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { updateTradieStatus } from "../action/adminActions";
 
 const TradespersonInfoForm = ({ page }) => {
   const [openModal, setOpenModal] = useState(false);
@@ -14,13 +15,13 @@ const TradespersonInfoForm = ({ page }) => {
   const [registeredBusinessName, setRegisteredBusinessName] = useState();
   const [australianBusinessNumber, setAustralianBusinessNumber] = useState();
   const [typeofWork, setTypeofWork] = useState();
-  const [credentials, setCredentials] = useState([]);
   const [certificationFilesUploaded, setCertificationFilesUploaded] =
     useState();
   const [userDetails, setUserDetails] = useState();
   const [userInfo] = useState(JSON.parse(localStorage.getItem("userInfo")));
   const [token, setToken] = useState();
   const [loading, setLoading] = useState(false);
+  const [declineReason, setDeclineReason] = useState();
 
   const navigate = useNavigate();
 
@@ -39,14 +40,13 @@ const TradespersonInfoForm = ({ page }) => {
     setAustralianBusinessNumber(user.australianBusinessNumber);
     setTypeofWork(user.typeofWork);
     setCertificationFilesUploaded(user.certificationFilesUploaded);
-    defaultUploadedFiles(user.certificationFilesUploaded);
     setLoading(false);
   };
 
   useEffect(() => {
     if (userInfo) {
       if (userInfo.role === "Admin") {
-        navigate("/admin");
+        navigate(`/admin/application-details/${id}`);
       } else if (userInfo.role === "Tradie") {
         if (userInfo.status === "Approved") {
           navigate(`/tradesperson/dashboard/${userInfo.userId}`);
@@ -78,7 +78,7 @@ const TradespersonInfoForm = ({ page }) => {
 
     console.log(userDetails);
 
-    await updateTradieProfile(userDetails, token);
+    // await updateTradieProfile(userDetails, token);
 
     navigate("/login/application-under-review");
   };
@@ -92,40 +92,45 @@ const TradespersonInfoForm = ({ page }) => {
     });
 
   const fileHandler = async (e) => {
-    const uploaded = [...credentials];
     const uploadedBase64 = [...certificationFilesUploaded];
     const file = e.target.files[0];
 
     await toBase64(file).then((res) => {
       if (!uploadedBase64.includes(file.name.replace(/\s/g, "") + " " + res)) {
-        uploaded.push(file.name.replace(/\s/g, ""));
         uploadedBase64.push(file.name.replace(/\s/g, "") + " " + res);
       }
     });
 
-    setCredentials(uploaded);
     setCertificationFilesUploaded(uploadedBase64);
   };
 
   const removeFile = (i) => {
-    const uploaded = [...credentials];
     const uploadedBase64 = [...certificationFilesUploaded];
 
-    uploaded.splice(i, 1);
     uploadedBase64.splice(i, 1);
 
-    setCredentials(uploaded);
     setCertificationFilesUploaded(uploadedBase64);
   };
 
-  const defaultUploadedFiles = (files) => {
-    const uploaded = [...credentials];
+  const approveTradieHandler = async () => {
+    const status = "Approved";
 
-    files.map((file) => {
-      uploaded.push(file.split(" ")[0]);
+    await updateTradieStatus(id, status, token).then(() => {
+      console.log("Success");
+      getUser();
     });
+  };
 
-    setCredentials(uploaded);
+  const declineTradieHandler = async (e) => {
+    e.preventDefault();
+    console.log({ declineReason });
+    const status = "Declined";
+
+    await updateTradieStatus(id, status, token).then(() => {
+      console.log("Success");
+      setOpenModal(false);
+      getUser();
+    });
   };
 
   return loading ? (
@@ -143,7 +148,23 @@ const TradespersonInfoForm = ({ page }) => {
       ) : (
         <div className="flex-between flex-center mb-32">
           <h1 className="signup-info-h1">Application Details</h1>
-          <span className="signup-info-status">Pending approval</span>
+          <span
+            className={
+              userDetails &&
+              (userDetails.status === "New"
+                ? "signup-info-status-pending"
+                : userDetails.status === "Approved"
+                ? "signup-info-status-approved"
+                : "signup-info-status-declined")
+            }
+          >
+            {userDetails &&
+              (userDetails.status === "New"
+                ? "Pending approval"
+                : userDetails.status === "Approved"
+                ? "Approved"
+                : "Declined")}
+          </span>
         </div>
       )}
       <form onSubmit={submitHandler} className="signup-info-form">
@@ -156,6 +177,7 @@ const TradespersonInfoForm = ({ page }) => {
             defaultValue={businessPostCode}
             onChange={(e) => setBusinessPostCode(e.target.value)}
             required
+            disabled={page === "signup" ? false : true}
           />
         </div>
         <div className="signup-info-halfw">
@@ -165,6 +187,7 @@ const TradespersonInfoForm = ({ page }) => {
             defaultValue={typeofWork}
             onChange={(e) => setTypeofWork(e.target.value)}
             required
+            disabled={page === "signup" ? false : true}
           >
             <option value={""} disabled hidden>
               Select
@@ -319,6 +342,7 @@ const TradespersonInfoForm = ({ page }) => {
             defaultValue={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             required
+            disabled={page === "signup" ? false : true}
           />
         </div>
         <div className="signup-info-halfw">
@@ -329,6 +353,7 @@ const TradespersonInfoForm = ({ page }) => {
             defaultValue={lastName}
             onChange={(e) => setLastName(e.target.value)}
             required
+            disabled={page === "signup" ? false : true}
           />
         </div>
         <div className="signup-info-halfw">
@@ -340,6 +365,7 @@ const TradespersonInfoForm = ({ page }) => {
             defaultValue={contactNumber}
             onChange={(e) => setContactNumber(e.target.value)}
             required
+            disabled={page === "signup" ? false : true}
           />
         </div>
         <div className="signup-info-halfw">
@@ -353,6 +379,7 @@ const TradespersonInfoForm = ({ page }) => {
             defaultValue={australianBusinessNumber}
             onChange={(e) => setAustralianBusinessNumber(e.target.value)}
             required
+            disabled={page === "signup" ? false : true}
           />
         </div>
         <div className="signup-info-maxw">
@@ -363,6 +390,7 @@ const TradespersonInfoForm = ({ page }) => {
             defaultValue={registeredBusinessName}
             onChange={(e) => setRegisteredBusinessName(e.target.value)}
             required
+            disabled={page === "signup" ? false : true}
           />
         </div>
         {page === "signup" ? (
@@ -381,23 +409,39 @@ const TradespersonInfoForm = ({ page }) => {
               onChange={fileHandler}
             />
             <div className="files">
-              {credentials.map((credential, i) => (
-                <div key={i} className="file">
-                  {credential}
-                  <X
-                    width={20}
-                    height={20}
-                    color="#8C8C8C"
-                    className="pointer"
-                    onClick={() => removeFile(i)}
-                  />
-                </div>
-              ))}
+              {certificationFilesUploaded &&
+                certificationFilesUploaded.map((file, i) => (
+                  <div key={i} className="file">
+                    {file.split(" ")[0]}
+                    <X
+                      width={20}
+                      height={20}
+                      color="#8C8C8C"
+                      className="pointer"
+                      onClick={() => removeFile(i)}
+                    />
+                  </div>
+                ))}
             </div>
           </div>
         ) : (
           <div className="signup-info-maxw">
             <label className="signup-info-label">Uploaded Credentials</label>
+
+            <div className="files">
+              {certificationFilesUploaded &&
+                certificationFilesUploaded.map((file, i) => (
+                  <a
+                    href={file.split(" ")[1]}
+                    download={file.split(" ")[0]}
+                    key={i}
+                    className="file pointer"
+                  >
+                    {file.split(" ")[0]}
+                    <Download width={20} height={20} color="#8C8C8C" />
+                  </a>
+                ))}
+            </div>
           </div>
         )}
 
@@ -406,29 +450,37 @@ const TradespersonInfoForm = ({ page }) => {
             Submit
           </button>
         ) : (
-          <div className="signup-info-btns-box flex-end">
-            <button
-              className="signup-info-btns singup-info-decline pointer"
-              onClick={() => setOpenModal(true)}
-            >
-              <XCircle width={20} height={20} color="#820014" />
-              Decline
-            </button>
-            <button className="signup-info-btns singup-info-approve pointer">
-              <Check
-                width={20}
-                height={20}
-                color="#FFFFFF"
-                className="icon-bg-black"
-              />
-              Approve
-            </button>
-          </div>
+          userDetails &&
+          userDetails.status === "New" && (
+            <div className="signup-info-btns-box flex-end">
+              <button
+                type="button"
+                className="signup-info-btns singup-info-decline pointer"
+                onClick={() => setOpenModal(true)}
+              >
+                <XCircle width={20} height={20} color="#820014" />
+                Decline
+              </button>
+              <button
+                type="button"
+                className="signup-info-btns singup-info-approve pointer"
+                onClick={approveTradieHandler}
+              >
+                <Check
+                  width={20}
+                  height={20}
+                  color="#FFFFFF"
+                  className="icon-bg-black"
+                />
+                Approve
+              </button>
+            </div>
+          )
         )}
       </form>
       {openModal && (
         <div className="modal-decline scroll-lock">
-          <div className="modal-decline-box">
+          <form onSubmit={declineTradieHandler} className="modal-decline-box">
             <div className="mb-48">
               <h1 className="signup-info-h1 mb-20">Decline Application</h1>
               <div className="signup-info-text mb-20">
@@ -440,7 +492,11 @@ const TradespersonInfoForm = ({ page }) => {
                 <label className="signup-info-text block mb-12">
                   Reason <span className="modal-required">(required)</span>
                 </label>
-                <textarea className="modal-textarea" />
+                <textarea
+                  className="modal-textarea"
+                  required
+                  onChange={(e) => setDeclineReason(e.target.value)}
+                />
               </div>
             </div>
 
@@ -448,12 +504,18 @@ const TradespersonInfoForm = ({ page }) => {
               <button
                 className="modal-btns pointer"
                 onClick={() => setOpenModal(false)}
+                type="button"
               >
                 Cancel
               </button>
-              <button className="modal-btns modal-black-btn">Finish</button>
+              <button
+                type="submit"
+                className="modal-btns modal-black-btn pointer"
+              >
+                Finish
+              </button>
             </div>
-          </div>
+          </form>
         </div>
       )}
     </div>

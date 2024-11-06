@@ -192,7 +192,7 @@ export const updateJobAdDetails = async (jobAdData, token) => {
   }
 };
 
-export const getJobsByStatus = async (userID, status, token) => {
+export const getJobsByStatusTradie = async (userID, status, token) => {
   try {
     console.log({ userID, status, token });
 
@@ -213,13 +213,19 @@ export const getJobsByStatus = async (userID, status, token) => {
   }
 };
 
-export const updateJobStatus = async (tradieID, jobID, status, token) => {
+export const updateJobStatus = async (
+  tradieID,
+  jobID,
+  status,
+  jobActionDate,
+  token
+) => {
   try {
-    console.log({ tradieID, jobID, status, token });
+    console.log({ tradieID, jobID, status, jobActionDate, token });
 
     await axios.put(
       "http://18.141.207.215/api/Tradie/UpdateJobStatus",
-      { tradieID, jobID, status, token },
+      { tradieID, jobID, status, jobActionDate, token },
       {
         headers: {
           "Content-Type": "application/json",

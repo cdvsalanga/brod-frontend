@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../styles/DashboardTradie.css";
 import DashboardContentItem from "./DashboardContentItem";
 import { Link } from "react-router-dom";
-import { getJobsByStatus } from "../action/tradieActions";
+import { getJobsByStatusTradie } from "../action/tradieActions";
 
 const DashboardContents = ({ userInfo }) => {
   const [item, setItem] = useState("job");
@@ -14,15 +14,17 @@ const DashboardContents = ({ userInfo }) => {
 
   const getJobData = async () => {
     let status;
-    await getJobsByStatus(userId, (status = "In Progress"), token).then(
+    await getJobsByStatusTradie(userId, (status = "In Progress"), token).then(
       (res) => {
         setInProgressJobs(res);
       }
     );
 
-    await getJobsByStatus(userId, (status = "Pending"), token).then((res) => {
-      setPendingOffers(res);
-    });
+    await getJobsByStatusTradie(userId, (status = "Pending"), token).then(
+      (res) => {
+        setPendingOffers(res);
+      }
+    );
     setLoading(false);
   };
 

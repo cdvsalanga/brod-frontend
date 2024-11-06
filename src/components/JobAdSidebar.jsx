@@ -34,6 +34,16 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    const date = new Date();
+
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    // This arrangement can be altered based on how we want the date's format to appear.
+    const currentDate = `${year}-${month}-${day}`;
+    console.log(currentDate); // "17-6-2022"
+
     await hireTradie(
       clientID,
       tradieID,
@@ -47,6 +57,7 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
       completionDate,
       clientBudget,
       budgetCurrency,
+      currentDate,
       token
     ).then(setComplete(true));
   };

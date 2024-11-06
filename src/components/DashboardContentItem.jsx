@@ -13,9 +13,21 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
 
   const updateJobStatusHandler = async (job, status, e) => {
     e.stopPropagation();
-    jobID = job.serviceID;
+    const date = new Date();
 
-    await updateJobStatus(tradieID, jobID, status, token);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    // This arrangement can be altered based on how we want the date's format to appear.
+    const currentDate = `${year}-${month}-${day}`;
+    console.log(currentDate);
+
+    await updateJobStatus(tradieID, job._id, status, currentDate, token).then(
+      () => {
+        window.location.reload();
+      }
+    );
   };
 
   if (data) {
@@ -68,7 +80,12 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
                   <CircleX color="#820014" />
                   Cancel job
                 </button>
-                <button className="dashboard-item-btn dashboard-item-complete flex-center">
+                <button
+                  className="dashboard-item-btn dashboard-item-complete flex-center pointer"
+                  onClick={(e) =>
+                    updateJobStatusHandler(job, (status = "Completed"), e)
+                  }
+                >
                   <Check
                     width={20}
                     height={20}
@@ -152,7 +169,7 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
                       <CircleX color="#820014" />
                       Cancel job
                     </button>
-                    <button className="dashboard-item-btn dashboard-item-complete flex-center">
+                    <button className="dashboard-item-btn dashboard-item-complete flex-center pointer">
                       <Check
                         width={20}
                         height={20}

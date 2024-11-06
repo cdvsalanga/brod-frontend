@@ -1,196 +1,395 @@
-.signup-contents {
-  width: 660px;
-  margin: 182px auto;
+/* Mobile View */
+@media only screen and (max-width: 768px) {
+  .signup-contents {
+    width: 361px;
+    margin: 48px auto;
+  }
+
+  .signup-h1 {
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24.2px;
+    color: #000000;
+    margin-bottom: 32px;
+  }
+
+  .signup-choose {
+    margin-bottom: 32px;
+  }
+
+  .choose-box {
+    position: relative;
+    cursor: pointer;
+    border-radius: 8px;
+    border: 1px solid #d9d9d9;
+    padding: 16px 24px 41px 24px;
+    margin-bottom: 16px;
+  }
+
+  .chosen-border {
+    border: 2px solid #1f1f23;
+  }
+
+  .client-icon {
+    margin: 0 0 10.15px 5.83px;
+    width: 32px;
+    height: 30px;
+  }
+
+  .trade-icon {
+    margin: 0 0 13.67px 2.47px;
+    width: 35px;
+    height: 29px;
+  }
+
+  .choose-text {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 25.2px;
+    color: #242424;
+  }
+
+  .circle {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: #837f89;
+  }
+
+  .signup-button {
+    width: 100%;
+    padding: 12px 24px;
+    border-radius: 4px;
+    background-color: #b3b2b5;
+    border: 1px solid #b3b2b5;
+    color: #ffffff;
+    font-size: 18px;
+    margin-bottom: 24px;
+  }
+
+  .to-login {
+    text-align: center;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19.36px;
+  }
+
+  .login-link,
+  .login-link:visited {
+    font-weight: 500;
+    color: #242424;
+  }
+
+  .signup-btn-link {
+    display: block;
+    height: 24px;
+    border-radius: 4px;
+    padding: 12px 24px;
+    background-color: #1f1f23;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    font-size: 18px;
+    line-height: 21.78px;
+    margin-bottom: 24px;
+  }
+
+  .signup-box {
+    width: 361px;
+    margin: 32px auto;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16.94px;
+    color: #242424;
+  }
+
+  .signup-box-h1 {
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29.05px;
+    color: #000000;
+    margin-bottom: 24px;
+  }
+
+  .signup-label {
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  .signup-input {
+    width: 327.4px;
+    height: 14.4px;
+    border: 1px solid #d9d9d9;
+    padding: 16px;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  .signup-box-btn {
+    width: 100%;
+    height: 48px;
+    border-radius: 4px;
+    border: none;
+    padding: 12px 24px;
+    background-color: #1f1f23;
+    color: #fff;
+    font-size: 18px;
+    line-height: 21.78px;
+    margin-bottom: 24px;
+  }
+
+  .signup-separator {
+    text-align: center;
+    line-height: 19.36px;
+    color: #242424;
+    display: flex;
+    justify-content: space-between;
+    margin: 32px 0 35px 0;
+  }
+
+  .signup-separator-line {
+    width: 150px;
+    border-top: 1px solid #d9d9d9;
+    align-self: center;
+  }
+
+  .signup-otp-btn {
+    border-radius: 4px;
+    padding: 12px 0;
+    background-color: #1f1f23;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    font-size: 16px;
+    line-height: 20px;
+    border: none;
+    width: 100%;
+  }
+
+  .signup-otp {
+    text-align: center;
+    color: #242424;
+  }
+
+  .signup-otp-h1 {
+    font-weight: bold;
+  }
+
+  .signup-otp-label {
+    display: block;
+    font-weight: 400;
+    font-size: 14px;
+  }
+
+  .signup-otp-input {
+    height: 48.4px;
+    border: 1px solid #1f1f23;
+    border-radius: 8px;
+    font-size: 25px;
+  }
+
+  .signup-otp-resend {
+    text-decoration: underline;
+    font-weight: 500;
+  }
 }
 
-.signup-h1 {
-  font-weight: 500;
-  font-size: 32px;
-  line-height: 38.73px;
-  margin-bottom: 49px;
-}
+/* Desktop View */
+@media only screen and (min-width: 768px) {
+  .signup-contents {
+    width: 660px;
+    margin: 182px auto;
+  }
 
-.signup-choose {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 54px;
-}
+  .signup-h1 {
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 38.73px;
+    margin-bottom: 49px;
+  }
 
-.choose-box {
-  width: 246px;
-  border-radius: 8px;
-  border: 2px solid #d9d9d9;
-  padding: 24px 32px;
-  position: relative;
-  cursor: pointer;
-}
+  .signup-choose {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 54px;
+  }
 
-.client-icon {
-  margin: 0 0 11.22px 8.75px;
-}
+  .choose-box {
+    width: 246px;
+    border-radius: 8px;
+    border: 2px solid #d9d9d9;
+    padding: 24px 32px;
+    position: relative;
+    cursor: pointer;
+  }
 
-.trade-icon {
-  margin: 0 0 16.51px 3.71px;
-}
+  .client-icon {
+    margin: 0 0 11.22px 8.75px;
+  }
 
-.choose-text {
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 33.6px;
-  color: #242424;
-}
+  .trade-icon {
+    margin: 0 0 16.51px 3.71px;
+  }
 
-.circle {
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  color: #837f89;
-}
+  .choose-text {
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 33.6px;
+    color: #242424;
+  }
 
-.signup-button {
-  width: 100%;
-  height: 48px;
-  border-radius: 4px;
-  border: none;
-  background-color: #b3b2b5;
-  padding: 12px 24px;
-  color: #fff;
-  font-size: 18px;
-  line-height: 21.78px;
-  margin-bottom: 24px;
-}
+  .circle {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: #837f89;
+  }
 
-.to-login {
-  font-size: 18px;
-  line-height: 21.78px;
-  text-align: center;
-  color: #242424;
-}
+  .signup-button {
+    width: 100%;
+    height: 48px;
+    border-radius: 4px;
+    border: none;
+    background-color: #b3b2b5;
+    padding: 12px 24px;
+    color: #fff;
+    font-size: 18px;
+    line-height: 21.78px;
+    margin-bottom: 24px;
+  }
 
-.login-link,
-.login-link:visited {
-  font-weight: 500;
-  color: #242424;
-}
+  .to-login {
+    font-size: 18px;
+    line-height: 21.78px;
+    text-align: center;
+    color: #242424;
+  }
 
-.chosen-border {
-  border: 3px solid #1f1f23;
-}
+  .login-link,
+  .login-link:visited {
+    font-weight: 500;
+    color: #242424;
+  }
 
-.signup-btn-link {
-  display: block;
-  height: 24px;
-  border-radius: 4px;
-  padding: 12px 0;
-  background-color: #1f1f23;
-  color: #fff;
-  text-decoration: none;
-  text-align: center;
-  font-size: 18px;
-  line-height: 21.78px;
-  margin-bottom: 24px;
-}
+  .chosen-border {
+    border: 3px solid #1f1f23;
+  }
 
-.signup-box {
-  width: 400px;
-  border-radius: 8px;
-  border: 1px solid #d9d9d9;
-  padding: 32px 64px;
-  margin: 72px auto;
-}
+  .signup-btn-link {
+    display: block;
+    height: 24px;
+    border-radius: 4px;
+    padding: 12px 0;
+    background-color: #1f1f23;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    font-size: 18px;
+    line-height: 21.78px;
+    margin-bottom: 24px;
+  }
 
-.signup-box-h1 {
-  font-weight: 500;
-  font-size: 32px;
-  line-height: 38.73px;
-  margin-bottom: 24px;
-}
+  .signup-box {
+    width: 400px;
+    border-radius: 8px;
+    border: 1px solid #d9d9d9;
+    padding: 32px 64px;
+    margin: 72px auto;
+  }
 
-.signup-label {
-  display: block;
-  font-weight: 500;
-  line-height: 19.36px;
-  color: #242424;
-  margin-bottom: 12px;
-}
+  .signup-box-h1 {
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 38.73px;
+    margin-bottom: 24px;
+  }
 
-.signup-input {
-  width: 91.5%;
-  height: 16px;
-  border: 1px solid #d9d9d9;
-  padding: 16px;
-  font-size: 16px;
-  margin-bottom: 20px;
-}
+  .signup-label {
+    display: block;
+    font-weight: 500;
+    line-height: 19.36px;
+    color: #242424;
+    margin-bottom: 12px;
+  }
 
-.signup-box-btn {
-  width: 100%;
-  height: 48px;
-  border-radius: 4px;
-  border: none;
-  padding: 12px 24px;
-  background-color: #1f1f23;
-  color: #fff;
-  font-size: 18px;
-  line-height: 21.78px;
-  margin-bottom: 24px;
-}
+  .signup-input {
+    width: 91.5%;
+    height: 16px;
+    border: 1px solid #d9d9d9;
+    padding: 16px;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
 
-.signup-separator {
-  text-align: center;
-  line-height: 19.36px;
-  color: #242424;
-  display: flex;
-  justify-content: space-between;
-  margin: 32px 0 35px 0;
-}
+  .signup-box-btn {
+    width: 100%;
+    height: 48px;
+    border-radius: 4px;
+    border: none;
+    padding: 12px 24px;
+    background-color: #1f1f23;
+    color: #fff;
+    font-size: 18px;
+    line-height: 21.78px;
+    margin-bottom: 24px;
+  }
 
-.signup-separator-line {
-  width: 170px;
-  border-top: 1px solid #d9d9d9;
-  align-self: center;
-}
+  .signup-separator {
+    text-align: center;
+    line-height: 19.36px;
+    color: #242424;
+    display: flex;
+    justify-content: space-between;
+    margin: 32px 0 35px 0;
+  }
 
-.signup-otp-btn {
-  border-radius: 4px;
-  padding: 12px 0;
-  background-color: #1f1f23;
-  color: #fff;
-  text-decoration: none;
-  text-align: center;
-  font-size: 18px;
-  line-height: 21.78px;
-  border: none;
-  width: 100%;
-}
+  .signup-separator-line {
+    width: 170px;
+    border-top: 1px solid #d9d9d9;
+    align-self: center;
+  }
 
-.signup-otp {
-  text-align: center;
-  color: #242424;
-}
+  .signup-otp-btn {
+    border-radius: 4px;
+    padding: 12px 0;
+    background-color: #1f1f23;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    font-size: 18px;
+    line-height: 21.78px;
+    border: none;
+    width: 100%;
+  }
 
-.signup-otp-h1 {
-  font-weight: bold;
-}
+  .signup-otp {
+    text-align: center;
+    color: #242424;
+  }
 
-.signup-otp-label {
-  display: block;
-  font-weight: 400;
-  font-size: 16px;
-}
+  .signup-otp-h1 {
+    font-weight: bold;
+  }
 
-.signup-otp-chosen {
-  font-weight: 500;
-}
+  .signup-otp-label {
+    display: block;
+    font-weight: 400;
+    font-size: 16px;
+  }
 
-.signup-otp-input {
-  height: 50px;
-  border: 1px solid #1f1f23;
-  border-radius: 8px;
-  font-size: 25px;
-}
+  .signup-otp-chosen {
+    font-weight: 500;
+  }
 
-.signup-otp-resend {
-  text-decoration: underline;
-  font-weight: 500;
+  .signup-otp-input {
+    height: 48.4px;
+    border: 1px solid #1f1f23;
+    border-radius: 8px;
+    font-size: 25px;
+  }
+
+  .signup-otp-resend {
+    text-decoration: underline;
+    font-weight: 500;
+  }
 }

@@ -3,15 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logos/header.png";
 import "../styles/Header.css";
 import { Bell, Heart, Mail, X } from "lucide-react";
-import CardImage from "../assets/images/card-image.png";
 import DefaultProfilePicture from "../assets/images/default-profile-picture.png";
 import Notifications from "./Notifications";
-import { getUserDetails } from "../action/userActions";
 
 const Header = ({ notHidden = true }) => {
-  const [userInfo, setUserInfo] = useState(
-    JSON.parse(localStorage.getItem("userInfo"))
-  );
+  const [userInfo] = useState(JSON.parse(localStorage.getItem("userInfo")));
   const [showProfile, setShowProfile] = useState(false);
   const [showNotif, setShowNotif] = useState(false);
   const [profilePicture, setProfilePicture] = useState();
@@ -24,7 +20,6 @@ const Header = ({ notHidden = true }) => {
         JSON.parse(localStorage.getItem("userInfo")).profilePicture
       );
     }
-    // setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
   }, [userInfo]);
 
   const logOutHandler = () => {

@@ -5,13 +5,23 @@ import Briefcase from "../assets/icons/briefcase.svg";
 import Phone from "../assets/icons/phone.svg";
 import Facebook from "../assets/icons/facebook.svg";
 import Instagram from "../assets/icons/instagram.svg";
-import { ArrowUpRight, MapPin, Navigation, Mail, X } from "lucide-react";
+import {
+  ArrowUpRight,
+  MapPin,
+  Navigation,
+  Mail,
+  X,
+  ArrowLeft,
+} from "lucide-react";
 import Complete from "../assets/images/complete.svg";
 import JobOffer from "./JobOffer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { hireTradie } from "../action/clientActions";
+import { useMediaQuery } from "react-responsive";
 
 const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
+  const isMobile = useMediaQuery({ query: "(max-width:768px)" });
+
   const [showOffer, setShowOffer] = useState(false);
   const [complete, setComplete] = useState(false);
   const [token] = useState(userInfo && userInfo.token);
@@ -31,6 +41,8 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
   const [completionDate, setCompletionDate] = useState("");
   const [clientBudget, setClientBudget] = useState("");
   const [budgetCurrency, setBudgetCurrency] = useState("AUD");
+
+  const navigate = useNavigate();
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -62,6 +74,14 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
     ).then(setComplete(true));
   };
 
+  const hireHandler = () => {
+    if (userInfo) {
+      setShowOffer(true);
+    } else {
+      navigate("/login");
+    }
+  };
+
   if (userDetails && jobAdDetails) {
     return (
       <div className="tradie-details gray-bg">
@@ -86,7 +106,7 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
               </div>
             </div>
           </div>
-          <div className="mb-24 gray-bg">
+          <div className={isMobile ? "mb-20 gray-bg" : "mb-24 gray-bg"}>
             <div className="flex-center gray-bg">
               <span className="gray-bg tradie-name">
                 {userDetails.firstName + " " + userDetails.lastName}
@@ -100,37 +120,63 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
               </Link>
             </div>
             <div className="gray-bg tradie-location flex-center tradie-my-8">
-              <MapPin className="gray-bg" color="#8C8C8C" />
+              <MapPin
+                width={isMobile ? 20 : 24}
+                height={isMobile ? 20 : 24}
+                className="gray-bg"
+                color="#8C8C8C"
+              />
               <span className="gray-bg">{userDetails.businessPostCode}</span>
             </div>
             <div className="gray-bg tradie-location flex-center">
-              <Navigation className="gray-bg" color="#8C8C8C" />
+              <Navigation
+                width={isMobile ? 20 : 24}
+                height={isMobile ? 20 : 24}
+                className="gray-bg"
+                color="#8C8C8C"
+              />
               <span className="gray-bg">Can work within 50km</span>
             </div>
           </div>
 
-          <div className="gray-bg mb-32">
-            <button
-              className="tradie-btn tradie-btn-hire flex-center pointer"
-              onClick={() => setShowOffer(true)}
-            >
-              <img src={Briefcase} className="icon-bg-black" />
-              Hire
-            </button>
-            <button className="tradie-btn tradie-btn-chat flex-center">
-              <Mail />
-              Chat
-            </button>
-          </div>
+          {isMobile ? (
+            <div className="tradie-btns">
+              <button className="tradie-btn tradie-btn-chat flex-center">
+                <Mail />
+                Chat
+              </button>
+              <button
+                className="tradie-btn tradie-btn-hire flex-center pointer"
+                onClick={hireHandler}
+              >
+                <img src={Briefcase} className="icon-bg-black" />
+                Hire
+              </button>
+            </div>
+          ) : (
+            <div className="gray-bg">
+              <button
+                className="tradie-btn tradie-btn-hire flex-center pointer"
+                onClick={hireHandler}
+              >
+                <img src={Briefcase} className="icon-bg-black" />
+                Hire
+              </button>
+              <button className="tradie-btn tradie-btn-chat flex-center">
+                <Mail />
+                Chat
+              </button>
+            </div>
+          )}
         </div>
         <div className="gray-bg">
-          <div className="gray-bg mb-32">
+          <div className={isMobile ? "mb-20 gray-bg" : "gray-bg mb-32"}>
             <h2 className="gray-bg tradie-h2">About me</h2>
             <div className="gray-bg tradie-about">
               {userDetails.aboutMeDescription}
             </div>
           </div>
-          <div className="gray-bg mb-32">
+          <div className={isMobile ? "mb-20 gray-bg" : "gray-bg mb-32"}>
             <h2 className="gray-bg tradie-h2">Services</h2>
             <div className="gray-bg tradie-services">
               {userDetails.services.map((service, i) => (
@@ -143,7 +189,7 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
           <div className="gray-bg">
             <h2 className="gray-bg tradie-h2">Contact and Socials</h2>
             <div className="gray-bg tradie-contact flex-center">
-              <img src={Phone} className="tradie-contact-icon" />
+              <img src={Phone} className="tradie-contact-icon gray-bg" />
               <span className="gray-bg">{userDetails.contactNumber}</span>
             </div>
             <div className="gray-bg tradie-contact flex-center">
@@ -164,8 +210,13 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
           <div className="job-offer scroll-lock">
             {complete ? (
               <div className="offer-complete">
-                <div className="mb-48">
-                  <img className="mb-24" src={Complete} />
+                <div className={isMobile ? "mb-40" : "mb-48"}>
+                  <img
+                    width={isMobile && 62.96}
+                    height={isMobile && 60}
+                    className="mb-24"
+                    src={Complete}
+                  />
                   <h1 className="offer-complete-h1 mb-24">
                     Your inquiry has been sent.
                   </h1>
@@ -189,10 +240,21 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
             ) : (
               <div className="offer-form">
                 <form onSubmit={submitHandler}>
-                  <h1 className="offer-h1 mb-20">
-                    Provide Job Details and Make an Offer
-                  </h1>
-                  <div className="mb-24">
+                  {isMobile && (
+                    <div className="offer-h1-container flex-center mb-8">
+                      <ArrowLeft
+                        width={24}
+                        height={24}
+                        color="#717171"
+                        className="pointer"
+                        onClick={() => setShowOffer(false)}
+                      />
+                      <h1 className="offer-h1">
+                        Provide Job Details and Make an Offer
+                      </h1>
+                    </div>
+                  )}
+                  <div className="offer-input-container mb-24">
                     <label className="block mb-12">Job Ad Title</label>
                     <input
                       className="offer-title offer-input"
@@ -201,7 +263,7 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
                       disabled
                     />
                   </div>
-                  <div className="mb-24">
+                  <div className="offer-input-container mb-24">
                     <label className="block mb-12">
                       Detailed description of the service you need.{" "}
                       <span className="offer-required">(required)</span>
@@ -214,8 +276,14 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
                       required
                     />
                   </div>
-                  <div className="mb-24 flex-between">
-                    <div className="half-inputs">
+                  <div
+                    className={
+                      isMobile
+                        ? "offer-input-container mb-24"
+                        : "mb-24 flex-between"
+                    }
+                  >
+                    <div className={isMobile ? "mb-24" : "half-inputs"}>
                       <label className="block mb-12">
                         Your Postcode{" "}
                         <span className="offer-required">(required)</span>
@@ -229,7 +297,7 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
                         required
                       />
                     </div>
-                    <div className="half-inputs">
+                    <div className={isMobile ? "mb-24" : "half-inputs"}>
                       <label className="block mb-12">
                         Contact Number{" "}
                         <span className="offer-required">(required)</span>
@@ -243,8 +311,14 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
                       />
                     </div>
                   </div>
-                  <div className="mb-24 flex-between">
-                    <div className="half-inputs">
+                  <div
+                    className={
+                      isMobile
+                        ? "offer-input-container mb-24"
+                        : "mb-24 flex-between"
+                    }
+                  >
+                    <div className={isMobile ? "mb-24" : "half-inputs"}>
                       <label className="block mb-12">
                         Target Start Date{" "}
                         <span className="offer-required">(required)</span>
@@ -256,7 +330,7 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
                         required
                       />
                     </div>
-                    <div className="half-inputs">
+                    <div className={isMobile ? "mb-24" : "half-inputs"}>
                       <label className="block mb-12">
                         Target Completion Date{" "}
                         <span className="offer-required">(required)</span>
@@ -269,7 +343,13 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
                       />
                     </div>
                   </div>
-                  <div className="mb-32 half-inputs">
+                  <div
+                    className={
+                      isMobile
+                        ? "offer-input-container mb-32"
+                        : "mb-32 half-inputs"
+                    }
+                  >
                     <label className="block mb-12">Your Budget</label>
                     <div>
                       <input
@@ -305,13 +385,15 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
                     </ol>
                   </div>
                   <div className="flex-end">
-                    <button
-                      className="offer-btn pointer"
-                      type="button"
-                      onClick={() => setShowOffer(false)}
-                    >
-                      Cancel
-                    </button>
+                    {!isMobile && (
+                      <button
+                        className="offer-btn pointer"
+                        type="button"
+                        onClick={() => setShowOffer(false)}
+                      >
+                        Cancel
+                      </button>
+                    )}
                     <button
                       className="offer-btn offer-btn-blk pointer"
                       type="submit"
@@ -320,10 +402,12 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
                     </button>
                   </div>
                 </form>
-                <X
-                  className="offer-x pointer"
-                  onClick={() => setShowOffer(false)}
-                />
+                {!isMobile && (
+                  <X
+                    className="offer-x pointer"
+                    onClick={() => setShowOffer(false)}
+                  />
+                )}
               </div>
             )}
           </div>

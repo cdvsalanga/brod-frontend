@@ -1,50 +1,474 @@
-.job-ad-contents {
-  width: 1179px;
-  margin: 42px auto;
-  display: flex;
-  justify-content: space-between;
-  column-gap: 64px;
+/* Mobile View */
+@media only screen and (max-width: 768px) {
+  .job-ad-contents {
+    width: 393px;
+    margin: 24px auto;
+  }
+
+  .job-details {
+    width: 361px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+    color: #242424;
+    margin: 0 auto 32px auto;
+  }
+
+  .job-h1 {
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24.2px;
+  }
+
+  .job-line {
+    border: 1px solid #d9d9d9;
+    margin-bottom: 24px;
+  }
+
+  .job-big-img {
+    width: 361px;
+    height: 223.45px;
+    object-fit: cover;
+    margin-bottom: 16px;
+  }
+
+  .job-sm-img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+  }
+
+  .tradie-details {
+    width: 361px;
+    height: 100%;
+    padding: 8px 16px 24px 16px;
+    margin-bottom: 32px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16.94px;
+    color: #242424;
+  }
+
+  .tradie-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 24px;
+  }
+
+  .tradie-rate-num {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19.36px;
+  }
+
+  .tradie-name {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19.36px;
+    margin-right: 24px;
+  }
+
+  .tradie-btns {
+    width: 393px;
+    padding: 10px 16px 24px 16px;
+    display: flex;
+    align-items: center;
+    column-gap: 12px;
+    position: fixed;
+    bottom: 0;
+    left: calc((100% - 393px) / 2);
+  }
+
+  .tradie-btn {
+    justify-content: center;
+    column-gap: 12px;
+    width: 174.5px;
+    height: 40px;
+    border-radius: 4px;
+    border: 1px solid #1f1f23;
+    padding: 8px 16px;
+    font-size: 16px;
+    line-height: 19.36px;
+  }
+
+  .tradie-btn-chat {
+    color: #1f1f23;
+    font-weight: 500;
+  }
+
+  .tradie-btn-hire {
+    background-color: #1f1f23;
+    color: #fff;
+    padding: 8px 16px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19.36px;
+  }
+
+  .tradie-h2 {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19.36px;
+    color: #242424;
+    margin-bottom: 8px;
+  }
+
+  .tradie-contact-icon {
+    color: #595959;
+    width: 20px;
+    height: 20px;
+  }
+
+  .job-selected-img {
+    border: 1.5px solid #434343;
+  }
+
+  .job-review-container {
+    width: 361px;
+    margin: 0 auto 98px auto;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16.94px;
+    color: #242424;
+  }
+
+  .job-review {
+    width: 329px;
+    border: 1px solid #d9d9d9;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+  }
+
+  .job-review-type {
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  .job-offer {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    overflow: auto;
+    z-index: 1;
+    top: 0;
+    left: 0;
+  }
+
+  .offer-form {
+    width: 393px;
+    margin: 8px auto;
+    font-weight: 500;
+  }
+
+  .offer-h1-container {
+    padding: 12px;
+    column-gap: 8px;
+  }
+
+  .offer-h1 {
+    font-size: 16px;
+    line-height: 19.36px;
+  }
+
+  .offer-input-container {
+    width: 361px;
+    margin: 0 auto 24px auto;
+  }
+
+  .offer-input {
+    border: 1px solid #d9d9d9;
+    padding: 12px;
+    font-weight: 400;
+  }
+
+  .offer-title {
+    width: 335.4px;
+    border: 1px solid #b3b2b5;
+    border-radius: 4px;
+  }
+
+  .offer-required {
+    font-weight: 400;
+    font-size: 12px;
+    color: #a8071a;
+  }
+
+  .offer-textbox {
+    width: 335.4px;
+    height: 174.4px;
+    border-radius: 8px;
+    resize: none;
+  }
+
+  .offer-input-half {
+    width: 335.4px;
+  }
+
+  .offer-budget-text {
+    width: 227.4px;
+    margin-right: 8px;
+  }
+
+  .offer-btn {
+    padding: 10px 20px;
+    border: 1px solid #1f1f23;
+    border-radius: 4px;
+    font-weight: 400;
+    line-height: 18px;
+    color: #1f1f23;
+  }
+
+  .offer-btn-blk {
+    background-color: #1f1f23;
+    color: #ffffff;
+    width: 361px;
+    margin: 8px auto 24px auto;
+  }
+
+  .offer-complete {
+    width: 361px;
+    margin: 32px auto;
+    text-align: center;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+    color: #242424;
+  }
+
+  .offer-complete-h1 {
+    font-weight: 600;
+    font-size: 18px;
+  }
 }
 
-.job-ad-ul {
-  padding-left: 16px;
-}
+/* Desktop View */
+@media only screen and (min-width: 768px) {
+  .job-ad-contents {
+    width: 1179px;
+    margin: 42px auto;
+    display: flex;
+    justify-content: space-between;
+    column-gap: 64px;
+  }
 
-.tradie-details {
-  width: 339px;
-  height: 100%;
-  border-radius: 4px;
-  padding: 24px;
-}
+  .job-details {
+    width: 728px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #242424;
+  }
 
-.tradie-img {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 24px;
-}
+  .job-h1 {
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 38.73px;
+    margin-bottom: 24px;
+  }
 
-.tradie-rate-num {
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 24.2px;
-  margin-right: 6px;
-  color: #242424;
+  .job-line {
+    border: 1px solid #d9d9d9;
+    margin-bottom: 40px;
+  }
+
+  .job-big-img {
+    width: 728px;
+    height: 450px;
+    object-fit: cover;
+    margin-bottom: 24px;
+  }
+
+  .job-sm-img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+  }
+
+  .tradie-details {
+    width: 339px;
+    height: 100%;
+    border-radius: 4px;
+    padding: 24px;
+  }
+
+  .tradie-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 24px;
+  }
+
+  .tradie-rate-num {
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24.2px;
+    margin-right: 6px;
+    color: #242424;
+  }
+
+  .tradie-name {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24.2px;
+    color: #242424;
+    margin-right: 24px;
+  }
+
+  .tradie-btn {
+    justify-content: center;
+    column-gap: 14.5px;
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid #1f1f23;
+    padding: 8px 16px;
+    font-size: 16px;
+    line-height: 19.36px;
+  }
+
+  .tradie-btn-chat {
+    background-color: #fafafa;
+    color: #1f1f23;
+    font-weight: 500;
+  }
+
+  .tradie-btn-hire {
+    background-color: #1f1f23;
+    color: #fff;
+  }
+
+  .tradie-h2 {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19.36px;
+    color: #242424;
+    margin-bottom: 12px;
+  }
+
+  .tradie-contact-icon {
+    color: #595959;
+    width: 24px;
+    height: 24px;
+  }
+
+  .job-selected-img {
+    border: 3px solid #434343;
+  }
+
+  .job-review {
+    border: 1px solid #d9d9d9;
+    border-radius: 8px;
+    padding: 24px 32px;
+  }
+
+  .job-review-type {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21.78px;
+  }
+
+  .job-offer {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    overflow: auto;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  .offer-form {
+    width: 620px;
+    margin: 18px auto;
+    padding: 32px 40px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19.36px;
+    color: #242424;
+    position: relative;
+  }
+
+  .offer-h1 {
+    font-size: 28px;
+    line-height: 33.89px;
+  }
+
+  .offer-input {
+    border: 1px solid #d9d9d9;
+    padding: 16px;
+    font-weight: 400;
+  }
+
+  .offer-title {
+    width: 94.581%;
+    border: 1px solid #b3b2b5;
+    border-radius: 4px;
+  }
+
+  .offer-required {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16.94px;
+    color: #a8071a;
+  }
+
+  .offer-textbox {
+    width: 94.581%;
+    height: 200px;
+    border-radius: 8px;
+    resize: none;
+  }
+
+  .offer-input-half {
+    width: 264.4px;
+  }
+
+  .offer-budget-text {
+    width: 156.4px;
+    margin-right: 8px;
+  }
+
+  .offer-btn {
+    padding: 10px 20px;
+    border: 1px solid #1f1f23;
+    border-radius: 4px;
+    font-weight: 400;
+    line-height: 18px;
+    color: #1f1f23;
+  }
+
+  .offer-btn-blk {
+    background-color: #1f1f23;
+    color: #ffffff;
+    margin-left: 16px;
+  }
+
+  .offer-complete {
+    padding: 54.5px 43px;
+    width: 554px;
+    margin: 32px auto;
+    text-align: center;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #242424;
+  }
+
+  .offer-complete-h1 {
+    font-weight: 600;
+    font-size: 24px;
+  }
 }
 
 .tradie-rate-text {
   font-size: 14px;
   line-height: 16.94px;
   color: #434343;
-}
-
-.tradie-name {
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 24.2px;
-  color: #242424;
-  margin-right: 24px;
 }
 
 .tradie-view {
@@ -68,41 +492,6 @@
 
 .tradie-my-8 {
   margin: 8px 0;
-}
-
-.tradie-btn {
-  justify-content: center;
-  column-gap: 14.5px;
-  width: 100%;
-  border-radius: 4px;
-  border: 1px solid #1f1f23;
-  padding: 8px 16px;
-  font-size: 16px;
-  line-height: 19.36px;
-}
-
-.tradie-btn-hire {
-  background-color: #1f1f23;
-  color: #fff;
-  padding: 8px 16px;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 19.36px;
-  margin-bottom: 12px;
-}
-
-.tradie-btn-chat {
-  background-color: #fafafa;
-  color: #1f1f23;
-  font-weight: 500;
-}
-
-.tradie-h2 {
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 19.36px;
-  color: #242424;
-  margin-bottom: 12px;
 }
 
 .tradie-about {
@@ -133,20 +522,6 @@
   margin-bottom: 8px;
 }
 
-.tradie-contact-icon {
-  color: #595959;
-  width: 24px;
-  height: 24px;
-}
-
-.job-details {
-  width: 728px;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  color: #242424;
-}
-
 .job-type {
   font-weight: 500;
   font-size: 14px;
@@ -158,9 +533,6 @@
 }
 
 .job-heart {
-  width: 32px;
-  height: 32px;
-  color: #d9d9d9;
   margin-right: 8px;
 }
 
@@ -170,41 +542,9 @@
   color: #1f1f23;
 }
 
-.job-h1 {
-  font-weight: 500;
-  font-size: 32px;
-  line-height: 38.73px;
-}
-
-.job-line {
-  border: 1px solid #d9d9d9;
-}
-
-.job-big-img {
-  width: 728px;
-  height: 450px;
-  object-fit: cover;
-}
-
 .job-sm-images {
   display: flex;
   gap: 12px;
-}
-
-.job-selected-img {
-  border: 3px solid #434343;
-}
-
-.job-sm-img {
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
-}
-
-.job-review {
-  border: 1px solid #d9d9d9;
-  border-radius: 8px;
-  padding: 24px 32px;
 }
 
 .job-review-avatar {
@@ -228,12 +568,6 @@
   column-gap: 2px;
 }
 
-.job-review-type {
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 21.78px;
-}
-
 .job-review-location {
   font-size: 14px;
   line-height: 16.94px;
@@ -244,69 +578,6 @@
 .job-review-text {
   font-size: 14px;
   line-height: 21px;
-}
-
-.job-offer {
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-  overflow: auto;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.3);
-}
-
-.offer-form {
-  width: 620px;
-  margin: 18px auto;
-  padding: 32px 40px;
-  border-radius: 8px;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 19.36px;
-  color: #242424;
-  position: relative;
-}
-
-.offer-h1 {
-  font-size: 28px;
-  line-height: 33.89px;
-}
-
-.offer-input {
-  border: 1px solid #d9d9d9;
-  padding: 16px;
-  font-weight: 400;
-}
-
-.offer-title {
-  width: 94.581%;
-  border: 1px solid #b3b2b5;
-  border-radius: 4px;
-}
-
-.offer-textbox {
-  width: 94.581%;
-  height: 200px;
-  border-radius: 8px;
-  resize: none;
-}
-
-.offer-required {
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 16.94px;
-  color: #a8071a;
-}
-
-.offer-input-half {
-  width: 264.4px;
-}
-
-.offer-budget-text {
-  width: 156.4px;
-  margin-right: 8px;
 }
 
 .offer-budget-select {
@@ -337,41 +608,10 @@
   padding-left: 24px;
 }
 
-.offer-btn {
-  padding: 10px 20px;
-  border: 1px solid #1f1f23;
-  border-radius: 4px;
-  font-weight: 400;
-  line-height: 18px;
-  color: #1f1f23;
-}
-
-.offer-btn-blk {
-  background-color: #1f1f23;
-  color: #ffffff;
-  margin-left: 16px;
-}
-
 .offer-x {
   position: absolute;
   top: 13px;
   right: 15px;
-}
-
-.offer-complete {
-  padding: 54.5px 43px;
-  width: 554px;
-  margin: 32px auto;
-  text-align: center;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  color: #242424;
-}
-
-.offer-complete-h1 {
-  font-weight: 600;
-  font-size: 24px;
 }
 
 .offer-complete-btn {

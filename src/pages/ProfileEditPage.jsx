@@ -5,10 +5,13 @@ import DefaultProfilePicture from "../assets/images/default-profile-picture.png"
 import { useNavigate, useParams } from "react-router-dom";
 import { getUserDetails } from "../action/userActions";
 import { updateClientProfile } from "../action/clientActions";
-import { Upload, X } from "lucide-react";
+import { ArrowLeft, Upload, X } from "lucide-react";
 import { updateTradieProfile } from "../action/tradieActions";
+import { useMediaQuery } from "react-responsive";
 
 const ProfileEditPage = () => {
+  const isMobile = useMediaQuery({ query: "(max-width:768px)" });
+
   const [userInfo] = useState(JSON.parse(localStorage.getItem("userInfo")));
   const [credentials, setCredentials] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -185,10 +188,21 @@ const ProfileEditPage = () => {
         <div>Loading</div>
       ) : (
         <div className="profile-edit">
-          <h1 className="profile-edit-h1 mb-32">Edit Profile</h1>
+          {isMobile ? (
+            <div className="flex-center gap-8 mb-20">
+              <ArrowLeft
+                color="#717171"
+                className="pointer"
+                onClick={() => navigate(`/profile/${id}`)}
+              />
+              <h1 className="profile-edit-h1">Edit Profile</h1>
+            </div>
+          ) : (
+            <h1 className="profile-edit-h1 mb-32">Edit Profile</h1>
+          )}
           {profileDetails && profileDetails.role === "Client" ? (
             <form onSubmit={editClientProfileHandler}>
-              <div className="mb-48">
+              <div className={isMobile ? "mb-24" : "mb-48"}>
                 <img
                   src={
                     profilePicture === ""
@@ -222,7 +236,7 @@ const ProfileEditPage = () => {
                   </button>
                 </div>
               </div>
-              <div className="flex-between mb-32">
+              <div className={!isMobile && "flex-between mb-32"}>
                 <div className="profile-edit-half">
                   <label className="block mb-12">First Name</label>
                   <input
@@ -242,7 +256,7 @@ const ProfileEditPage = () => {
                   />
                 </div>
               </div>
-              <div className="flex-between mb-32">
+              <div className={!isMobile && "flex-between mb-32"}>
                 <div className="profile-edit-half">
                   <label className="block mb-12">Contact Number</label>
                   <input
@@ -266,7 +280,7 @@ const ProfileEditPage = () => {
                   />
                 </div>
               </div>
-              <div className="flex-between mb-32">
+              <div className={!isMobile && "flex-between mb-32"}>
                 <div className="profile-edit-half">
                   <label className="block mb-12">City</label>
                   <input
@@ -286,7 +300,7 @@ const ProfileEditPage = () => {
                   />
                 </div>
               </div>
-              <div className="mb-48">
+              <div className={isMobile ? "mb-36" : "mb-48"}>
                 <label className="block mb-12">Postal Code</label>
                 <input
                   type="text"
@@ -476,7 +490,7 @@ const ProfileEditPage = () => {
                   <span className="profile-edit-optional">(optional)</span>
                 </label>
                 <label
-                  className="flex-center gap pointer"
+                  className="flex-center gap-8 pointer"
                   htmlFor="imageUpload"
                 >
                   <Upload color="#8C8C8C" />

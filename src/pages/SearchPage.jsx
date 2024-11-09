@@ -11,9 +11,11 @@ const SearchPage = () => {
     <>
       <Header />
       <ServicesHeader />
-      <div className="search-body">
-        <SearchSideBar />
-        <ServicesList content="search" />
+      <div className="search-body-container">
+        <div className="search-body">
+          <SearchSideBar />
+          <ServicesList content="search" />
+        </div>
       </div>
       <Footer />
     </>

@@ -15,8 +15,10 @@ import {
   UserRoundSearch,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";
 
 const ProfileSideBar = ({ role, profile }) => {
+  const isMobile = useMediaQuery({ query: "(max-width:768px)" });
   useEffect(() => {
     console.log(profile);
   }, []);
@@ -24,37 +26,59 @@ const ProfileSideBar = ({ role, profile }) => {
   if (role === "Client") {
     return (
       <div className="profile-sidebar gray-bg">
-        {profile.profilePicture ? (
-          <img
-            src={CardImage}
-            width={100}
-            height={100}
-            className="profile-img mb-24"
-          />
-        ) : (
-          <img
-            src={DefaultProfilePicture}
-            width={100}
-            height={100}
-            className="profile-img mb-24"
-          />
-        )}
-        <div className="mb-24 gray-bg">
-          <h1 className="profile-name mb-8 gray-bg">
-            {profile.firstName} {profile.lastName}
-          </h1>
-          <div className="flex-center mb-8 profile-info gray-bg">
-            <Phone color="#8C8C8C" className="gray-bg" />
-            {profile.contactNumber}
-          </div>
-          <div className="flex-center mb-8 profile-info gray-bg">
-            <Mail color="#8C8C8C" className="gray-bg" />
-            {profile.email}
-          </div>
-          <div className="flex-center profile-info gray-bg">
-            <MapPin color="#8C8C8C" className="gray-bg" />
-            {profile.city && profile.city + ","} {profile.state}{" "}
-            {profile.postalCode}
+        <div
+          className={
+            isMobile ? "profile-sidebar-details gray-bg mb-24" : "gray-bg"
+          }
+        >
+          {profile.profilePicture ? (
+            <img
+              src={CardImage}
+              width={isMobile ? 60 : 100}
+              height={isMobile ? 60 : 100}
+              className="profile-img mb-24"
+            />
+          ) : (
+            <img
+              src={DefaultProfilePicture}
+              width={isMobile ? 60 : 100}
+              height={isMobile ? 60 : 100}
+              className="profile-img mb-24"
+            />
+          )}
+
+          <div className={isMobile ? "gray-bg" : "mb-24 gray-bg"}>
+            <h1 className="profile-name mb-8 gray-bg">
+              {profile.firstName} {profile.lastName}
+            </h1>
+            <div className="flex-center mb-8 profile-info gray-bg">
+              <Phone
+                width={isMobile ? 20 : 24}
+                height={isMobile ? 20 : 24}
+                color="#8C8C8C"
+                className="gray-bg"
+              />
+              {profile.contactNumber}
+            </div>
+            <div className="flex-center mb-8 profile-info gray-bg">
+              <Mail
+                width={isMobile ? 20 : 24}
+                height={isMobile ? 20 : 24}
+                color="#8C8C8C"
+                className="gray-bg"
+              />
+              {profile.email}
+            </div>
+            <div className="flex-center profile-info gray-bg">
+              <MapPin
+                width={isMobile ? 20 : 24}
+                height={isMobile ? 20 : 24}
+                color="#8C8C8C"
+                className="gray-bg"
+              />
+              {profile.city && profile.city + ","} {profile.state}{" "}
+              {profile.postalCode}
+            </div>
           </div>
         </div>
         <div className="mb-24">
@@ -73,7 +97,9 @@ const ProfileSideBar = ({ role, profile }) => {
           </button>
         </div>
         <div className="flex-center flex-between gray-bg">
-          <div className="profile-font-w-500 gray-bg">Tradesperson Reviews</div>
+          <div className="profile-review-text profile-font-w-500 gray-bg">
+            Tradesperson Reviews
+          </div>
           <div className="flex-center gray-bg">
             <Star color="#1F1F23" fill="#1F1F23" className="gray-bg" />
             <div className="profile-review-num gray-bg">

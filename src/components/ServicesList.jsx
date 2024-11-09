@@ -51,7 +51,7 @@ const ServicesList = ({ content, services, userInfo }) => {
             ? "services-recommend"
             : content === "favorites"
             ? "services-favorites"
-            : ""
+            : "services-search"
         }
       >
         <div className="services-flex-h1">
@@ -61,7 +61,7 @@ const ServicesList = ({ content, services, userInfo }) => {
               : content === "recommend"
               ? "Recommend"
               : content === "search"
-              ? `Results for ${searchResult}`
+              ? `Results for "${searchResult}"`
               : content === "favorites"
               ? "My Favorites"
               : ""}
@@ -97,19 +97,11 @@ const ServicesList = ({ content, services, userInfo }) => {
                   key={service._id}
                 />
               ))}
-          {/* {services &&
-            services.map((service) => (
-              <Card
-                width={content === "search" ? "search" : ""}
-                service={service}
-                key={service._id}
-              />
-            ))} */}
         </div>
         {content === "near" && (
-          <button className="services-near-btn flex-center">
-            <span>See all</span>
-            <ArrowRight className="services-near-icon" />
+          <button className="services-near-btn flex-center gap-4 pointer">
+            See all
+            <ArrowRight color="#1F1F23" className="services-near-icon" />
           </button>
         )}
         {content === "search" && (

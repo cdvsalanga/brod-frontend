@@ -404,7 +404,7 @@ const JobAdForm = () => {
           ) : (
             <>
               <label
-                className="flex-center gap pointer job-form-upload"
+                className="flex-center gap-8 pointer job-form-upload"
                 htmlFor="thumbnailImg"
               >
                 <Upload color="#8C8C8C" />
@@ -432,7 +432,7 @@ const JobAdForm = () => {
           {status !== "publish" && (
             <>
               <label
-                className="flex-center gap pointer job-form-upload"
+                className="flex-center gap-8 pointer job-form-upload"
                 htmlFor="projectGallery"
               >
                 <Upload color="#8C8C8C" />

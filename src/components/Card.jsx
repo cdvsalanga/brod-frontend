@@ -5,8 +5,11 @@ import Location from "../assets/icons/location.svg";
 import { Heart, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import { getUserDetails } from "../action/userActions";
+import { useMediaQuery } from "react-responsive";
 
 const Card = ({ width, service }) => {
+  const isMobile = useMediaQuery({ query: "(max-width:768px)" });
+
   const [favorite, setFavorite] = useState(false);
   const [tradieDetails, setTradieDetails] = useState();
   const [totalStarRating, setTotalStarRating] = useState(0);
@@ -46,11 +49,11 @@ const Card = ({ width, service }) => {
                 tradieDetails.firstName + " " + tradieDetails.lastName}
             </span>
           </div>
-          <div className="card-loc flex-center">
+          <div className="card-loc flex-center gap-4">
             <img src={Location} className="card-loc-icon" />
             <span>{service && service.businessPostcode}</span>
           </div>
-          <div className="card-review flex-center">
+          <div className="card-review flex-center gap-4">
             <Star fill="#1F1F23" className="card-review-icon" />
             <span className="card-review-rating">
               {service && totalStarRating}
@@ -66,16 +69,17 @@ const Card = ({ width, service }) => {
               )
             </span>
           </div>
-
-          <Heart
-            fill={favorite ? "#1F1F23" : "none"}
-            color={favorite ? "#1F1F23" : "#D9D9D9"}
-            className="card-heart pointer"
-            onClick={addFavorite}
-          />
-          <div className="card-rate">
-            {service && "$" + service.pricingStartsAt + "/"}
-            {service && service.pricingOption === "Per hour" ? "hr" : "day"}
+          <div className={isMobile && "flex-between flex-center"}>
+            <div className="card-rate">
+              {service && "$" + service.pricingStartsAt + "/"}
+              {service && service.pricingOption === "Per hour" ? "hr" : "day"}
+            </div>
+            <Heart
+              fill={favorite ? "#1F1F23" : "none"}
+              color={favorite ? "#1F1F23" : "#D9D9D9"}
+              className="card-heart"
+              onClick={addFavorite}
+            />
           </div>
         </div>
       </div>

@@ -41,6 +41,10 @@ body:has(.scroll-lock) {
   margin-bottom: 4px;
 }
 
+.mb-6 {
+  margin-bottom: 6px;
+}
+
 .mb-8 {
   margin-bottom: 8px;
 }
@@ -65,6 +69,10 @@ body:has(.scroll-lock) {
   margin-bottom: 32px;
 }
 
+.mb-36 {
+  margin-bottom: 36px;
+}
+
 .mb-40 {
   margin-bottom: 40px;
 }
@@ -73,12 +81,28 @@ body:has(.scroll-lock) {
   margin-bottom: 42px;
 }
 
+.mb-44 {
+  margin-bottom: 44px;
+}
+
 .mb-48 {
   margin-bottom: 48px;
 }
 
-.gap {
+.gap-4 {
+  column-gap: 4px;
+}
+
+.gap-8 {
   column-gap: 8px;
+}
+
+.gap-12 {
+  column-gap: 12px;
+}
+
+.gap-16 {
+  column-gap: 16px;
 }
 
 .gray-bg {

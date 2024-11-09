@@ -8,8 +8,11 @@ import {
   getUnPublishedAds,
 } from "../action/tradieActions";
 import { getJobsByStatusClient } from "../action/clientActions";
+import { useMediaQuery } from "react-responsive";
 
 const ProfileContents = ({ role, userInfo, profile }) => {
+  const isMobile = useMediaQuery({ query: "(max-width:768px)" });
+
   const [item, setItem] = useState(role === "Client" ? "job" : "publish");
   const [loading, setLoading] = useState(false);
   const [token] = useState(userInfo && userInfo.token);
@@ -88,7 +91,9 @@ const ProfileContents = ({ role, userInfo, profile }) => {
           <div>Loading</div>
         ) : (
           <div className="mb-16">
-            <h1 className="profile-content-h1 mb-16">My Account</h1>
+            <h1 className="profile-content-h1">
+              {isMobile ? "Job Requests" : "My Account"}
+            </h1>
             <div className="profile-navs">
               <div
                 className={

@@ -398,7 +398,7 @@ const TradespersonInfoForm = ({ page }) => {
             <label className="signup-info-label">
               Upload Your Credentials (e.g., Qualifications, Licenses)
             </label>
-            <label className="flex-center gap pointer" htmlFor="imageUpload">
+            <label className="flex-center gap-8 pointer" htmlFor="imageUpload">
               <Upload color="#8C8C8C" />
               Upload
             </label>

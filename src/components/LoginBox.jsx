@@ -28,6 +28,7 @@ const LoginBox = () => {
       userDetails.then((res) => {
         setUserInfo(
           (userInfo.role = res.role),
+          (userInfo.name = res.firstName + " " + res.lastName),
           (userInfo.status = res.status),
           (userInfo.postalCode = res.postalCode),
           (userInfo.contactNumber = res.contactNumber),

@@ -21,6 +21,7 @@ import PostJobAdPage from "./pages/PostJobAdPage";
 import DashboardAdminPage from "./pages/DashboardAdminPage";
 import ApplicationDetailsPage from "./pages/ApplicationDetailsPage";
 import ProfileEditPage from "./pages/ProfileEditPage";
+import TradieJobAdsPage from "./pages/TradieJobAdsPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -53,6 +54,7 @@ const router = createBrowserRouter(
         path="/admin/application-details/:id"
         element={<ApplicationDetailsPage />}
       />
+      <Route path="/profile/:id/:jobAds" element={<TradieJobAdsPage />} />
     </Route>
   )
 );

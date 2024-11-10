@@ -7,9 +7,12 @@ import {
   updateIsActive,
   updateJobAdDetails,
 } from "../action/tradieActions";
-import { Upload, X } from "lucide-react";
+import { ArrowLeft, Upload, X } from "lucide-react";
+import { useMediaQuery } from "react-responsive";
 
 const JobAdForm = () => {
+  const isMobile = useMediaQuery({ query: "(max-width:768px)" });
+
   const [userInfo] = useState(JSON.parse(localStorage.getItem("userInfo")));
   const [loading, setLoading] = useState(false);
   const [jobAdData, setJobAdData] = useState();
@@ -29,7 +32,7 @@ const JobAdForm = () => {
 
   const navigate = useNavigate();
 
-  const { status, serviceId } = useParams();
+  const { id, status, serviceId } = useParams();
 
   const getJobAdDetailsByServiceIdData = async () => {
     await getJobAdDetailsByServiceId(serviceId, userInfo.token).then((res) => {
@@ -139,27 +142,62 @@ const JobAdForm = () => {
     <div>Loading</div>
   ) : (
     <form className="job-form">
-      <div className="mb-40">
+      <div className={isMobile ? "mb-36" : "mb-40"}>
         {status === "publish" ? (
           <div className="flex-between flex-center mb-20">
-            <h1 className="job-form-h1">Post a Job Ad</h1>
+            {isMobile ? (
+              <div className="flex-center gap-8">
+                <ArrowLeft
+                  color="#717171"
+                  className="pointer"
+                  onClick={() => navigate(`/profile/${id}/job-ads`)}
+                />
+                <h1 className="job-form-h1">Job Ad Details</h1>
+              </div>
+            ) : (
+              <h1 className="job-form-h1">Job Ad Details</h1>
+            )}
             <div className="job-form-status job-form-publish">Published</div>
           </div>
         ) : status === "unpublish" ? (
           <div className="flex-between flex-center mb-20">
-            <h1 className="job-form-h1">Post a Job Ad</h1>
+            {isMobile ? (
+              <div className="flex-center gap-8">
+                <ArrowLeft
+                  color="#717171"
+                  className="pointer"
+                  onClick={() => navigate(`/profile/${id}/job-ads`)}
+                />
+                <h1 className="job-form-h1">Job Ad Details</h1>
+              </div>
+            ) : (
+              <h1 className="job-form-h1">Job Ad Details</h1>
+            )}
             <div className="job-form-status job-form-unpublish">
               Unpublished
             </div>
           </div>
+        ) : isMobile ? (
+          <div className="flex-center gap-8 mb-20">
+            <ArrowLeft
+              color="#717171"
+              className="pointer"
+              onClick={() => navigate(-1)}
+            />
+            <h1 className="job-form-h1">Post a Job Ad</h1>
+          </div>
         ) : (
           <h1 className="job-form-h1 mb-20">Post a Job Ad</h1>
         )}
-        <div className="flex-between mb-24">
-          <div className="half-inputs">
+        <div className={!isMobile && "flex-between mb-24"}>
+          <div className={isMobile ? "mb-24" : "half-inputs"}>
             <label className="block mb-12">Business Postcode</label>
             <input
-              className="job-form-input job-form-half-input"
+              className={
+                isMobile
+                  ? "job-form-input"
+                  : "job-form-input job-form-half-input"
+              }
               type="text"
               onChange={(e) => setBusinessPostcode(e.target.value)}
               defaultValue={businessPostcode}
@@ -167,7 +205,7 @@ const JobAdForm = () => {
               required
             />
           </div>
-          <div className="half-inputs">
+          <div className={isMobile ? "mb-24" : "half-inputs"}>
             <label className="block mb-12 mb-12">Job Category</label>
             <select
               className="job-form-input job-form-select"
@@ -338,8 +376,8 @@ const JobAdForm = () => {
             required
           />
         </div>
-        <div className="flex-between mb-24">
-          <div className="half-inputs">
+        <div className={!isMobile && "flex-between mb-24"}>
+          <div className={isMobile ? "mb-24" : "half-inputs"}>
             <label className="block mb-12">
               Pricing option{" "}
               <span className="job-form-optional">(optional)</span>
@@ -357,7 +395,7 @@ const JobAdForm = () => {
               <option>Per day</option>
             </select>
           </div>
-          <div className="half-inputs">
+          <div className={isMobile ? "mb-24" : "half-inputs"}>
             <label className="block mb-12">
               Your Pricing Starts at{" "}
               <span className="job-form-optional">(optional)</span>
@@ -477,13 +515,17 @@ const JobAdForm = () => {
           <button
             type="button"
             onClick={updateToUnpublishedHandler}
-            className="job-form-btn job-form-btn-red pointer"
+            className={
+              isMobile
+                ? "job-form-btn job-form-btn-red pointer w-100"
+                : "job-form-btn job-form-btn-red pointer"
+            }
           >
             Unpublished
           </button>
         </div>
       ) : status === "unpublish" ? (
-        <div className="job-form-btns flex-end">
+        <div className={isMobile ? "job-form-btns" : "job-form-btns flex-end"}>
           <button
             type="submit"
             className="job-form-btn pointer"
@@ -500,7 +542,7 @@ const JobAdForm = () => {
           </button>
         </div>
       ) : (
-        <div className="job-form-btns flex-end">
+        <div className={isMobile ? "job-form-btns" : "job-form-btns flex-end"}>
           <button
             type="button"
             onClick={() => AddJobHandler((isActive = false))}

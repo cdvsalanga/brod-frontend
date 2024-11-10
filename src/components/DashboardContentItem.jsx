@@ -1,10 +1,23 @@
-import { Check, CircleX, MapPin, Phone, X } from "lucide-react";
+import {
+  ArrowLeft,
+  Check,
+  CircleX,
+  EllipsisVertical,
+  MapPin,
+  Phone,
+  User,
+  X,
+} from "lucide-react";
 import React, { useState } from "react";
 import "../styles/DashboardTradie.css";
 import { updateJobStatus } from "../action/tradieActions";
+import { useMediaQuery } from "react-responsive";
 
 const DashboardContentItem = ({ item, data, userInfo }) => {
+  const isMobile = useMediaQuery({ query: "(max-width:768px)" });
+
   const [showModal, setShowModal] = useState(false);
+  const [showBtns, setShowBtns] = useState(false);
   const [jobModal, setJobModal] = useState();
   const [token] = useState(userInfo && userInfo.token);
   const [tradieID] = useState(userInfo && userInfo.userId);
@@ -43,11 +56,17 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
               setJobModal(job);
             }}
           >
-            <div className="mb-16">
-              <div className="flex-between mb-12">
+            <div className={!isMobile && "mb-16"}>
+              <div className={isMobile ? "mb-12" : "flex-between mb-12"}>
                 <div>
-                  Job Ad:{" "}
-                  <span className="dashboard-item-job">
+                  {!isMobile && "Job Ad: "}
+                  <span
+                    className={
+                      isMobile
+                        ? "dashboard-item-job block"
+                        : "dashboard-item-job"
+                    }
+                  >
                     {job.jobPostAdTitle}
                   </span>
                 </div>
@@ -58,8 +77,14 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
               </div>
               <div className="dashboard-item-details mb-12">
                 <div className="dashboard-item-detail">
-                  <span>Client:</span>
-                  <span className="dashboard-item-name">{job.clientName}</span>
+                  {isMobile ? (
+                    <User width={20} height={20} color="#8C8C8C" />
+                  ) : (
+                    <span>Client:</span>
+                  )}
+                  <span className={!isMobile && "dashboard-item-name"}>
+                    {job.clientName}
+                  </span>
                 </div>
                 <div className="dashboard-item-detail">
                   <MapPin width={20} height={20} color="#8C8C8C" />
@@ -74,7 +99,18 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
                 {job.descriptionServiceNeeded}
               </div>
             </div>
-            {item === "job" ? (
+            {isMobile ? (
+              <EllipsisVertical
+                width={28}
+                height={28}
+                color={showBtns ? "#1F1F23" : "#717171"}
+                className="dashboard-item-menu-icon pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowBtns(true);
+                }}
+              />
+            ) : item === "job" ? (
               <div className="flex-between">
                 <button className="dashboard-item-btn dashboard-item-cancel flex-center">
                   <CircleX color="#820014" />
@@ -96,7 +132,7 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
                 </button>
               </div>
             ) : (
-              <div className="flex-end">
+              <div className="flex-end gap-16">
                 <button className="dashboard-item-btn dashboard-item-decline flex-center">
                   <CircleX width={20} height={20} color="#820014" />
                   Decline
@@ -117,18 +153,65 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
                 </button>
               </div>
             )}
+            {isMobile && showBtns && (
+              <div className="dashboard-item-btns-container scroll-lock">
+                <div className="dashboard-item-btns">
+                  {item === "job" ? (
+                    <div>
+                      <button className="dashboard-btn-mobile dashboard-btn-mobile-cancel flex-center pointer">
+                        <CircleX width={28} height={28} />
+                        Cancel job
+                      </button>
+                      <button className="dashboard-btn-mobile flex-center pointer">
+                        <Check width={28} height={28} color="#8C8C8C" />
+                        Mark as completed
+                      </button>
+                    </div>
+                  ) : (
+                    <div>
+                      <button className="dashboard-btn-mobile dashboard-btn-mobile-cancel flex-center pointer">
+                        <CircleX width={28} height={28} />
+                        Decline
+                      </button>
+                      <button className="dashboard-btn-mobile flex-center pointer">
+                        <Check width={28} height={28} color="#8C8C8C" />
+                        Accept offer
+                      </button>
+                    </div>
+                  )}
+                  <X
+                    className="profile-item-btns-close pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowBtns(false);
+                    }}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         ))}
         {showModal && (
           <div className="dashboard-modal scroll-lock">
             <div className="dashboard-modal-contents">
               <div className="mb-24">
-                <h1 className="dashboard-content-h1 mb-32">Job Ad Details</h1>
+                {isMobile ? (
+                  <div className="flex-center gap-8 mb-20">
+                    <ArrowLeft
+                      color="#717171"
+                      className="pointer"
+                      onClick={() => setShowModal(false)}
+                    />
+                    <h1 className="dashboard-content-h1-mobile">Job Details</h1>
+                  </div>
+                ) : (
+                  <h1 className="dashboard-content-h1 mb-32">Job Ad Details</h1>
+                )}
                 <div>
-                  <div className="flex-between mb-24">
-                    <div>
+                  <div className={isMobile ? "mb-16" : "flex-between mb-24"}>
+                    <div className={isMobile && "mb-12"}>
                       Job Ad:{" "}
-                      <span className="dashboard-item-job">
+                      <span className="dashboard-item-job-mobile">
                         {jobModal.jobPostAdTitle}
                       </span>
                     </div>
@@ -141,7 +224,13 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
                       </span>
                     </div>
                   </div>
-                  <div className="dashboard-item-details mb-24">
+                  <div
+                    className={
+                      isMobile
+                        ? "dashboard-item-details mb-16"
+                        : "dashboard-item-details mb-24"
+                    }
+                  >
                     <div className="dashboard-item-detail">
                       Client:{" "}
                       <span className="dashboard-item-name">
@@ -164,7 +253,11 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
               </div>
               <div>
                 {item === "job" ? (
-                  <div className="flex-end">
+                  <div
+                    className={
+                      isMobile ? "dashboard-modal-btns" : "flex-end gap-16"
+                    }
+                  >
                     <button className="dashboard-item-btn dashboard-item-cancel flex-center">
                       <CircleX color="#820014" />
                       Cancel job
@@ -180,7 +273,11 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
                     </button>
                   </div>
                 ) : (
-                  <div className="flex-end">
+                  <div
+                    className={
+                      isMobile ? "dashboard-modal-btns" : "flex-end gap-16"
+                    }
+                  >
                     <button className="dashboard-item-btn dashboard-item-decline flex-center">
                       <CircleX width={20} height={20} color="#820014" />
                       Decline
@@ -206,13 +303,15 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
                   </div>
                 )}
               </div>
-              <X
-                width={32}
-                height={32}
-                color="#837F89"
-                className="dashboard-modal-close pointer"
-                onClick={() => setShowModal(false)}
-              />
+              {!isMobile && (
+                <X
+                  width={32}
+                  height={32}
+                  color="#837F89"
+                  className="dashboard-modal-close pointer"
+                  onClick={() => setShowModal(false)}
+                />
+              )}
             </div>
           </div>
         )}

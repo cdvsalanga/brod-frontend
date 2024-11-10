@@ -5,6 +5,7 @@ import "../styles/Header.css";
 import {
   ArrowLeft,
   Bell,
+  Briefcase,
   CircleUserRound,
   Heart,
   Mail,
@@ -16,7 +17,7 @@ import DefaultProfilePicture from "../assets/images/default-profile-picture.png"
 import BrodLogo from "../assets/logos/header.png";
 import { useMediaQuery } from "react-responsive";
 
-const Header = ({ notHidden = true }) => {
+const Header = ({ notHidden = true, headerText }) => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
 
   const [userInfo] = useState(JSON.parse(localStorage.getItem("userInfo")));
@@ -60,19 +61,23 @@ const Header = ({ notHidden = true }) => {
                 onClick={() => setShowMenu(true)}
               />
             )}
-            <Link
-              to={
-                userInfo
-                  ? userInfo.role === "Client"
-                    ? "/services"
-                    : userInfo.role === "Tradie"
-                    ? `/tradesperson/dashboard/${userInfo.userId}`
-                    : "/admin"
-                  : "/"
-              }
-            >
-              <img src={logo} className="header-logo" />
-            </Link>
+            {!showMenu && headerText ? (
+              <div className="header-text">{headerText}</div>
+            ) : (
+              <Link
+                to={
+                  userInfo
+                    ? userInfo.role === "Client"
+                      ? "/services"
+                      : userInfo.role === "Tradie"
+                      ? `/tradesperson/dashboard/${userInfo.userId}`
+                      : "/admin"
+                    : "/"
+                }
+              >
+                <img src={logo} className="header-logo" />
+              </Link>
+            )}
           </div>
         ) : (
           <Link
@@ -149,23 +154,17 @@ const Header = ({ notHidden = true }) => {
                     />
                   </Link>
                 )}
-                {userInfo.profilePicture ? (
-                  <img
-                    src={profilePicture}
-                    width={32}
-                    height={32}
-                    className="header-img"
-                    onClick={() => setShowProfile(!showProfile)}
-                  />
-                ) : (
-                  <img
-                    src={DefaultProfilePicture}
-                    width={32}
-                    height={32}
-                    className="header-img"
-                    onClick={() => setShowProfile(!showProfile)}
-                  />
-                )}
+                <img
+                  src={
+                    userInfo.profilePicture
+                      ? profilePicture
+                      : DefaultProfilePicture
+                  }
+                  width={32}
+                  height={32}
+                  className="header-img"
+                  onClick={() => setShowProfile(!showProfile)}
+                />
                 {showProfile && (
                   <div className="header-profile">
                     <Link
@@ -255,7 +254,11 @@ const Header = ({ notHidden = true }) => {
           <div className="header-menu">
             <div className="flex-center gap-16 mb-24">
               <img
-                src={profilePicture}
+                src={
+                  userInfo.profilePicture
+                    ? profilePicture
+                    : DefaultProfilePicture
+                }
                 width={60}
                 height={60}
                 className="header-img"
@@ -276,13 +279,23 @@ const Header = ({ notHidden = true }) => {
                 <CircleUserRound color="#8C8C8C" />
                 My Account
               </Link>
-              <Link
-                to={"/favorites"}
-                className="link-none flex-center gap-12 mb-16"
-              >
-                <Heart color="#8C8C8C" />
-                My Favorites
-              </Link>
+              {userInfo.role === "Client" ? (
+                <Link
+                  to={"/favorites"}
+                  className="link-none flex-center gap-12 mb-16"
+                >
+                  <Heart color="#8C8C8C" />
+                  My Favorites
+                </Link>
+              ) : (
+                <Link
+                  to={`/profile/${userInfo.userId}/job-ads`}
+                  className="link-none flex-center gap-12 mb-16"
+                >
+                  <Briefcase color="#8C8C8C" />
+                  My Job Ads
+                </Link>
+              )}
               <div className="flex-center gap-12 mb-16">
                 <Mail color="#8C8C8C" />
                 Inbox

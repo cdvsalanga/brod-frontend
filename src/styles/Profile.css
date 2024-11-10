@@ -35,7 +35,7 @@
 
   .profile-contents {
     width: 361px;
-    margin: 0 auto;
+    margin: 16px auto 68px auto;
     font-weight: 400;
     font-size: 14px;
     line-height: 16.94px;
@@ -116,9 +116,11 @@
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 2;
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.3);
+    cursor: auto;
   }
 
   .profile-item-btns {
@@ -127,7 +129,6 @@
     border-radius: 16px 16px 0 0;
     padding: 32px 24px;
     position: fixed;
-    z-index: 2;
     bottom: 0;
     left: calc((100% - 393px) / 2);
     cursor: auto;
@@ -223,6 +224,32 @@
   .profile-modal-description {
     line-height: 21px;
     margin-bottom: 35px;
+  }
+
+  .profile-job-details {
+    display: flex;
+    gap: 2px 24px;
+    flex-wrap: wrap;
+  }
+
+  .profile-post-btn-container {
+    width: 393px;
+    position: fixed;
+    bottom: 0;
+    left: calc((100% - 393px) / 2);
+    z-index: 1;
+    text-align: center;
+  }
+
+  .profile-post-btn {
+    width: 361px;
+    border: #1f1f23;
+    border-radius: 4px;
+    padding: 8px 20px;
+    background-color: #1f1f23;
+    font-size: 16px;
+    color: #ffffff;
+    margin: 12px auto;
   }
 }
 
@@ -409,6 +436,21 @@
   .profile-modal-description {
     margin-bottom: 20px;
   }
+
+  .profile-job-details {
+    display: flex;
+    gap: 2px 32px;
+    flex-wrap: wrap;
+  }
+
+  .profile-post-btn {
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    background-color: #1f1f23;
+    font-size: 16px;
+    color: #ffffff;
+  }
 }
 
 .profile-img {
@@ -453,12 +495,6 @@
   font-size: 14px;
   line-height: 16.94px;
   color: #595959;
-}
-
-.profile-job-details {
-  display: flex;
-  gap: 2px 32px;
-  flex-wrap: wrap;
 }
 
 .profile-item-details {
@@ -584,15 +620,6 @@
 
 .profile-contacts {
   column-gap: 12px;
-}
-
-.profile-post-btn {
-  border: none;
-  border-radius: 4px;
-  padding: 10px 20px;
-  background-color: #1f1f23;
-  font-size: 16px;
-  color: #ffffff;
 }
 
 .profile-item-service {

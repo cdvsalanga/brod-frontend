@@ -27,6 +27,14 @@
   .profile-edit-full-input {
     width: 327.4px;
   }
+
+  .profile-edit-select-half {
+    background-position: 333px;
+  }
+
+  .profile-edit-select-full {
+    background-position: 333px;
+  }
 }
 
 /* Desktop View */
@@ -57,6 +65,14 @@
   .profile-edit-full-input {
     width: 586.4px;
   }
+
+  .profile-edit-select-half {
+    background-position: 270px;
+  }
+
+  .profile-edit-select-full {
+    background-position: 592px;
+  }
 }
 
 .profile-edit-input {
@@ -83,14 +99,6 @@
   appearance: none;
   background-image: url("../assets/icons/dropdown.svg");
   background-repeat: no-repeat;
-}
-
-.profile-edit-select-full {
-  background-position: 592px 20px;
-}
-
-.profile-edit-select-half {
-  background-position: 270px 20px;
 }
 
 .profile-edit-optional {

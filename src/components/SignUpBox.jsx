@@ -266,8 +266,8 @@ const SignUpBox = ({ chosen }) => {
     return (
       <div className="signup-info-box">
         <div>
-          <h1 className="signup-info-h1 mb-12">Tradesperson Information</h1>
-          <div className="signup-info-text mb-32">
+          <h1 className="signup-info-h1">Tradesperson Information</h1>
+          <div className="signup-info-text">
             We will review your application before you can post a job ad. We
             will contact you if we need further clarification.
           </div>
@@ -288,7 +288,7 @@ const SignUpBox = ({ chosen }) => {
               Main type of work you do?
             </label>
             <select
-              className="signup-info-input singup-info-select"
+              className="signup-info-input signup-info-select pointer"
               defaultValue={""}
               onChange={(e) => setTypeofWork(e.target.value)}
               // required

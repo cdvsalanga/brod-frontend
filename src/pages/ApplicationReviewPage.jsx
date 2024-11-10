@@ -3,8 +3,11 @@ import "../styles/LogIn.css";
 import Header from "../components/Header";
 import UnderReview from "../assets/images/under-review.svg";
 import { useNavigate } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";
 
 const ApplicationReviewPage = () => {
+  const isMobile = useMediaQuery({ query: "(max-width:768px)" });
+
   const navigate = useNavigate();
 
   const logOutHandler = () => {
@@ -16,7 +19,7 @@ const ApplicationReviewPage = () => {
       <Header />
       <div className="under-review">
         <div>
-          <div className="mb-48">
+          <div className={isMobile ? "mb-40" : "mb-48"}>
             <img src={UnderReview} className="mb-24" />
             <h1 className="under-review-h1 mb-24">Application Under Review</h1>
             <div className="under-review-text">

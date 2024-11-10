@@ -35,7 +35,7 @@
   appearance: none;
   background-image: url("../assets/icons/dropdown.svg");
   background-repeat: no-repeat;
-  background-position: 122px 16px;
+  background-position: 122px;
 }
 
 .admin-form-date {

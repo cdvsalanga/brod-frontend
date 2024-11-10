@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import ProfileContents from "../components/ProfileContents";
-import ProfileSideBar from "../components/ProfileSideBar";
 import { getUserDetails } from "../action/userActions";
-import { useNavigate, useParams } from "react-router-dom";
-import { useMediaQuery } from "react-responsive";
 
-const ProfilePage = () => {
+const TradieJobAdsPage = () => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
 
   const [userInfo] = useState(JSON.parse(localStorage.getItem("userInfo")));
@@ -29,7 +28,11 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (userInfo) {
-      getProfileDetails();
+      if (!isMobile) {
+        navigate(`/profile/${userInfo.userId}`);
+      } else {
+        getProfileDetails();
+      }
       console.log(isMobile);
     } else {
       navigate("/login");
@@ -38,23 +41,18 @@ const ProfilePage = () => {
 
   return (
     <div>
-      <Header headerText={"My Account"} />
+      <Header headerText={"My Job Ads"} />
       {loading ? (
         <div>Loading</div>
       ) : (
-        <div className="profile">
-          <ProfileSideBar role={role} profile={profileDetails} />
-          {(!isMobile || role !== "Tradie") && (
-            <ProfileContents
-              role={role}
-              userInfo={userInfo}
-              profile={profileDetails}
-            />
-          )}
-        </div>
+        <ProfileContents
+          role={role}
+          userInfo={userInfo}
+          profile={profileDetails}
+        />
       )}
     </div>
   );
 };
 
-export default ProfilePage;
+export default TradieJobAdsPage;

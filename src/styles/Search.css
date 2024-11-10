@@ -69,7 +69,7 @@
     appearance: none;
     background-image: url("../assets/icons/dropdown.svg");
     background-repeat: no-repeat;
-    background-position: 216px 16px;
+    background-position: 216px;
   }
 
   .search-textbox {
@@ -141,7 +141,7 @@
     appearance: none;
     background-image: url("../assets/icons/dropdown.svg");
     background-repeat: no-repeat;
-    background-position: 172px 16px;
+    background-position: 172px;
   }
 
   .search-textbox {

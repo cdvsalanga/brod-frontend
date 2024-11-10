@@ -134,14 +134,16 @@ const ProfileContents = ({ role, userInfo, profile }) => {
         <div>Loading</div>
       ) : (
         <div className="mb-16">
-          <div className="flex-between mb-16">
-            <h1 className="profile-content-h1">My Account</h1>
-            <Link to={"/tradesperson/post-job-ad"} className="link-none">
-              <button className="profile-post-btn pointer">
-                Post a job ad
-              </button>
-            </Link>
-          </div>
+          {!isMobile && (
+            <div className="flex-between mb-16">
+              <h1 className="profile-content-h1">My Account</h1>
+              <Link to={"/tradesperson/post-job-ad"} className="link-none">
+                <button className="profile-post-btn pointer">
+                  Post a job ad
+                </button>
+              </Link>
+            </div>
+          )}
           <div className="profile-navs">
             <div
               className={
@@ -167,6 +169,14 @@ const ProfileContents = ({ role, userInfo, profile }) => {
             >
               Completed Jobs ({completedJobs && completedJobs.length})
             </div>
+          </div>
+
+          <div className="profile-post-btn-container">
+            <Link to={"/tradesperson/post-job-ad"} className="link-none">
+              <button className="profile-post-btn pointer">
+                Post a job ad
+              </button>
+            </Link>
           </div>
         </div>
       )}

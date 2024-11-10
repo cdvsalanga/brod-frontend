@@ -37,7 +37,7 @@ const DashboardTradiePage = () => {
       {loading ? (
         <div>Loading</div>
       ) : (
-        <div className="dashboard-tradie flex-between">
+        <div className="dashboard-tradie">
           <DashboardSidebar profile={profileDetails} />
           <DashboardContents userInfo={userInfo} />
         </div>

@@ -3,8 +3,11 @@ import "../styles/DashboardTradie.css";
 import DashboardContentItem from "./DashboardContentItem";
 import { Link } from "react-router-dom";
 import { getJobsByStatusTradie } from "../action/tradieActions";
+import { useMediaQuery } from "react-responsive";
 
 const DashboardContents = ({ userInfo }) => {
+  const isMobile = useMediaQuery({ query: "(max-width:768px)" });
+
   const [item, setItem] = useState("job");
   const [loading, setLoading] = useState(false);
   const [token] = useState(userInfo && userInfo.token);
@@ -38,13 +41,15 @@ const DashboardContents = ({ userInfo }) => {
   ) : (
     <div className="dashboard-contents">
       <div className="mb-16">
-        <div className="flex-between mb-16">
+        <div className={isMobile ? "mb-12" : "flex-between mb-16"}>
           <h1 className="dashboard-content-h1">Dashboard</h1>
-          <Link to={"/tradesperson/post-job-ad"} className="link-none">
-            <button className="dashboard-content-btn pointer">
-              Post a job ad
-            </button>
-          </Link>
+          {!isMobile && (
+            <Link to={"/tradesperson/post-job-ad"} className="link-none">
+              <button className="dashboard-content-btn pointer">
+                Post a job ad
+              </button>
+            </Link>
+          )}
         </div>
         <div className="flex-center">
           <div

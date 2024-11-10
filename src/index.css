@@ -89,6 +89,10 @@ body:has(.scroll-lock) {
   margin-bottom: 48px;
 }
 
+.mb-68 {
+  margin-bottom: 68px;
+}
+
 .gap-4 {
   column-gap: 4px;
 }
@@ -142,6 +146,10 @@ body:has(.scroll-lock) {
 
 .half-inputs {
   width: 298px;
+}
+
+.w-100 {
+  width: 100%;
 }
 
 .block {

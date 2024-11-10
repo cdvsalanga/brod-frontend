@@ -183,7 +183,7 @@ const ProfileEditPage = () => {
 
   return (
     <div>
-      <Header />
+      {!isMobile && <Header />}
       {loading ? (
         <div>Loading</div>
       ) : (
@@ -316,7 +316,7 @@ const ProfileEditPage = () => {
             </form>
           ) : (
             <form onSubmit={editTradieProfileHandler}>
-              <div className="mb-48">
+              <div className={isMobile ? "mb-24" : "mb-48"}>
                 <img
                   src={
                     profilePicture === ""
@@ -350,7 +350,7 @@ const ProfileEditPage = () => {
                   </button>
                 </div>
               </div>
-              <div className="flex-between mb-32">
+              <div className={!isMobile && "flex-between mb-32"}>
                 <div className="profile-edit-half">
                   <label className="block mb-12">First Name</label>
                   <input
@@ -370,7 +370,7 @@ const ProfileEditPage = () => {
                   />
                 </div>
               </div>
-              <div className="flex-between mb-32">
+              <div className={!isMobile && "flex-between mb-32"}>
                 <div className="profile-edit-half">
                   <label className="block mb-12">Business Postcode</label>
                   <input
@@ -425,7 +425,7 @@ const ProfileEditPage = () => {
                   <option>Select your service/s</option>
                 </select>
               </div>
-              <div className="flex-between mb-32">
+              <div className={!isMobile && "flex-between mb-32"}>
                 <div className="profile-edit-half">
                   <label className="block mb-12">Contact Number</label>
                   <input
@@ -449,7 +449,7 @@ const ProfileEditPage = () => {
                   />
                 </div>
               </div>
-              <div className="flex-between mb-32">
+              <div className={!isMobile && "flex-between mb-32"}>
                 <div className="profile-edit-half">
                   <label className="block mb-12">
                     Website{" "}
@@ -484,7 +484,7 @@ const ProfileEditPage = () => {
                   />
                 </div>
               </div>
-              <div className="mb-48">
+              <div className={isMobile ? "mb-36" : "mb-48"}>
                 <label className="block mb-12">
                   Upload Your Credentials (e.g., Qualifications, Licenses){" "}
                   <span className="profile-edit-optional">(optional)</span>

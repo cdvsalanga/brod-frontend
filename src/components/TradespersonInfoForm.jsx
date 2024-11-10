@@ -183,7 +183,7 @@ const TradespersonInfoForm = ({ page }) => {
         <div className="signup-info-halfw">
           <label className="signup-info-label">Main type of work you do?</label>
           <select
-            className="signup-info-input singup-info-select"
+            className="signup-info-input signup-info-select"
             defaultValue={typeofWork}
             onChange={(e) => setTypeofWork(e.target.value)}
             required

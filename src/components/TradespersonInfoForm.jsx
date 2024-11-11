@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "../styles/SignUpInfo.css";
-import { Check, Download, Upload, X, XCircle } from "lucide-react";
+import { ArrowLeft, Check, Download, Upload, X, XCircle } from "lucide-react";
 import { updateTradieProfile } from "../action/tradieActions";
 import { getUserDetails } from "../action/userActions";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { updateTradieStatus } from "../action/adminActions";
+import { useMediaQuery } from "react-responsive";
 
 const TradespersonInfoForm = ({ page }) => {
+  const isMobile = useMediaQuery({ query: "(max-width:768px)" });
+
   const [openModal, setOpenModal] = useState(false);
   const [businessPostCode, setBusinessPostCode] = useState();
   const [firstName, setFirstName] = useState();
@@ -145,6 +148,34 @@ const TradespersonInfoForm = ({ page }) => {
             will contact you if we need further clarification.
           </div>
         </div>
+      ) : isMobile ? (
+        <div className="flex-between flex-center mb-20">
+          <div className="flex-center gap-8">
+            <ArrowLeft
+              color="#717171"
+              className="pointer"
+              onClick={() => navigate("/admin")}
+            />
+            <h1 className="signup-info-title">Application Details</h1>
+          </div>
+          <span
+            className={
+              userDetails &&
+              (userDetails.status === "New"
+                ? "signup-info-status-pending"
+                : userDetails.status === "Approved"
+                ? "signup-info-status-approved"
+                : "signup-info-status-declined")
+            }
+          >
+            {userDetails &&
+              (userDetails.status === "New"
+                ? "New"
+                : userDetails.status === "Approved"
+                ? "Approved"
+                : "Declined")}
+          </span>
+        </div>
       ) : (
         <div className="flex-between flex-center mb-32">
           <h1 className="signup-info-h1">Application Details</h1>
@@ -183,7 +214,7 @@ const TradespersonInfoForm = ({ page }) => {
         <div className="signup-info-halfw">
           <label className="signup-info-label">Main type of work you do?</label>
           <select
-            className="signup-info-input signup-info-select"
+            className="signup-info-input signup-info-select mb-24"
             defaultValue={typeofWork}
             onChange={(e) => setTypeofWork(e.target.value)}
             required
@@ -425,7 +456,7 @@ const TradespersonInfoForm = ({ page }) => {
             </div>
           </div>
         ) : (
-          <div className="signup-info-maxw">
+          <div className="signup-info-maxw mb-48">
             <label className="signup-info-label">Uploaded Credentials</label>
 
             <div className="files">
@@ -452,7 +483,11 @@ const TradespersonInfoForm = ({ page }) => {
         ) : (
           userDetails &&
           userDetails.status === "New" && (
-            <div className="signup-info-btns-box flex-end">
+            <div
+              className={
+                isMobile ? "flex-between" : "signup-info-btns-box flex-end"
+              }
+            >
               <button
                 type="button"
                 className="signup-info-btns singup-info-decline pointer"
@@ -482,7 +517,13 @@ const TradespersonInfoForm = ({ page }) => {
         <div className="modal-decline scroll-lock">
           <form onSubmit={declineTradieHandler} className="modal-decline-box">
             <div className="mb-48">
-              <h1 className="signup-info-h1 mb-20">Decline Application</h1>
+              <h1
+                className={
+                  isMobile ? "signup-info-h1 mb-8" : "signup-info-h1 mb-20"
+                }
+              >
+                Decline Application
+              </h1>
               <div className="signup-info-text mb-20">
                 You are about to decline the tradesperson's application. Kindly
                 provide a reason so they can prepare the necessary requirements
@@ -500,7 +541,7 @@ const TradespersonInfoForm = ({ page }) => {
               </div>
             </div>
 
-            <div>
+            <div className={isMobile && "flex-between"}>
               <button
                 className="modal-btns pointer"
                 onClick={() => setOpenModal(false)}

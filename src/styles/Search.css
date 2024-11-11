@@ -216,21 +216,6 @@
   margin-left: 35px;
 }
 
-.search-checkbox {
-  width: 18px;
-  height: 18px;
-  border: 1px solid #b3b2b5;
-  appearance: none;
-  margin-right: 11px;
-  cursor: pointer;
-}
-
-.search-checkbox:checked {
-  background-color: #b3b2b5;
-  background-image: url("../assets/icons/check.svg");
-  background-repeat: no-repeat;
-}
-
 .search-label {
   font-weight: 400;
 }

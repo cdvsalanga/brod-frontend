@@ -109,6 +109,10 @@ body:has(.scroll-lock) {
   column-gap: 16px;
 }
 
+.gap-24 {
+  column-gap: 24px;
+}
+
 .gray-bg {
   background-color: #fafafa;
 }
@@ -189,4 +193,19 @@ body:has(.scroll-lock) {
   column-gap: 4px;
   font-size: 14px;
   color: #242424;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  border: 1px solid #b3b2b5;
+  appearance: none;
+  margin-right: 11px;
+  cursor: pointer;
+}
+
+.checkbox:checked {
+  background-color: #b3b2b5;
+  background-image: url("../src/assets/icons/check.svg");
+  background-repeat: no-repeat;
 }

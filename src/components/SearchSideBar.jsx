@@ -134,23 +134,23 @@ const SearchSideBar = () => {
                 {showJobCategory && (
                   <div>
                     <div className="mb-8 flex-center">
-                      <input type="checkbox" className="search-checkbox" />
+                      <input type="checkbox" className="checkbox" />
                       <label className="search-label">Aircon Installer</label>
                     </div>
                     <div className="mb-8 flex-center">
-                      <input type="checkbox" className="search-checkbox" />
+                      <input type="checkbox" className="checkbox" />
                       <label className="search-label">Appliance Repair</label>
                     </div>
                     <div className="mb-8 flex-center">
-                      <input type="checkbox" className="search-checkbox" />
+                      <input type="checkbox" className="checkbox" />
                       <label className="search-label">Builder</label>
                     </div>
                     <div className="mb-8 flex-center">
-                      <input type="checkbox" className="search-checkbox" />
+                      <input type="checkbox" className="checkbox" />
                       <label className="search-label">Garage Builder</label>
                     </div>
                     <div className="flex-center">
-                      <input type="checkbox" className="search-checkbox" />
+                      <input type="checkbox" className="checkbox" />
                       <label className="search-label">
                         Pest Control Services
                       </label>
@@ -209,23 +209,23 @@ const SearchSideBar = () => {
                   <div>
                     <div className="search-label mb-12">Can start within</div>
                     <div className="mb-8 flex-center">
-                      <input type="checkbox" className="search-checkbox" />
+                      <input type="checkbox" className="checkbox" />
                       <label className="search-label">Today</label>
                     </div>
                     <div className="mb-8 flex-center">
-                      <input type="checkbox" className="search-checkbox" />
+                      <input type="checkbox" className="checkbox" />
                       <label className="search-label">In 3 days</label>
                     </div>
                     <div className="mb-8 flex-center">
-                      <input type="checkbox" className="search-checkbox" />
+                      <input type="checkbox" className="checkbox" />
                       <label className="search-label">Within a week</label>
                     </div>
                     <div className="mb-8 flex-center">
-                      <input type="checkbox" className="search-checkbox" />
+                      <input type="checkbox" className="checkbox" />
                       <label className="search-label">Within a month</label>
                     </div>
                     <div className="flex-center">
-                      <input type="checkbox" className="search-checkbox" />
+                      <input type="checkbox" className="checkbox" />
                       <label className="search-label">Anytime</label>
                     </div>
                   </div>
@@ -252,7 +252,7 @@ const SearchSideBar = () => {
                 {showPricing && (
                   <div>
                     <div className="mb-8 flex-center">
-                      <input type="checkbox" className="search-checkbox" />
+                      <input type="checkbox" className="checkbox" />
                       <label className="search-label">Call out rate</label>
                     </div>
                     <div className="search-ml-35">
@@ -266,7 +266,7 @@ const SearchSideBar = () => {
                       </div>
                     </div>
                     <div className="mb-8 flex-center">
-                      <input type="checkbox" className="search-checkbox" />
+                      <input type="checkbox" className="checkbox" />
                       <label className="search-label">Anytime</label>
                     </div>
                     <div className="search-ml-35">
@@ -375,23 +375,23 @@ const SearchSideBar = () => {
         {showJobCategory && (
           <div>
             <div className="mb-8 flex-center">
-              <input type="checkbox" className="search-checkbox" />
+              <input type="checkbox" className="checkbox" />
               <label className="search-label">Aircon Installer</label>
             </div>
             <div className="mb-8 flex-center">
-              <input type="checkbox" className="search-checkbox" />
+              <input type="checkbox" className="checkbox" />
               <label className="search-label">Appliance Repair</label>
             </div>
             <div className="mb-8 flex-center">
-              <input type="checkbox" className="search-checkbox" />
+              <input type="checkbox" className="checkbox" />
               <label className="search-label">Builder</label>
             </div>
             <div className="mb-8 flex-center">
-              <input type="checkbox" className="search-checkbox" />
+              <input type="checkbox" className="checkbox" />
               <label className="search-label">Garage Builder</label>
             </div>
             <div className="flex-center">
-              <input type="checkbox" className="search-checkbox" />
+              <input type="checkbox" className="checkbox" />
               <label className="search-label">Pest Control Services</label>
             </div>
             <div className="search-job-more pointer">See more</div>
@@ -448,23 +448,23 @@ const SearchSideBar = () => {
           <div>
             <div className="search-label mb-12">Can start within</div>
             <div className="mb-8 flex-center">
-              <input type="checkbox" className="search-checkbox" />
+              <input type="checkbox" className="checkbox" />
               <label className="search-label">Today</label>
             </div>
             <div className="mb-8 flex-center">
-              <input type="checkbox" className="search-checkbox" />
+              <input type="checkbox" className="checkbox" />
               <label className="search-label">In 3 days</label>
             </div>
             <div className="mb-8 flex-center">
-              <input type="checkbox" className="search-checkbox" />
+              <input type="checkbox" className="checkbox" />
               <label className="search-label">Within a week</label>
             </div>
             <div className="mb-8 flex-center">
-              <input type="checkbox" className="search-checkbox" />
+              <input type="checkbox" className="checkbox" />
               <label className="search-label">Within a month</label>
             </div>
             <div className="flex-center">
-              <input type="checkbox" className="search-checkbox" />
+              <input type="checkbox" className="checkbox" />
               <label className="search-label">Anytime</label>
             </div>
           </div>
@@ -491,7 +491,7 @@ const SearchSideBar = () => {
         {showPricing && (
           <div>
             <div className="mb-8 flex-center">
-              <input type="checkbox" className="search-checkbox" />
+              <input type="checkbox" className="checkbox" />
               <label className="search-label">Call out rate</label>
             </div>
             <div className="search-ml-35">
@@ -505,7 +505,7 @@ const SearchSideBar = () => {
               </div>
             </div>
             <div className="mb-8 flex-center">
-              <input type="checkbox" className="search-checkbox" />
+              <input type="checkbox" className="checkbox" />
               <label className="search-label">Anytime</label>
             </div>
             <div className="search-ml-35">

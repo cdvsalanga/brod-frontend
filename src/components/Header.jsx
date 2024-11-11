@@ -94,106 +94,104 @@ const Header = ({ notHidden = true, headerText }) => {
             <img src={logo} className="header-logo" />
           </Link>
         )}
-        {userInfo ? (
-          userInfo.role === "Admin" ||
-          (userInfo.status !== "Approved" && userInfo.role === "Tradie") ? (
-            <div className="header-links">
-              <img
-                src={DefaultProfilePicture}
-                width={32}
-                height={32}
-                className="header-img"
-                onClick={() => setShowProfile(!showProfile)}
-              />
-              {showProfile &&
-                (userInfo.role === "Admin" ||
-                (userInfo.status !== "Approved" &&
-                  userInfo.role === "Tradie") ? (
-                  <div className="header-profile header-w-91">
-                    <div className="pointer" onClick={logOutHandler}>
-                      Log out
-                    </div>
-                  </div>
-                ) : (
-                  <div className="header-profile">
-                    <Link
-                      to={`/profile/${userInfo.userId}`}
-                      className="link-none mb-16"
-                    >
-                      My Account
+        {userInfo
+          ? userInfo.role === "Admin" ||
+            (userInfo.status !== "Approved" && userInfo.role === "Tradie")
+            ? !isMobile && (
+                <div className="header-links">
+                  <img
+                    src={DefaultProfilePicture}
+                    width={32}
+                    height={32}
+                    className="header-img"
+                    onClick={() => setShowProfile(!showProfile)}
+                  />
+                  {showProfile &&
+                    (userInfo.role === "Admin" ||
+                    (userInfo.status !== "Approved" &&
+                      userInfo.role === "Tradie") ? (
+                      <div className="header-profile header-w-91">
+                        <div className="pointer" onClick={logOutHandler}>
+                          Log out
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="header-profile">
+                        <Link
+                          to={`/profile/${userInfo.userId}`}
+                          className="link-none mb-16"
+                        >
+                          My Account
+                        </Link>
+                        <div className="pointer" onClick={logOutHandler}>
+                          Log out
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              )
+            : !isMobile && (
+                <div className="header-links">
+                  <Bell
+                    className="pointer"
+                    width={32}
+                    height={32}
+                    color="#8C8C8C"
+                    onClick={() => setShowNotif(!showNotif)}
+                  />
+                  <Mail
+                    className="pointer"
+                    width={32}
+                    height={32}
+                    color="#8C8C8C"
+                  />
+                  {userInfo.role === "Client" && (
+                    <Link to={"/favorites"}>
+                      <Heart
+                        className="pointer"
+                        width={32}
+                        height={32}
+                        color="#5F6368"
+                      />
                     </Link>
-                    <div className="pointer" onClick={logOutHandler}>
-                      Log out
+                  )}
+                  <img
+                    src={
+                      userInfo.profilePicture
+                        ? profilePicture
+                        : DefaultProfilePicture
+                    }
+                    width={32}
+                    height={32}
+                    className="header-img"
+                    onClick={() => setShowProfile(!showProfile)}
+                  />
+                  {showProfile && (
+                    <div className="header-profile">
+                      <Link
+                        to={`/profile/${userInfo.userId}`}
+                        className="link-none block mb-16"
+                      >
+                        My Account
+                      </Link>
+                      <div className="pointer" onClick={logOutHandler}>
+                        Log out
+                      </div>
                     </div>
-                  </div>
-                ))}
-            </div>
-          ) : (
-            !isMobile && (
-              <div className="header-links">
-                <Bell
-                  className="pointer"
-                  width={32}
-                  height={32}
-                  color="#8C8C8C"
-                  onClick={() => setShowNotif(!showNotif)}
-                />
-                <Mail
-                  className="pointer"
-                  width={32}
-                  height={32}
-                  color="#8C8C8C"
-                />
-                {userInfo.role === "Client" && (
-                  <Link to={"/favorites"}>
-                    <Heart
-                      className="pointer"
-                      width={32}
-                      height={32}
-                      color="#5F6368"
-                    />
-                  </Link>
-                )}
-                <img
-                  src={
-                    userInfo.profilePicture
-                      ? profilePicture
-                      : DefaultProfilePicture
-                  }
-                  width={32}
-                  height={32}
-                  className="header-img"
-                  onClick={() => setShowProfile(!showProfile)}
-                />
-                {showProfile && (
-                  <div className="header-profile">
-                    <Link
-                      to={`/profile/${userInfo.userId}`}
-                      className="link-none block mb-16"
-                    >
-                      My Account
-                    </Link>
-                    <div className="pointer" onClick={logOutHandler}>
-                      Log out
-                    </div>
-                  </div>
-                )}
+                  )}
+                </div>
+              )
+          : notHidden && (
+              <div className={"header-btns"}>
+                <Link to="/login" className="login-btn">
+                  Log in
+                </Link>
+                <span className="divider" />
+                <Link to="/signup" className="signup-btn">
+                  Sign Up
+                </Link>
               </div>
-            )
-          )
-        ) : (
-          notHidden && (
-            <div className={"header-btns"}>
-              <Link to="/login" className="login-btn">
-                Log in
-              </Link>
-              <span className="divider" />
-              <Link to="/signup" className="signup-btn">
-                Sign Up
-              </Link>
-            </div>
-          )
-        )}
+            )}
       </header>
       {showNotif && (
         <div className="notification scroll-lock">
@@ -263,51 +261,57 @@ const Header = ({ notHidden = true, headerText }) => {
                 height={60}
                 className="header-img"
               />
-              <div>
-                <div className="header-name mb-4">{name}</div>
-                <div className="header-loc flex-center gap-8">
-                  <MapPin width={20} height={20} color="#8C8C8C" />
-                  {postalCode}
+              {userInfo.role === "Admin" ? (
+                <div className="header-name">Admin</div>
+              ) : (
+                <div>
+                  <div className="header-name mb-4">{name}</div>
+                  <div className="header-loc flex-center gap-8">
+                    <MapPin width={20} height={20} color="#8C8C8C" />
+                    {postalCode}
+                  </div>
+                </div>
+              )}
+            </div>
+            {userInfo.role !== "Admin" && (
+              <div className="mb-24">
+                <Link
+                  to={`/profile/${userInfo.userId}`}
+                  className="link-none flex-center gap-12 mb-16"
+                >
+                  <CircleUserRound color="#8C8C8C" />
+                  My Account
+                </Link>
+                {userInfo.role === "Client" ? (
+                  <Link
+                    to={"/favorites"}
+                    className="link-none flex-center gap-12 mb-16"
+                  >
+                    <Heart color="#8C8C8C" />
+                    My Favorites
+                  </Link>
+                ) : (
+                  <Link
+                    to={`/profile/${userInfo.userId}/job-ads`}
+                    className="link-none flex-center gap-12 mb-16"
+                  >
+                    <Briefcase color="#8C8C8C" />
+                    My Job Ads
+                  </Link>
+                )}
+                <div className="flex-center gap-12 mb-16">
+                  <Mail color="#8C8C8C" />
+                  Inbox
+                </div>
+                <div
+                  className="flex-center gap-12 pointer"
+                  onClick={() => setShowNotif(!showNotif)}
+                >
+                  <Bell color="#8C8C8C" />
+                  Notifications
                 </div>
               </div>
-            </div>
-            <div className="mb-24">
-              <Link
-                to={`/profile/${userInfo.userId}`}
-                className="link-none flex-center gap-12 mb-16"
-              >
-                <CircleUserRound color="#8C8C8C" />
-                My Account
-              </Link>
-              {userInfo.role === "Client" ? (
-                <Link
-                  to={"/favorites"}
-                  className="link-none flex-center gap-12 mb-16"
-                >
-                  <Heart color="#8C8C8C" />
-                  My Favorites
-                </Link>
-              ) : (
-                <Link
-                  to={`/profile/${userInfo.userId}/job-ads`}
-                  className="link-none flex-center gap-12 mb-16"
-                >
-                  <Briefcase color="#8C8C8C" />
-                  My Job Ads
-                </Link>
-              )}
-              <div className="flex-center gap-12 mb-16">
-                <Mail color="#8C8C8C" />
-                Inbox
-              </div>
-              <div
-                className="flex-center gap-12 pointer"
-                onClick={() => setShowNotif(!showNotif)}
-              >
-                <Bell color="#8C8C8C" />
-                Notifications
-              </div>
-            </div>
+            )}
             <div className="header-line mb-24"></div>
             <div className="pointer" onClick={logOutHandler}>
               Log out

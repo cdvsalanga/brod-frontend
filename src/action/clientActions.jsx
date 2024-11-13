@@ -4,7 +4,7 @@ export const updateClientProfile = async (profileDetails, token) => {
   try {
     console.log(profileDetails);
     await axios.put(
-      "http://18.141.207.215/api/Client/update-profile",
+      "http://47.130.91.115/api/Client/update-profile",
       profileDetails,
       {
         headers: {
@@ -53,7 +53,7 @@ export const hireTradie = async (
     });
 
     await axios.post(
-      "http://18.141.207.215/api/Client/HireTradie",
+      "http://47.130.91.115/api/Client/HireTradie",
       {
         clientID,
         tradieID,
@@ -111,7 +111,7 @@ export const bookmarkJob = async (
       token,
     });
     await axios.post(
-      "http://18.141.207.215/api/Client/BookmarkJob",
+      "http://47.130.91.115/api/Client/BookmarkJob",
       {
         clientID,
         tradieID,
@@ -143,7 +143,7 @@ export const getJobsByStatusClient = async (userID, status, token) => {
   try {
     console.log({ userID, status, token });
     const { data } = await axios.post(
-      "http://18.141.207.215/api/Client/GetJobsByStatus",
+      "http://47.130.91.115/api/Client/GetJobsByStatus",
       { userID, status },
       {
         headers: {
@@ -154,6 +154,26 @@ export const getJobsByStatusClient = async (userID, status, token) => {
     );
 
     return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const unBookmarkJob = async (bookmarkedJobId, token) => {
+  try {
+    console.log({ bookmarkedJobId, token });
+    const { res } = await axios.post(
+      `http://47.130.91.115/api/Client/UnBookmarkJob?bookmarkedJobId=${bookmarkedJobId}`,
+      "",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return res;
   } catch (error) {
     return error;
   }

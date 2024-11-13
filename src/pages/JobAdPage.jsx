@@ -7,6 +7,8 @@ import { useParams } from "react-router-dom";
 import { getJobPostDetails, getUserDetails } from "../action/userActions";
 import { useMediaQuery } from "react-responsive";
 import { MapPin, Star } from "lucide-react";
+import { TailSpin } from "react-loading-icons";
+import { getJobsByStatusClient } from "../action/clientActions";
 
 const JobAdPage = () => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
@@ -15,6 +17,7 @@ const JobAdPage = () => {
   const [loading, setLoading] = useState(false);
   const [jobAdDetails, setJobAdDetails] = useState();
   const [userDetails, setUserDetails] = useState();
+  const [bookmarks, setBookmarks] = useState([]);
 
   const { id } = useParams();
 
@@ -23,10 +26,19 @@ const JobAdPage = () => {
     await getJobPostDetails(id).then(async (res) => {
       console.log(res);
       setJobAdDetails(res.service);
-      await getUserDetails(res.service.userID).then((user) => {
+      await getUserDetails(res.service.userID).then(async (user) => {
         console.log(user);
         setUserDetails(user);
-        setLoading(false);
+        const status = "Bookmarked";
+        await getJobsByStatusClient(
+          userInfo.userId,
+          status,
+          userInfo.token
+        ).then((jobs) => {
+          console.log(jobs);
+          setBookmarks(jobs);
+          setLoading(false);
+        });
       });
     });
   };
@@ -38,13 +50,16 @@ const JobAdPage = () => {
     <div>
       <Header />
       {loading ? (
-        <div>Loading</div>
+        <div className="loading loading-page">
+          <TailSpin stroke="#1f1f23" speed={1} />
+        </div>
       ) : isMobile ? (
         <div className="job-ad-contents">
           <JobAdDetails
             jobAdDetails={jobAdDetails}
             userDetails={userDetails}
             userInfo={userInfo}
+            bookmarks={bookmarks}
           />
           <JobAdSidebar
             userDetails={userDetails}
@@ -125,6 +140,7 @@ const JobAdPage = () => {
             jobAdDetails={jobAdDetails}
             userDetails={userDetails}
             userInfo={userInfo}
+            bookmarks={bookmarks}
           />
         </div>
       )}

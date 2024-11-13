@@ -10,6 +10,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
+import { TailSpin } from "react-loading-icons";
 
 const LoginBox = () => {
   const [showPass, setShowPass] = useState(false);
@@ -19,6 +20,7 @@ const LoginBox = () => {
   const [userInfo, setUserInfo] = useState(
     JSON.parse(localStorage.getItem("userInfo"))
   );
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -35,6 +37,7 @@ const LoginBox = () => {
           (userInfo.profilePicture = res.profilePicture)
         );
         localStorage.setItem("userInfo", JSON.stringify(userInfo));
+        setLoading(false);
 
         if (res.role === "Admin") {
           navigate("/admin");
@@ -53,13 +56,14 @@ const LoginBox = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    const error = await login(email, password);
+    setLoading(true);
+    await login(email, password).then((err) => {
+      if (err) {
+        setShowError(true);
+      }
 
-    if (error) {
-      setShowError(true);
-    }
-
-    setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
+      setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
+    });
   };
 
   return (
@@ -77,6 +81,7 @@ const LoginBox = () => {
           className="login-input"
           onChange={(e) => setEmail(e.target.value)}
           required
+          disabled={loading ? true : false}
         />
 
         <label className="login-label">Password</label>
@@ -86,6 +91,7 @@ const LoginBox = () => {
             className="login-input mb-24 input-pass"
             onChange={(e) => setPassword(e.target.value)}
             required
+            disabled={loading ? true : false}
           />
           {showPass ? (
             <Eye onClick={() => setShowPass(false)} className="show-pass" />
@@ -94,13 +100,26 @@ const LoginBox = () => {
           )}
         </div>
 
-        <button type="submit" className="login-button mb-24">
-          Log in
+        <button
+          type="submit"
+          className={
+            loading ? "login-button mb-24" : "login-button pointer mb-24"
+          }
+          disabled={loading ? true : false}
+        >
+          {loading ? (
+            <TailSpin stroke="#ffffff" speed={1} className="icon-bg-black" />
+          ) : (
+            "Log in"
+          )}
         </button>
       </form>
       <div className="to-signup">
         Don't have an account?{" "}
-        <Link to={"/signup"} className="signup-link">
+        <Link
+          to={"/signup"}
+          className={loading ? "signup-link link-disabled" : "signup-link"}
+        >
           Sign Up
         </Link>{" "}
       </div>
@@ -113,6 +132,7 @@ const LoginBox = () => {
       <GoogleLogin
         onSuccess={(res) => console.log(jwtDecode(res.credential))}
         onError={() => console.log("Login Failed")}
+        disabled={loading ? true : false}
       />
     </div>
   );

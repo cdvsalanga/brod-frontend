@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const login = async (email, password) => {
   try {
-    const { data } = await axios.post("http://18.141.207.215/api/Auth/login", {
+    const { data } = await axios.post("http://47.130.91.115/api/Auth/login", {
       email,
       password,
     });
@@ -15,7 +15,7 @@ export const login = async (email, password) => {
 
 export const signup = async (email, password, role) => {
   try {
-    await axios.post("http://18.141.207.215/api/Auth/signup", {
+    await axios.post("http://47.130.91.115/api/Auth/signup", {
       _id: "",
       username: "",
       email,
@@ -59,7 +59,7 @@ export const signup = async (email, password, role) => {
 export const getUserDetails = async (userId) => {
   try {
     const { data } = await axios.get(
-      `http://18.141.207.215/api/Auth/userDetails?id=${userId}`
+      `http://47.130.91.115/api/Auth/userDetails?id=${userId}`
     );
 
     return data;
@@ -71,7 +71,7 @@ export const getUserDetails = async (userId) => {
 export const getAllServices = async () => {
   try {
     const { data } = await axios.get(
-      `http://18.141.207.215/api/Auth/allServices`
+      `http://47.130.91.115/api/Auth/allServices`
     );
 
     return data;
@@ -83,7 +83,7 @@ export const getAllServices = async () => {
 export const googleLoginClient = async (idToken) => {
   try {
     const { data } = await axios.post(
-      "http://18.141.207.215/api/Auth/google-login-client",
+      "http://47.130.91.115/api/Auth/google-login-client",
       {
         idToken,
       }
@@ -100,10 +100,25 @@ export const getJobPostDetails = async (id) => {
     console.log({ id });
 
     const { data } = await axios.post(
-      "http://18.141.207.215/api/Auth/JobPostDetails",
+      "http://47.130.91.115/api/Auth/JobPostDetails",
       {
         id,
       }
+    );
+
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getFilteredServices = async (filters) => {
+  try {
+    console.log(filters);
+
+    const { data } = await axios.post(
+      "http://47.130.91.115/api/Auth/FilteredServices",
+      filters
     );
 
     return data;

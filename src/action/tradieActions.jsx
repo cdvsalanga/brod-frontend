@@ -5,7 +5,7 @@ export const updateTradieProfile = async (user, token) => {
     console.log(user, token);
 
     await axios.put(
-      "http://18.141.207.215/api/Tradie/update-tradie-profile",
+      "http://47.130.91.115/api/Tradie/update-tradie-profile",
       user,
       {
         headers: {
@@ -50,7 +50,7 @@ export const addTradieJobAd = async (
     );
 
     await axios.post(
-      "http://18.141.207.215/api/Tradie/add-tradie-job-ad",
+      "http://47.130.91.115/api/Tradie/add-tradie-job-ad",
       {
         _id: "",
         userID,
@@ -93,7 +93,7 @@ export const getPublishedAds = async (userId, token) => {
     console.log({ userId, token });
 
     const { data } = await axios.get(
-      `http://18.141.207.215/api/Tradie/publishedAds?userId=${userId}`,
+      `http://47.130.91.115/api/Tradie/publishedAds?userId=${userId}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -113,7 +113,7 @@ export const getUnPublishedAds = async (userId, token) => {
     console.log({ userId, token });
 
     const { data } = await axios.get(
-      `http://18.141.207.215/api/Tradie/unpublishedAds?userId=${userId}`,
+      `http://47.130.91.115/api/Tradie/unpublishedAds?userId=${userId}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -133,7 +133,7 @@ export const getJobAdDetailsByServiceId = async (serviceID, token) => {
     console.log({ serviceID, token });
 
     const { data } = await axios.post(
-      "http://18.141.207.215/api/Tradie/job-ad-getDetails-byServiceID",
+      "http://47.130.91.115/api/Tradie/job-ad-getDetails-byServiceID",
       {
         serviceID,
       },
@@ -156,7 +156,7 @@ export const updateIsActive = async (jobID, isActive, token) => {
     console.log({ jobID, isActive, token });
 
     await axios.put(
-      "http://18.141.207.215/api/Tradie/job-ads/update-isActive",
+      "http://47.130.91.115/api/Tradie/job-ads/update-isActive",
       {
         jobID,
         isActive,
@@ -178,7 +178,7 @@ export const updateJobAdDetails = async (jobAdData, token) => {
     console.log({ jobAdData, token });
 
     await axios.put(
-      "http://18.141.207.215/api/Tradie/update-job-ad-Details",
+      "http://47.130.91.115/api/Tradie/update-job-ad-Details",
       jobAdData,
       {
         headers: {
@@ -197,7 +197,7 @@ export const getJobsByStatusTradie = async (userID, status, token) => {
     console.log({ userID, status, token });
 
     const { data } = await axios.post(
-      "http://18.141.207.215/api/Tradie/GetJobsByStatus",
+      "http://47.130.91.115/api/Tradie/GetJobsByStatus",
       { userID, status },
       {
         headers: {
@@ -224,7 +224,7 @@ export const updateJobStatus = async (
     console.log({ tradieID, jobID, status, jobActionDate, token });
 
     await axios.put(
-      "http://18.141.207.215/api/Tradie/UpdateJobStatus",
+      "http://47.130.91.115/api/Tradie/UpdateJobStatus",
       { tradieID, jobID, status, jobActionDate, token },
       {
         headers: {

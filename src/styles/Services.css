@@ -71,10 +71,6 @@
     background-color: #fafafa;
   }
 
-  .services-search-btn {
-    display: none;
-  }
-
   .services-recommend {
     width: 393px;
     background-color: #fafafa;
@@ -179,6 +175,11 @@
 
   .services {
     padding: 40px;
+    width: calc(100% - 80px);
+  }
+
+  .services-search {
+    width: 100%;
   }
 
   .services-flex-h1 {

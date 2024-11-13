@@ -200,12 +200,24 @@ body:has(.scroll-lock) {
   height: 18px;
   border: 1px solid #b3b2b5;
   appearance: none;
-  margin-right: 11px;
   cursor: pointer;
+  margin: 3px;
 }
 
 .checkbox:checked {
   background-color: #b3b2b5;
   background-image: url("../src/assets/icons/check.svg");
   background-repeat: no-repeat;
+}
+
+.loading {
+  margin: 48px auto;
+}
+
+.loading-page {
+  text-align: center;
+}
+
+.link-disabled {
+  pointer-events: none;
 }

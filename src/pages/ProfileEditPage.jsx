@@ -122,6 +122,9 @@ const ProfileEditPage = () => {
 
     await updateTradieProfile(profileDetails, token).then(() => {
       userInfo.profilePicture = profilePicture;
+      userInfo.name = firstName + " " + lastName;
+      userInfo.postalCode = postalCode;
+      userInfo.contactNumber = contactNumber;
 
       localStorage.setItem("userInfo", JSON.stringify(userInfo));
 

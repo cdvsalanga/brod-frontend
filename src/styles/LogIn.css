@@ -43,7 +43,6 @@
     font-size: 18px;
     line-height: 21.78px;
     border: none;
-    cursor: pointer;
   }
 
   .to-signup {
@@ -134,7 +133,6 @@
 
   .login-button {
     width: 100%;
-    height: 48px;
     border-radius: 4px;
     padding: 12px 24px;
     background-color: #1f1f23;
@@ -142,7 +140,6 @@
     font-size: 18px;
     line-height: 21.78px;
     border: none;
-    cursor: pointer;
   }
 
   .to-signup {

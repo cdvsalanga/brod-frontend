@@ -156,7 +156,7 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
           ) : (
             <div className="gray-bg">
               <button
-                className="tradie-btn tradie-btn-hire flex-center pointer"
+                className="tradie-btn tradie-btn-hire flex-center mb-12 pointer"
                 onClick={hireHandler}
               >
                 <img src={Briefcase} className="icon-bg-black" />

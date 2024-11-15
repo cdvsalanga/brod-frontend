@@ -10,12 +10,14 @@ import { useMediaQuery } from "react-responsive";
 import { ChevronDown, ChevronUp, ListFilter, X } from "lucide-react";
 import { getFilteredServices } from "../action/userActions";
 import { TailSpin } from "react-loading-icons";
+import { getJobsByStatusClient } from "../action/clientActions";
 
 const SearchPage = () => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
 
   const { search } = useLocation();
 
+  const [userInfo] = useState(JSON.parse(localStorage.getItem("userInfo")));
   const [showPostcode, setShowPostcode] = useState(false);
   const [showLocation, setShowLocation] = useState(false);
   const [showJobCategory, setShowJobCategory] = useState(false);
@@ -35,6 +37,7 @@ const SearchPage = () => {
   const [pricingStartsMin, setPricingStartsMin] = useState(0);
   const [pricingStartsMax, setPricingStartsMax] = useState(0);
   const [filteredServices, setFilteredServices] = useState();
+  const [bookmarks, setBookmarks] = useState();
   const [checked, setChecked] = useState(false);
   const [showMore, setShowMore] = useState(false);
 
@@ -55,10 +58,22 @@ const SearchPage = () => {
     //   (filters.callOutRateMax = 0),
     //   (filters.pricingStartsMin = 0),
     //   (filters.pricingStartsMax = 0),
-    await getFilteredServices(filters).then((data) => {
+    await getFilteredServices(filters).then(async (data) => {
       console.log(data);
       setFilteredServices(data);
-      setLoading(false);
+      if (userInfo) {
+        const status = "Bookmarked";
+        await getJobsByStatusClient(
+          userInfo.userId,
+          status,
+          userInfo.token
+        ).then((jobs) => {
+          setBookmarks(jobs);
+          setLoading(false);
+        });
+      } else {
+        setLoading(false);
+      }
     });
   };
 
@@ -2605,7 +2620,11 @@ const SearchPage = () => {
               />
             </div>
           ) : (
-            <ServicesList content="search" services={filteredServices} />
+            <ServicesList
+              content="search"
+              services={filteredServices}
+              bookmarks={bookmarks}
+            />
           )}
         </div>
       </div>

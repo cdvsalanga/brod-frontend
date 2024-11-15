@@ -3,7 +3,14 @@ import React, { useEffect, useState } from "react";
 import "../styles/Signup.css";
 import "../styles/SignUpInfo.css";
 import { Link, useNavigate } from "react-router-dom";
-import { getUserDetails, signup } from "../action/userActions";
+import {
+  emailOtp,
+  emailVerifyOtp,
+  getUserDetails,
+  signup,
+  smsOtp,
+  smsVerifyOtp,
+} from "../action/userActions";
 import ActiveRadio from "../assets/icons/active-radio.svg";
 import OTPInput from "react-otp-input";
 
@@ -12,6 +19,7 @@ const SignUpBox = ({ chosen }) => {
   const [showPass, setShowPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [showOtpError, setShowOtpError] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -92,6 +100,27 @@ const SignUpBox = ({ chosen }) => {
     uploadedBase64.splice(i, 1);
 
     setCertificationFilesUploaded(uploadedBase64);
+  };
+
+  const verifyOtpHandler = async (e) => {
+    e.preventDefault();
+
+    if (otp !== "123456") {
+      setShowOtpError(true);
+    } else {
+      setShowOtpError(false);
+    }
+
+    if (chosenOTP === "sms") {
+      await smsVerifyOtp(contactNumber, otp).then((res) => {
+        console.log(res);
+      });
+    } else {
+      await emailVerifyOtp(email, otp).then((res) => {
+        console.log(res);
+      });
+    }
+    console.log(otp);
   };
 
   const signupHandler = async (e) => {
@@ -591,28 +620,45 @@ const SignUpBox = ({ chosen }) => {
           </div>
           {chosenOTP === "email" ? (
             <button
+              type="button"
               className="signup-otp-btn pointer"
-              onClick={() => setPage("otp")}
+              onClick={async () => {
+                await emailOtp(email).then((res) => {
+                  console.log(res);
+                  setPage("otp");
+                });
+              }}
             >
               Get OTP in email address
             </button>
           ) : chosenOTP === "sms" ? (
             <button
+              type="button"
               className="signup-otp-btn pointer"
-              onClick={() => setPage("otp")}
+              onClick={async () => {
+                await smsOtp(contactNumber).then((res) => {
+                  console.log(res);
+                  setPage("otp");
+                });
+              }}
             >
               Get OTP in phone number
             </button>
           ) : (
-            <button className="signup-button">Choose to get OTP</button>
+            <button type="button" className="signup-button link-disabled">
+              Choose to get OTP
+            </button>
           )}
         </div>
       </>
     );
   } else {
     return (
-      <div className="signup-box signup-otp">
+      <form className="signup-box signup-otp">
         <h1 className="signup-box-h1 signup-otp-h1">OTP Verification</h1>
+        {showOtpError && (
+          <div className="show-error mb-20">You have entered wrong otp.</div>
+        )}
         <label className="signup-otp-label mb-16">
           Enter OTP Code sent to{" "}
           <span className="signup-otp-chosen">
@@ -630,18 +676,20 @@ const SignUpBox = ({ chosen }) => {
             props.style.width = "48.4px";
             return <input {...props} className="signup-otp-input mb-24" />;
           }}
+          required
         />
         <div className="mb-12">
           Didn't receive OTP code?{" "}
           <span className="signup-otp-resend pointer">Resend Code</span>
         </div>
         <button
+          type="submit"
           className="signup-otp-btn pointer"
-          onClick={() => console.log(otp)}
+          onClick={verifyOtpHandler}
         >
           Verify
         </button>
-      </div>
+      </form>
     );
   }
 };

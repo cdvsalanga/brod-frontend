@@ -10,6 +10,7 @@ const DashboardSidebar = ({ profile }) => {
   useEffect(() => {
     console.log(profile);
   }, []);
+
   if (profile) {
     return (
       <div className="dashboard-sidebar gray-bg">
@@ -19,31 +20,41 @@ const DashboardSidebar = ({ profile }) => {
               <img
                 className="dashboard-sidebar-img"
                 src={
-                  profile.profile
+                  profile.profilePicture
                     ? profile.profilePicture
                     : DefaultProfilePicture
                 }
                 width={isMobile ? 60 : 100}
                 height={isMobile ? 60 : 100}
               />
-              {!isMobile && (
-                <div className="status-available flex-center">
-                  <div className="green-dot" />
-                  Available for work
-                </div>
-              )}
+              {!isMobile &&
+                (profile.publishedAds > 0 ? (
+                  <div className="status-available flex-center">
+                    <div className="green-dot" />
+                    Available for work
+                  </div>
+                ) : (
+                  <div className="status-not-available">
+                    Not available for work
+                  </div>
+                ))}
             </div>
             <div className="gray-bg">
               <div className="dashboard-name-status gray-bg">
                 <h1 className="gray-bg dashboard-sidebar-h1">
                   {profile.firstName + " " + profile.lastName}
                 </h1>
-                {isMobile && (
-                  <div className="dashboard-status flex-center">
-                    <div className="green-dot" />
-                    Available for work
-                  </div>
-                )}
+                {isMobile &&
+                  (profile.publishedAds > 0 ? (
+                    <div className="dashboard-status flex-center">
+                      <div className="green-dot" />
+                      Available for work
+                    </div>
+                  ) : (
+                    <div className="dashboard-status-not">
+                      Not available for work
+                    </div>
+                  ))}
               </div>
               <div className="gray-bg dashboard-sidebar-status">
                 <div className="gray-bg mb-8">

@@ -6,6 +6,7 @@ import { getUserDetails } from "../action/userActions";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { updateTradieStatus } from "../action/adminActions";
 import { useMediaQuery } from "react-responsive";
+import { TailSpin } from "react-loading-icons";
 
 const TradespersonInfoForm = ({ page }) => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
@@ -137,7 +138,9 @@ const TradespersonInfoForm = ({ page }) => {
   };
 
   return loading ? (
-    <div>Loading</div>
+    <div className="loading loading-page">
+      <TailSpin stroke="#1f1f23" speed={1} />
+    </div>
   ) : (
     <div className="signup-info-box">
       {page === "signup" ? (

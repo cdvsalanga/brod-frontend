@@ -5,6 +5,7 @@ import ProfileSideBar from "../components/ProfileSideBar";
 import { getUserDetails } from "../action/userActions";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
+import { TailSpin } from "react-loading-icons";
 
 const ProfilePage = () => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
@@ -21,6 +22,8 @@ const ProfilePage = () => {
   const getProfileDetails = async () => {
     setLoading(true);
     await getUserDetails(id).then((res) => {
+      console.log(res);
+
       setRole(res.role);
       setProfileDetails(res);
       setLoading(false);
@@ -40,10 +43,20 @@ const ProfilePage = () => {
     <div>
       <Header headerText={"My Account"} />
       {loading ? (
-        <div>Loading</div>
+        <div className="loading loading-page">
+          <TailSpin
+            stroke="#1f1f23"
+            speed={1}
+            className={isMobile && "gray-bg"}
+          />
+        </div>
       ) : (
         <div className="profile">
-          <ProfileSideBar role={role} profile={profileDetails} />
+          <ProfileSideBar
+            role={role}
+            profile={profileDetails}
+            userInfo={userInfo}
+          />
           {(!isMobile || role !== "Tradie") && (
             <ProfileContents
               role={role}

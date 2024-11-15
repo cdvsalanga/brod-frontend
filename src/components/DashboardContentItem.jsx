@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import React, { useState } from "react";
 import "../styles/DashboardTradie.css";
-import { updateJobStatus } from "../action/tradieActions";
+import { updateJobStatusTradie } from "../action/tradieActions";
 import { useMediaQuery } from "react-responsive";
 
 const DashboardContentItem = ({ item, data, userInfo }) => {
@@ -36,11 +36,15 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
     const currentDate = `${year}-${month}-${day}`;
     console.log(currentDate);
 
-    await updateJobStatus(tradieID, job._id, status, currentDate, token).then(
-      () => {
-        window.location.reload();
-      }
-    );
+    await updateJobStatusTradie(
+      tradieID,
+      job._id,
+      status,
+      currentDate,
+      token
+    ).then(() => {
+      window.location.reload();
+    });
   };
 
   if (data) {

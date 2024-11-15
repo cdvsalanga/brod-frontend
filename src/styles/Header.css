@@ -148,6 +148,72 @@
   .notif-delete {
     flex-shrink: 0;
   }
+
+  .inbox-contents {
+    width: 361px;
+    margin: 20px auto;
+    overflow: auto;
+  }
+
+  .inbox-search {
+    width: 303.4px;
+    height: 22.4px;
+    border: 1px solid #eaeaea;
+    border-radius: 4px;
+    padding: 8px 12px 8px 44px;
+    font-size: 14px;
+    background-image: url("../assets/icons/search.svg");
+    background-repeat: no-repeat;
+    background-position: 15px;
+  }
+
+  .inbox-message-mobile {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 3;
+  }
+
+  .inbox-message-mobile-container {
+    width: 361px;
+    margin: 20px auto;
+  }
+
+  .inbox-messages {
+    width: 100%;
+    height: calc(100vh - 174px);
+    overflow: auto;
+  }
+
+  .inbox-message-input {
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    width: 301.44px;
+    height: 22px;
+    padding: 12px 47.56px 12px 12px;
+    font-size: 14px;
+  }
+
+  .inbox-message-input-container {
+    position: fixed;
+    right: calc((100% - 361px) / 2);
+    bottom: 17px;
+    z-index: 1;
+    width: 361px;
+  }
+
+  .header-red-dot {
+    position: absolute;
+    width: 4.67px;
+    height: 4.67px;
+    top: 1.67px;
+    left: 15px;
+    border: 1.33px solid #ff7875;
+    border-radius: 50%;
+    background-color: #ff7875;
+  }
 }
 
 /* Desktop View */
@@ -239,6 +305,8 @@
     height: 100vh;
     z-index: 1;
     position: fixed;
+    top: 0;
+    left: 0;
     overflow: auto;
     display: flex;
     background-color: rgba(0, 0, 0, 0.3);
@@ -294,6 +362,64 @@
     border-radius: 50%;
     object-fit: cover;
   }
+
+  .inbox-contents {
+    width: 265px;
+    padding: 23px 0 87px 31px;
+    flex-shrink: 0;
+    overflow: auto;
+  }
+
+  .inbox-message-container {
+    padding: 43px 42px 41px 20px;
+    width: 661px;
+    flex-shrink: 0;
+  }
+
+  .inbox-search {
+    width: 183px;
+    border: 1px solid #eaeaea;
+    border-radius: 4px;
+    padding: 16px 16px 16px 44px;
+    font-size: 16px;
+    background-image: url("../assets/icons/search.svg");
+    background-repeat: no-repeat;
+    background-position: 15px;
+  }
+
+  .inbox-messages {
+    width: 100%;
+    height: calc(100vh - 190px);
+    overflow: auto;
+  }
+
+  .inbox-message-input {
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    width: 581.44px;
+    height: 22px;
+    padding: 12px 47.56px 12px 12px;
+    font-size: 14px;
+  }
+
+  .inbox-message-input-container {
+    position: fixed;
+    right: 42px;
+    bottom: 32px;
+    z-index: 1;
+    width: 643px;
+  }
+
+  .header-red-dot {
+    position: absolute;
+    width: 4.67px;
+    height: 4.67px;
+    top: 1.67px;
+    left: 19px;
+    border: 1.33px solid #ff7875;
+    border-radius: 50%;
+    background-color: #ff7875;
+  }
 }
 
 .notif-item-text {
@@ -301,4 +427,62 @@
   font-size: 14px;
   line-height: 18px;
   color: #242424;
+}
+
+.inbox-contents-profile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0 12px 23px;
+}
+
+.inbox-profile-name {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 22px;
+  color: #000000;
+}
+
+.inbox-profile-loc {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16.94px;
+  color: #434343;
+}
+
+.inbox-profile-img {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.inbox-message-user {
+  text-align: end;
+}
+
+.inbox-message-date {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
+  color: #717171;
+}
+
+.inbox-message {
+  display: inline-block;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  color: #242424;
+}
+
+.inbox-message-send {
+  position: absolute;
+  top: 3px;
+  right: 7px;
+}
+
+.header-bell-container {
+  position: relative;
 }

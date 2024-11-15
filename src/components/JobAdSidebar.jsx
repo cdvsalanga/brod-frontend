@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../styles/JobAd.css";
+import "../styles/Header.css";
 import DefaultProfilePicture from "../assets/images/default-profile-picture.png";
 import Briefcase from "../assets/icons/briefcase.svg";
 import Phone from "../assets/icons/phone.svg";
@@ -12,9 +13,10 @@ import {
   Mail,
   X,
   ArrowLeft,
+  ChevronRight,
+  SendHorizonal,
 } from "lucide-react";
 import Complete from "../assets/images/complete.svg";
-import JobOffer from "./JobOffer";
 import { Link, useNavigate } from "react-router-dom";
 import { hireTradie } from "../action/clientActions";
 import { useMediaQuery } from "react-responsive";
@@ -23,6 +25,8 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
 
   const [showOffer, setShowOffer] = useState(false);
+  const [showInbox, setShowInbox] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
   const [complete, setComplete] = useState(false);
   const [token] = useState(userInfo && userInfo.token);
   const [clientID] = useState(userInfo && userInfo.userId);
@@ -71,7 +75,17 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
       budgetCurrency,
       currentDate,
       token
-    ).then(setComplete(true));
+    ).then((res) => {
+      if (res.message === "Request failed with status code 401") {
+        if (confirm("Your session expired, please login again.")) {
+          localStorage.removeItem("userInfo");
+          navigate("/login");
+        }
+      } else {
+        console.log(res);
+        setComplete(true);
+      }
+    });
   };
 
   const hireHandler = () => {
@@ -100,24 +114,21 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
                 <div className="gray-bg green-dot" />
                 Available for work
               </div>
-              <div className="gray-bg flex-center">
-                <span className="gray-bg tradie-rate-num">$18</span>
-                <span className="gray-bg tradie-rate-text">Call out rate</span>
-              </div>
+              {jobAdDetails.pricingStartsAt && jobAdDetails.pricingOption && (
+                <div className="gray-bg flex-center">
+                  <span className="gray-bg tradie-rate-num">
+                    {"$" + jobAdDetails.pricingStartsAt}
+                  </span>
+                  <span className="gray-bg tradie-rate-text">
+                    {jobAdDetails.pricingOption}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
           <div className={isMobile ? "mb-20 gray-bg" : "mb-24 gray-bg"}>
-            <div className="flex-center gray-bg">
-              <span className="gray-bg tradie-name">
-                {userDetails.firstName + " " + userDetails.lastName}
-              </span>
-              <Link
-                to={`/profile/${userDetails._id}`}
-                className="link-none gray-bg"
-              >
-                <span className="gray-bg tradie-view">View profile</span>
-                <ArrowUpRight className="gray-bg tradie-arrow" />
-              </Link>
+            <div className="gray-bg tradie-name">
+              {userDetails.firstName + " " + userDetails.lastName}
             </div>
             <div className="gray-bg tradie-location flex-center tradie-my-8">
               <MapPin
@@ -128,20 +139,25 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
               />
               <span className="gray-bg">{userDetails.businessPostCode}</span>
             </div>
-            <div className="gray-bg tradie-location flex-center">
-              <Navigation
-                width={isMobile ? 20 : 24}
-                height={isMobile ? 20 : 24}
-                className="gray-bg"
-                color="#8C8C8C"
-              />
-              <span className="gray-bg">Can work within 50km</span>
-            </div>
+            {userDetails.proximityToWork && (
+              <div className="gray-bg tradie-location flex-center">
+                <Navigation
+                  width={isMobile ? 20 : 24}
+                  height={isMobile ? 20 : 24}
+                  className="gray-bg"
+                  color="#8C8C8C"
+                />
+                <span className="gray-bg">{userDetails.proximityToWork}</span>
+              </div>
+            )}
           </div>
 
           {isMobile ? (
             <div className="tradie-btns">
-              <button className="tradie-btn tradie-btn-chat flex-center">
+              <button
+                className="tradie-btn tradie-btn-chat flex-center pointer"
+                onClick={() => setShowInbox(true)}
+              >
                 <Mail />
                 Chat
               </button>
@@ -162,7 +178,10 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
                 <img src={Briefcase} className="icon-bg-black" />
                 Hire
               </button>
-              <button className="tradie-btn tradie-btn-chat flex-center">
+              <button
+                className="tradie-btn tradie-btn-chat flex-center pointer"
+                onClick={() => setShowInbox(true)}
+              >
                 <Mail />
                 Chat
               </button>
@@ -170,40 +189,52 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
           )}
         </div>
         <div className="gray-bg">
-          <div className={isMobile ? "mb-20 gray-bg" : "gray-bg mb-32"}>
-            <h2 className="gray-bg tradie-h2">About me</h2>
-            <div className="gray-bg tradie-about">
-              {userDetails.aboutMeDescription}
+          {userDetails.aboutMeDescription && (
+            <div className={isMobile ? "mb-20 gray-bg" : "gray-bg mb-32"}>
+              <h2 className="gray-bg tradie-h2">About me</h2>
+              <div className="gray-bg tradie-about">
+                {userDetails.aboutMeDescription}
+              </div>
             </div>
-          </div>
-          <div className={isMobile ? "mb-20 gray-bg" : "gray-bg mb-32"}>
-            <h2 className="gray-bg tradie-h2">Services</h2>
-            <div className="gray-bg tradie-services">
-              {userDetails.services.map((service, i) => (
-                <span className="tradie-service" key={i}>
-                  {service}
-                </span>
-              ))}
+          )}
+          {userDetails.services.length > 0 && (
+            <div className={isMobile ? "mb-20 gray-bg" : "gray-bg mb-32"}>
+              <h2 className="gray-bg tradie-h2">Services</h2>
+              <div className="gray-bg tradie-services">
+                {userDetails.services.map((service, i) => (
+                  <span className="tradie-service" key={i}>
+                    {service}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
           <div className="gray-bg">
             <h2 className="gray-bg tradie-h2">Contact and Socials</h2>
-            <div className="gray-bg tradie-contact flex-center">
-              <img src={Phone} className="tradie-contact-icon gray-bg" />
-              <span className="gray-bg">{userDetails.contactNumber}</span>
-            </div>
-            <div className="gray-bg tradie-contact flex-center">
-              <Mail className="tradie-contact-icon" />
-              <span className="gray-bg">{userDetails.email}</span>
-            </div>
-            <div className="gray-bg tradie-contact flex-center">
-              <img src={Facebook} className="tradie-contact-icon" />
-              <span className="gray-bg">{userDetails.facebookAccount}</span>
-            </div>
-            <div className="gray-bg tradie-contact flex-center">
-              <img src={Instagram} className="tradie-contact-icon" />
-              <span className="gray-bg">{userDetails.igAccount}</span>
-            </div>
+            {userDetails.contactNumber && (
+              <div className="gray-bg tradie-contact flex-center">
+                <img src={Phone} className="tradie-contact-icon gray-bg" />
+                <span className="gray-bg">{userDetails.contactNumber}</span>
+              </div>
+            )}
+            {userDetails.email && (
+              <div className="gray-bg tradie-contact flex-center">
+                <Mail className="tradie-contact-icon" />
+                <span className="gray-bg">{userDetails.email}</span>
+              </div>
+            )}
+            {userDetails.facebookAccount && (
+              <div className="gray-bg tradie-contact flex-center">
+                <img src={Facebook} className="tradie-contact-icon" />
+                <span className="gray-bg">{userDetails.facebookAccount}</span>
+              </div>
+            )}
+            {userDetails.igAccount && (
+              <div className="gray-bg tradie-contact flex-center">
+                <img src={Instagram} className="tradie-contact-icon" />
+                <span className="gray-bg">{userDetails.igAccount}</span>
+              </div>
+            )}
           </div>
         </div>
         {showOffer && (
@@ -351,13 +382,12 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
                     }
                   >
                     <label className="block mb-12">Your Budget</label>
-                    <div>
+                    <div className="flex-between">
                       <input
                         type="text"
                         className="offer-input offer-budget-text"
                         placeholder="000"
                         onChange={(e) => setClientBudget(e.target.value)}
-                        required
                       />
                       <select
                         defaultValue={budgetCurrency}
@@ -410,6 +440,269 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
                 )}
               </div>
             )}
+          </div>
+        )}
+
+        {showInbox && (
+          <div className="notification scroll-lock">
+            {!isMobile && (
+              <div className="remove-notif" onClick={() => setShowInbox(false)}>
+                <X
+                  width={32}
+                  height={32}
+                  color="#717171"
+                  className="close-notif pointer"
+                />
+              </div>
+            )}
+            <div className="inbox-contents">
+              {isMobile ? (
+                <div className="flex-center gap-8 mb-8">
+                  <ArrowLeft
+                    color="#717171"
+                    className="pointer"
+                    onClick={() => setShowInbox(false)}
+                  />
+                  <h1 className="notif-h1">Inbox</h1>
+                </div>
+              ) : (
+                <h1 className="notif-h1 mb-14">Inbox</h1>
+              )}
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  console.log(inboxSearch);
+                }}
+              >
+                <input
+                  type="text"
+                  className="inbox-search mb-14"
+                  onChange={(e) => setInboxSearch(e.target.value)}
+                  placeholder="Search"
+                />
+              </form>
+              <div
+                className={
+                  showMessage
+                    ? "inbox-contents-profile pointer gray-bg"
+                    : "inbox-contents-profile pointer"
+                }
+                onClick={() => setShowMessage(!showMessage)}
+              >
+                <div
+                  className={
+                    showMessage
+                      ? "flex-center gap-8 gray-bg"
+                      : "flex-center gap-8"
+                  }
+                >
+                  <img
+                    src={DefaultProfilePicture}
+                    width={45}
+                    height={45}
+                    className={
+                      showMessage
+                        ? "inbox-profile-img gray-bg"
+                        : "inbox-profile-img"
+                    }
+                  />
+                  <div className={showMessage && "gray-bg"}>
+                    <div
+                      className={
+                        showMessage
+                          ? "inbox-profile-name gray-bg"
+                          : "inbox-profile-name"
+                      }
+                    >
+                      Name
+                    </div>
+                    <div
+                      className={
+                        showMessage
+                          ? "inbox-profile-loc flex-center gap-8 gray-bg"
+                          : "inbox-profile-loc flex-center gap-8"
+                      }
+                    >
+                      <MapPin
+                        width={12.8}
+                        height={16}
+                        color="#8C8C8C"
+                        className={showMessage && "gray-bg"}
+                      />
+                      Location
+                    </div>{" "}
+                  </div>
+                </div>
+                <ChevronRight
+                  color="#8C8C8C"
+                  className={showMessage && "gray-bg"}
+                />
+              </div>
+            </div>
+            <div
+              className={
+                isMobile && showMessage
+                  ? "inbox-message-mobile gray-bg"
+                  : "inbox-message-container gray-bg"
+              }
+            >
+              {showMessage && (
+                <div className="inbox-message-mobile-container gray-bg">
+                  {isMobile ? (
+                    <div className="flex-center gap-12 gray-bg">
+                      <ArrowLeft
+                        color="#717171"
+                        className="pointer gray-bg"
+                        onClick={() => {
+                          setShowInbox(true);
+                          setShowMessage(false);
+                        }}
+                      />
+                      <div className="mb-16 gray-bg">
+                        <div className="flex-center gap-8 gray-bg">
+                          <img
+                            src={DefaultProfilePicture}
+                            width={45}
+                            height={45}
+                            className="inbox-profile-img gray-bg"
+                          />
+                          <div className="gray-bg">
+                            <div className="inbox-profile-name gray-bg">
+                              Name
+                            </div>
+                            <div className="inbox-profile-loc flex-center gap-8 gray-bg">
+                              <MapPin
+                                width={12.8}
+                                height={16}
+                                color="#8C8C8C"
+                                className="gray-bg"
+                              />
+                              Location
+                            </div>{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="mb-16 gray-bg">
+                      <div className="flex-center gap-8 gray-bg">
+                        <img
+                          src={DefaultProfilePicture}
+                          width={45}
+                          height={45}
+                          className="inbox-profile-img gray-bg"
+                        />
+                        <div className="gray-bg">
+                          <div className="inbox-profile-name gray-bg">Name</div>
+                          <div className="inbox-profile-loc flex-center gap-8 gray-bg">
+                            <MapPin
+                              width={12.8}
+                              height={16}
+                              color="#8C8C8C"
+                              className="gray-bg"
+                            />
+                            Location
+                          </div>{" "}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  <div className="inbox-messages gray-bg">
+                    <div className="inbox-message-user mb-16 gray-bg">
+                      <div className="inbox-message-date mb-4 gray-bg">
+                        May 24, 2024 | 9:00 AM
+                      </div>
+                      <span className="inbox-message">
+                        Hi Yves, I would like to follow up on my inquiry about
+                        house painting.
+                      </span>
+                    </div>
+                    <div className="inbox-message-user mb-16 gray-bg">
+                      <div className="inbox-message-date mb-4 gray-bg">
+                        May 24, 2024 | 9:00 AM
+                      </div>
+                      <span className="inbox-message">
+                        Hi Yves, I would like to follow up on my inquiry about
+                        house painting.
+                      </span>
+                    </div>
+                    <div className="inbox-message-user mb-16 gray-bg">
+                      <div className="inbox-message-date mb-4 gray-bg">
+                        May 24, 2024 | 9:00 AM
+                      </div>
+                      <span className="inbox-message">
+                        Hi Yves, I would like to follow up on my inquiry about
+                        house painting.
+                      </span>
+                    </div>
+                    <div className="inbox-message-user mb-16 gray-bg">
+                      <div className="inbox-message-date mb-4 gray-bg">
+                        May 24, 2024 | 9:00 AM
+                      </div>
+                      <span className="inbox-message">
+                        Hi Yves, I would like to follow up on my inquiry about
+                        house painting.
+                      </span>
+                    </div>
+                    <div className="inbox-message-user mb-16 gray-bg">
+                      <div className="inbox-message-date mb-4 gray-bg">
+                        May 24, 2024 | 9:00 AM
+                      </div>
+                      <span className="inbox-message">
+                        Hi Yves, I would like to follow up on my inquiry about
+                        house painting.
+                      </span>
+                    </div>
+                    <div className="inbox-message-user mb-16 gray-bg">
+                      <div className="inbox-message-date mb-4 gray-bg">
+                        May 24, 2024 | 9:00 AM
+                      </div>
+                      <span className="inbox-message">
+                        Hi Yves, I would like to follow up on my inquiry about
+                        house painting.
+                      </span>
+                    </div>
+                    <div className="inbox-message-user mb-16 gray-bg">
+                      <div className="inbox-message-date mb-4 gray-bg">
+                        May 24, 2024 | 9:00 AM
+                      </div>
+                      <span className="inbox-message">
+                        Hi Yves, I would like to follow up on my inquiry about
+                        house painting.
+                      </span>
+                    </div>
+                    <div className="inbox-message-user mb-16 gray-bg">
+                      <div className="inbox-message-date mb-4 gray-bg">
+                        May 24, 2024 | 9:00 AM
+                      </div>
+                      <span className="inbox-message">
+                        Hi Yves, I would like to follow up on my inquiry about
+                        house painting.
+                      </span>
+                    </div>
+                  </div>
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      console.log("first");
+                    }}
+                    className="inbox-message-input-container gray-bg"
+                  >
+                    <input
+                      type="text"
+                      className="inbox-message-input"
+                      placeholder="Type something..."
+                    />
+                    <SendHorizonal
+                      width={35.56}
+                      height={40}
+                      color="#1F1F23"
+                      className="inbox-message-send pointer"
+                    />
+                  </form>
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>

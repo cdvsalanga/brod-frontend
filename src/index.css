@@ -53,6 +53,10 @@ body:has(.scroll-lock) {
   margin-bottom: 12px;
 }
 
+.mb-14 {
+  margin-bottom: 14px;
+}
+
 .mb-16 {
   margin-bottom: 16px;
 }
@@ -145,6 +149,16 @@ body:has(.scroll-lock) {
   color: #3e8629;
   background-color: #daf5da;
   padding: 8px 16px;
+  border-radius: 99px;
+}
+
+.status-not-available {
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 15.73px;
+  color: #676767;
+  background-color: #e5e5e5;
+  padding: 6px 12px;
   border-radius: 99px;
 }
 

@@ -26,6 +26,7 @@ const LoginBox = () => {
 
   useEffect(() => {
     if (userInfo) {
+      setLoading(true);
       const userDetails = getUserDetails(userInfo.userId);
       userDetails.then((res) => {
         setUserInfo(
@@ -62,6 +63,23 @@ const LoginBox = () => {
         setShowError(true);
       }
 
+      setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
+    });
+  };
+
+  const googleLoginHandler = async (res) => {
+    console.log(res);
+
+    setLoading(true);
+
+    await googleLoginClient(
+      res.email,
+      res.email_verified.toString(),
+      res.name,
+      res.picture,
+      res.given_name,
+      res.family_name
+    ).then((res) => {
       setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
     });
   };
@@ -130,9 +148,12 @@ const LoginBox = () => {
       </div>
       {/* Google and apple logins */}
       <GoogleLogin
-        onSuccess={(res) => console.log(jwtDecode(res.credential))}
-        onError={() => console.log("Login Failed")}
-        disabled={loading ? true : false}
+        onSuccess={(res) => {
+          console.log(res);
+          googleLoginHandler(jwtDecode(res.credential));
+        }}
+        onError={() => alert("Login Failed")}
+        disabled={loading}
       />
     </div>
   );

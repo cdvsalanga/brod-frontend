@@ -5,6 +5,7 @@ import "../styles/DashboardTradie.css";
 import DashboardContents from "../components/DashboardContents";
 import { getUserDetails } from "../action/userActions";
 import { useNavigate, useParams } from "react-router-dom";
+import { TailSpin } from "react-loading-icons";
 
 const DashboardTradiePage = () => {
   const [userInfo] = useState(JSON.parse(localStorage.getItem("userInfo")));
@@ -35,7 +36,9 @@ const DashboardTradiePage = () => {
     <div>
       <Header />
       {loading ? (
-        <div>Loading</div>
+        <div className="loading loading-page">
+          <TailSpin stroke="#1f1f23" speed={1} />
+        </div>
       ) : (
         <div className="dashboard-tradie">
           <DashboardSidebar profile={profileDetails} />

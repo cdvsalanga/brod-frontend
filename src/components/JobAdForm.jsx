@@ -9,6 +9,7 @@ import {
 } from "../action/tradieActions";
 import { ArrowLeft, Upload, X } from "lucide-react";
 import { useMediaQuery } from "react-responsive";
+import { TailSpin } from "react-loading-icons";
 
 const JobAdForm = () => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
@@ -139,7 +140,9 @@ const JobAdForm = () => {
   };
 
   return loading ? (
-    <div>Loading</div>
+    <div className="loading loading-page">
+      <TailSpin stroke="#1f1f23" speed={1} />
+    </div>
   ) : (
     <form className="job-form">
       <div className={isMobile ? "mb-36" : "mb-40"}>

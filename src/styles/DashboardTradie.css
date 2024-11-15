@@ -44,6 +44,17 @@
     margin-bottom: 8px;
   }
 
+  .dashboard-status-not {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14.52px;
+    color: #676767;
+    background-color: #e5e5e5;
+    padding: 4px 8px;
+    border-radius: 99px;
+    margin-bottom: 8px;
+  }
+
   .dashboard-sidebar-btn-blk {
     width: 100%;
     background-color: #1f1f23;

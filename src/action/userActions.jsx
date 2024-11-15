@@ -80,18 +80,33 @@ export const getAllServices = async () => {
   }
 };
 
-export const googleLoginClient = async (idToken) => {
+export const googleLoginClient = async (
+  email,
+  email_verified,
+  name,
+  picture,
+  given_name,
+  family_name
+) => {
   try {
+    console.log({
+      email,
+      email_verified,
+      name,
+      picture,
+      given_name,
+      family_name,
+    });
+
     const { data } = await axios.post(
-      "http://47.130.91.115/api/Auth/google-login-client",
-      {
-        idToken,
-      }
+      `http://47.130.91.115/api/Auth/google-login-client`,
+      { email, email_verified, name, picture, given_name, family_name }
     );
 
-    console.log(data);
+    localStorage.setItem("userInfo", JSON.stringify(data));
+    return data;
   } catch (error) {
-    return error;
+    console.error(error);
   }
 };
 
@@ -124,5 +139,177 @@ export const getFilteredServices = async (filters) => {
     return data;
   } catch (error) {
     return error;
+  }
+};
+
+export const smsOtp = async (phoneNumber) => {
+  try {
+    const res = await axios.post(
+      `http://47.130.91.115/api/Auth/sms-otp?phoneNumber=${phoneNumber}`,
+      ""
+    );
+
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const emailOtp = async (email) => {
+  try {
+    const res = await axios.post(
+      `http://47.130.91.115/api/Auth/email-otp?email=${email}`,
+      ""
+    );
+
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const smsVerifyOtp = async (phoneNumber, userEnteredOtp) => {
+  try {
+    const res = await axios.post(
+      `http://47.130.91.115/api/Auth/sms-verify-otp?phoneNumber=${phoneNumber}&userEnteredOtp=${userEnteredOtp}`,
+      ""
+    );
+
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const emailVerifyOtp = async (email, userEnteredOtp) => {
+  try {
+    const res = await axios.post(
+      `http://47.130.91.115/api/Auth/sms-email-otp?email=${email}&userEnteredOtp=${userEnteredOtp}`,
+      ""
+    );
+
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getNotifications = async (userId) => {
+  try {
+    const { data } = await axios.post(
+      `http://47.130.91.115/api/Auth/GetNotifications?userId=${userId}`,
+      ""
+    );
+
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getNotificationsNoUpdate = async (userId) => {
+  try {
+    const { data } = await axios.post(
+      `http://47.130.91.115/api/Auth/GetNotificationsNoUpdate?userId=${userId}`,
+      ""
+    );
+
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const clientAddMessage = async (clientId, tradieId, message) => {
+  try {
+    const res = await axios.post(
+      `http://47.130.91.115/api/Auth/Client-AddMessage`,
+      {
+        _id: "",
+        clientId,
+        tradieId,
+        tradieName: "",
+        tradielocation: "",
+        picture: "",
+        message,
+        timeStamp: "",
+        sentByClient: true,
+      }
+    );
+
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const tradieAddMessage = async (clientId, tradieId, message) => {
+  try {
+    const res = await axios.post(
+      `http://47.130.91.115/api/Auth/Tradie-AddMessage`,
+      {
+        _id: "",
+        clientId,
+        tradieId,
+        tradieName: "",
+        tradielocation: "",
+        picture: "",
+        message,
+        timeStamp: "",
+        sentByTradie: true,
+      }
+    );
+
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const clientGetAllMessages = async (clientId) => {
+  try {
+    const { data } = await axios.post(
+      `http://47.130.91.115/api/Auth/Client-GetAll-Messages`,
+      {
+        clientId,
+        tradieId: "",
+      }
+    );
+
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const tradieGetAllMessages = async (tradieId) => {
+  try {
+    const { data } = await axios.post(
+      `http://47.130.91.115/api/Auth/Tradie-GetAll-Messages`,
+      {
+        clientId: "",
+        tradieId,
+      }
+    );
+
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getMessagesById = async (clientId, tradieId) => {
+  try {
+    const { data } = await axios.post(
+      `http://47.130.91.115/api/Auth/GetMessages-ByID`,
+      {
+        clientId,
+        tradieId,
+      }
+    );
+
+    return data;
+  } catch (error) {
+    console.error(error);
   }
 };

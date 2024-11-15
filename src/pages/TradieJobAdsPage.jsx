@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import ProfileContents from "../components/ProfileContents";
 import { getUserDetails } from "../action/userActions";
+import { TailSpin } from "react-loading-icons";
 
 const TradieJobAdsPage = () => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
@@ -43,7 +44,9 @@ const TradieJobAdsPage = () => {
     <div>
       <Header headerText={"My Job Ads"} />
       {loading ? (
-        <div>Loading</div>
+        <div className="loading loading-page">
+          <TailSpin stroke="#1f1f23" speed={1} />
+        </div>
       ) : (
         <ProfileContents
           role={role}

@@ -66,13 +66,10 @@ export const addTradieJobAd = async (
         isActive,
         clientReviews: [
           {
-            reviewDescription: "",
-            starRating: 0,
-            clientID: "",
-            clientUserName: "",
-            clientCity: "",
-            clientState: "",
-            clientPostalCode: "",
+            clientName: "",
+            clientLocation: "",
+            ratingDescription: "",
+            rating: 0,
           },
         ],
       },
@@ -213,7 +210,7 @@ export const getJobsByStatusTradie = async (userID, status, token) => {
   }
 };
 
-export const updateJobStatus = async (
+export const updateJobStatusTradie = async (
   tradieID,
   jobID,
   status,

@@ -43,8 +43,25 @@ const JobAdPage = () => {
     });
   };
 
+  const getJobAdDetailsNoUserInfo = async () => {
+    setLoading(true);
+    await getJobPostDetails(id).then(async (res) => {
+      console.log(res);
+      setJobAdDetails(res.service);
+      await getUserDetails(res.service.userID).then(async (user) => {
+        console.log(user);
+        setUserDetails(user);
+        setLoading(false);
+      });
+    });
+  };
+
   useEffect(() => {
-    getJobAdDetails();
+    if (userInfo) {
+      getJobAdDetails();
+    } else {
+      getJobAdDetailsNoUserInfo();
+    }
   }, []);
   return (
     <div>
@@ -69,64 +86,76 @@ const JobAdPage = () => {
           <div className="job-review-container">
             <h1 className="job-h1 mb-16">Reviews</h1>
             {jobAdDetails &&
-              jobAdDetails.clientReviews.map((review) => (
-                <div className="job-review" key={review.clientID}>
-                  <div
-                    className={
-                      isMobile ? "flex-between mb-4" : "flex-between mb-8"
-                    }
-                  >
-                    <div className="flex-center">
-                      <div className="job-review-avatar">SC</div>
-                      <div className="job-review-name">Sean C.</div>
+              jobAdDetails.clientReviews.map(
+                (review, i) =>
+                  i !== 0 && (
+                    <div className="job-review" key={review.clientID}>
+                      <div
+                        className={
+                          isMobile ? "flex-between mb-4" : "flex-between mb-8"
+                        }
+                      >
+                        <div className="flex-center">
+                          <div className="job-review-avatar">
+                            {Array.from(review.clientName.split(" ")[0])[0] +
+                              Array.from(
+                                review.clientName.split(" ")[
+                                  review.clientName.split(" ").length - 1
+                                ]
+                              )[0]}
+                          </div>
+                          <div className="job-review-name">
+                            {review.clientName}
+                          </div>
+                        </div>
+                        <div className="job-review-stars">
+                          <Star
+                            width={isMobile ? 20 : 24}
+                            height={isMobile ? 20 : 24}
+                            color="#1F1F23"
+                            fill={review.rating > 0 ? "#1F1F23" : "#FFFFFF"}
+                          />
+                          <Star
+                            width={isMobile ? 20 : 24}
+                            height={isMobile ? 20 : 24}
+                            color="#1F1F23"
+                            fill={review.rating > 1 ? "#1F1F23" : "#FFFFFF"}
+                          />
+                          <Star
+                            width={isMobile ? 20 : 24}
+                            height={isMobile ? 20 : 24}
+                            color="#1F1F23"
+                            fill={review.rating > 2 ? "#1F1F23" : "#FFFFFF"}
+                          />
+                          <Star
+                            width={isMobile ? 20 : 24}
+                            height={isMobile ? 20 : 24}
+                            color="#1F1F23"
+                            fill={review.rating > 3 ? "#1F1F23" : "#FFFFFF"}
+                          />
+                          <Star
+                            width={isMobile ? 20 : 24}
+                            height={isMobile ? 20 : 24}
+                            color="#1F1F23"
+                            fill={review.rating > 4 ? "#1F1F23" : "#FFFFFF"}
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <div className="job-review-type mb-8">
+                          {jobAdDetails.jobAdTitle}
+                        </div>
+                        <div className="flex-center job-review-location mb-12">
+                          <MapPin width={20} height={20} color="#8C8C8C" />
+                          {review.clientLocation}
+                        </div>
+                        <div className="job-review-text">
+                          {review.ratingDescription}
+                        </div>
+                      </div>
                     </div>
-                    <div className="job-review-stars">
-                      <Star
-                        width={isMobile ? 20 : 24}
-                        height={isMobile ? 20 : 24}
-                        color="#1F1F23"
-                        fill={review.starRating > 0 ? "#1F1F23" : "#FFFFFF"}
-                      />
-                      <Star
-                        width={isMobile ? 20 : 24}
-                        height={isMobile ? 20 : 24}
-                        color="#1F1F23"
-                        fill={review.starRating > 1 ? "#1F1F23" : "#FFFFFF"}
-                      />
-                      <Star
-                        width={isMobile ? 20 : 24}
-                        height={isMobile ? 20 : 24}
-                        color="#1F1F23"
-                        fill={review.starRating > 2 ? "#1F1F23" : "#FFFFFF"}
-                      />
-                      <Star
-                        width={isMobile ? 20 : 24}
-                        height={isMobile ? 20 : 24}
-                        color="#1F1F23"
-                        fill={review.starRating > 3 ? "#1F1F23" : "#FFFFFF"}
-                      />
-                      <Star
-                        width={isMobile ? 20 : 24}
-                        height={isMobile ? 20 : 24}
-                        color="#1F1F23"
-                        fill={review.starRating > 4 ? "#1F1F23" : "#FFFFFF"}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <div className="job-review-type mb-8">
-                      {jobAdDetails.jobAdTitle}
-                    </div>
-                    <div className="flex-center job-review-location mb-12">
-                      <MapPin width={20} height={20} color="#8C8C8C" />
-                      {review.clientPostalCode}
-                    </div>
-                    <div className="job-review-text">
-                      {review.reviewDescription}
-                    </div>
-                  </div>
-                </div>
-              ))}
+                  )
+              )}
           </div>
         </div>
       ) : (

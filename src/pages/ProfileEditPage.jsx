@@ -8,6 +8,7 @@ import { updateClientProfile } from "../action/clientActions";
 import { ArrowLeft, Upload, X } from "lucide-react";
 import { updateTradieProfile } from "../action/tradieActions";
 import { useMediaQuery } from "react-responsive";
+import { TailSpin } from "react-loading-icons";
 
 const ProfileEditPage = () => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
@@ -15,6 +16,7 @@ const ProfileEditPage = () => {
   const [userInfo] = useState(JSON.parse(localStorage.getItem("userInfo")));
   const [credentials, setCredentials] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [updateLoading, setUpdateLoading] = useState(false);
   const [profileDetails, setProfileDetails] = useState();
   const [token, setToken] = useState();
   const [profilePicture, setProfilePicture] = useState();
@@ -79,6 +81,8 @@ const ProfileEditPage = () => {
   const editClientProfileHandler = async (e) => {
     e.preventDefault();
 
+    setUpdateLoading(true);
+
     profileDetails.profilePicture = profilePicture;
     profileDetails.firstName = firstName;
     profileDetails.lastName = lastName;
@@ -95,12 +99,16 @@ const ProfileEditPage = () => {
 
       localStorage.setItem("userInfo", JSON.stringify(userInfo));
 
+      setUpdateLoading(false);
+
       getProfileDetails();
     });
   };
 
   const editTradieProfileHandler = async (e) => {
     e.preventDefault();
+
+    setUpdateLoading(true);
 
     delete profileDetails._id;
 
@@ -127,6 +135,8 @@ const ProfileEditPage = () => {
       userInfo.contactNumber = contactNumber;
 
       localStorage.setItem("userInfo", JSON.stringify(userInfo));
+
+      setUpdateLoading(false);
 
       getProfileDetails();
     });
@@ -188,7 +198,9 @@ const ProfileEditPage = () => {
     <div>
       {!isMobile && <Header />}
       {loading ? (
-        <div>Loading</div>
+        <div className="loading loading-page">
+          <TailSpin stroke="#1f1f23" speed={1} />
+        </div>
       ) : (
         <div className="profile-edit">
           {isMobile ? (
@@ -218,7 +230,11 @@ const ProfileEditPage = () => {
                 />
                 <div className="profile-edit-pic-btns">
                   <label
-                    className="profile-edit-update-btn profile-edit-pic-btn pointer"
+                    className={
+                      updateLoading
+                        ? "profile-edit-update-btn profile-edit-pic-btn pointer link-disabled"
+                        : "profile-edit-update-btn profile-edit-pic-btn pointer"
+                    }
                     htmlFor="imageUpload"
                   >
                     Upload Picture
@@ -234,6 +250,7 @@ const ProfileEditPage = () => {
                     className="profile-edit-pic-btn profile-edit-remove-btn pointer"
                     onClick={() => setProfilePicture("")}
                     type="button"
+                    disabled={updateLoading}
                   >
                     Remove picture
                   </button>
@@ -247,6 +264,7 @@ const ProfileEditPage = () => {
                     className="profile-edit-half-input profile-edit-input"
                     defaultValue={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
+                    disabled={updateLoading}
                   />
                 </div>
                 <div className="profile-edit-half">
@@ -256,6 +274,7 @@ const ProfileEditPage = () => {
                     className="profile-edit-half-input profile-edit-input"
                     defaultValue={lastName}
                     onChange={(e) => setLastName(e.target.value)}
+                    disabled={updateLoading}
                   />
                 </div>
               </div>
@@ -268,6 +287,7 @@ const ProfileEditPage = () => {
                     placeholder="+61 000 000 000"
                     defaultValue={contactNumber}
                     onChange={(e) => setContactNumber(e.target.value)}
+                    disabled={updateLoading}
                   />
                 </div>
                 <div className="profile-edit-half">
@@ -280,6 +300,7 @@ const ProfileEditPage = () => {
                     placeholder="@email.com"
                     defaultValue={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    disabled={updateLoading}
                   />
                 </div>
               </div>
@@ -291,6 +312,7 @@ const ProfileEditPage = () => {
                     className="profile-edit-half-input profile-edit-input"
                     defaultValue={city}
                     onChange={(e) => setCity(e.target.value)}
+                    disabled={updateLoading}
                   />
                 </div>
                 <div className="profile-edit-half">
@@ -300,6 +322,7 @@ const ProfileEditPage = () => {
                     className="profile-edit-half-input profile-edit-input"
                     defaultValue={state}
                     onChange={(e) => setState(e.target.value)}
+                    disabled={updateLoading}
                   />
                 </div>
               </div>
@@ -311,10 +334,26 @@ const ProfileEditPage = () => {
                   placeholder="0000"
                   defaultValue={postalCode}
                   onChange={(e) => setPostalCode(e.target.value)}
+                  disabled={updateLoading}
                 />
               </div>
-              <button type="submit" className="profile-edit-btn pointer">
-                Save
+              <button
+                type="submit"
+                className={
+                  updateLoading
+                    ? "profile-edit-btn"
+                    : "profile-edit-btn pointer"
+                }
+              >
+                {updateLoading ? (
+                  <TailSpin
+                    stroke="#ffffff"
+                    speed={1}
+                    className="icon-bg-black"
+                  />
+                ) : (
+                  "Save"
+                )}
               </button>
             </form>
           ) : (

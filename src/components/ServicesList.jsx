@@ -70,7 +70,7 @@ const ServicesList = ({ content, services, bookmarks }) => {
     }
   }, []);
 
-  if (services && bookmarks) {
+  if (services || bookmarks) {
     return (
       <div className="services">
         <div
@@ -133,13 +133,14 @@ const ServicesList = ({ content, services, bookmarks }) => {
                       bookmarks={bookmarks}
                     />
                   ))
-              : content === "search" && seeMore && !isMobile
-              ? searchServices && !showMore
+              : content === "search"
+              ? searchServices && !showMore && seeMore && !isMobile
                 ? searchServices.map((service) => (
                     <Card
                       width={content === "search" ? "search" : ""}
                       service={service}
                       key={service._id}
+                      bookmarks={bookmarks && bookmarks}
                     />
                   ))
                 : services &&
@@ -148,6 +149,7 @@ const ServicesList = ({ content, services, bookmarks }) => {
                       width={content === "search" ? "search" : ""}
                       service={service}
                       key={service._id}
+                      bookmarks={bookmarks && bookmarks}
                     />
                   ))
               : services &&

@@ -139,6 +139,24 @@ export const bookmarkJob = async (
   }
 };
 
+export const unBookmarkJob = async (bookmarkedJobId, token) => {
+  try {
+    console.log({ bookmarkedJobId, token });
+    await axios.post(
+      `http://47.130.91.115/api/Client/UnBookmarkJob?bookmarkedJobId=${bookmarkedJobId}`,
+      "",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  } catch (error) {
+    return error;
+  }
+};
+
 export const getJobsByStatusClient = async (userID, status, token) => {
   try {
     console.log({ userID, status, token });
@@ -159,12 +177,65 @@ export const getJobsByStatusClient = async (userID, status, token) => {
   }
 };
 
-export const unBookmarkJob = async (bookmarkedJobId, token) => {
+export const updateJobStatusClient = async (
+  tradieID,
+  jobID,
+  status,
+  jobActionDate,
+  token
+) => {
   try {
-    console.log({ bookmarkedJobId, token });
-    const { res } = await axios.post(
-      `http://47.130.91.115/api/Client/UnBookmarkJob?bookmarkedJobId=${bookmarkedJobId}`,
-      "",
+    console.log({ tradieID, jobID, status, jobActionDate, token });
+    const res = await axios.put(
+      "http://47.130.91.115/api/Client/UpdateJobStatus",
+      { tradieID, jobID, status, jobActionDate },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return res;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const addRating = async (
+  tradieId,
+  clientId,
+  jobId,
+  jobAdId,
+  rating,
+  clientLocation,
+  ratingDescription,
+  token
+) => {
+  try {
+    console.log({
+      tradieId,
+      clientId,
+      jobId,
+      jobAdId,
+      rating,
+      clientLocation,
+      ratingDescription,
+      token,
+    });
+    const res = await axios.post(
+      "http://47.130.91.115/api/Client/AddRating",
+      {
+        _id: "",
+        tradieId,
+        clientId,
+        jobId,
+        jobAdId,
+        rating,
+        clientLocation,
+        ratingDescription,
+      },
       {
         headers: {
           "Content-Type": "application/json",

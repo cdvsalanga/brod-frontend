@@ -52,15 +52,15 @@ const Card = ({ width, service, bookmarks }) => {
   };
 
   useEffect(() => {
-    if (service && bookmarks) {
-      console.log(service);
+    if (service || bookmarks) {
+      console.log({ service, bookmarks });
       if (width === "favorites") {
         service.service.clientReviews.forEach((review) => {
-          setTotalStarRating(review.starRating + totalStarRating);
+          setTotalStarRating(review.rating + totalStarRating);
         });
       } else {
         service.clientReviews.forEach((review) => {
-          setTotalStarRating(review.starRating + totalStarRating);
+          setTotalStarRating(review.rating + totalStarRating);
         });
       }
       getTradieDetails();
@@ -175,10 +175,10 @@ const Card = ({ width, service, bookmarks }) => {
             </span>
             <span>
               {" "}
-              ({service && service.service.clientReviews.length}
-              {service && service.service.clientReviews.length < 2
+              ({service && service.service.clientReviews.length - 1}
+              {service && service.service.clientReviews.length < 3
                 ? " review"
-                : service.service.clientReviews.length === 0
+                : service.service.clientReviews.length === 1
                 ? " no review"
                 : " reviews"}
               )
@@ -191,6 +191,7 @@ const Card = ({ width, service, bookmarks }) => {
                 ? "hr"
                 : "day"}
             </div>
+
             <Heart
               fill={favorite ? "#1F1F23" : "none"}
               color={favorite ? "#1F1F23" : "#D9D9D9"}
@@ -228,10 +229,10 @@ const Card = ({ width, service, bookmarks }) => {
             </span>
             <span>
               {" "}
-              ({service && service.clientReviews.length}
-              {service && service.clientReviews.length < 2
+              ({service && service.clientReviews.length - 1}
+              {service && service.clientReviews.length < 3
                 ? " review"
-                : service.clientReviews.length === 0
+                : service.clientReviews.length === 1
                 ? " no review"
                 : " reviews"}
               )

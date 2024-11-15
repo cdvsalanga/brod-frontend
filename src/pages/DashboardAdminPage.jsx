@@ -15,6 +15,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { getTradies } from "../action/adminActions";
 import { useMediaQuery } from "react-responsive";
+import { TailSpin } from "react-loading-icons";
 
 const DashboardAdminPage = () => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
@@ -109,7 +110,9 @@ const DashboardAdminPage = () => {
     <>
       <Header headerText={"Admin Dashboard"} />
       {loading ? (
-        <div>Loading</div>
+        <div className="loading loading-page">
+          <TailSpin stroke="#1f1f23" speed={1} />
+        </div>
       ) : isMobile ? (
         <div className="admin-dashboard">
           <div className="flex-center gap-24 mb-12">

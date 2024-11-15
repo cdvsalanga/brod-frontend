@@ -4,6 +4,7 @@ import DashboardContentItem from "./DashboardContentItem";
 import { Link } from "react-router-dom";
 import { getJobsByStatusTradie } from "../action/tradieActions";
 import { useMediaQuery } from "react-responsive";
+import { TailSpin } from "react-loading-icons";
 
 const DashboardContents = ({ userInfo }) => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
@@ -37,7 +38,9 @@ const DashboardContents = ({ userInfo }) => {
   }, []);
 
   return loading ? (
-    <div>Loading</div>
+    <div className="loading loading-page">
+      <TailSpin stroke="#1f1f23" speed={1} />
+    </div>
   ) : (
     <div className="dashboard-contents">
       <div className="mb-16">

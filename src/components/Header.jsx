@@ -23,8 +23,6 @@ import {
   getNotificationsNoUpdate,
 } from "../action/userActions";
 import { TailSpin } from "react-loading-icons";
-import Inbox from "./Inbox";
-import Chat from "./Chat";
 
 const Header = ({ notHidden = true, headerText }) => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });

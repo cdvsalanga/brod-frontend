@@ -121,11 +121,11 @@ export const bookmarkJob = async (
         descriptionServiceNeeded,
         clientContactNumber,
         clientPostCode,
-        jobActionDate,
         startDate: "",
         completionDate: "",
         clientBudget: 0,
         budgetCurrency: "",
+        jobActionDate,
       },
       {
         headers: {
@@ -186,7 +186,7 @@ export const updateJobStatusClient = async (
 ) => {
   try {
     console.log({ tradieID, jobID, status, jobActionDate, token });
-    const res = await axios.put(
+    await axios.put(
       "http://47.130.91.115/api/Client/UpdateJobStatus",
       { tradieID, jobID, status, jobActionDate },
       {
@@ -196,8 +196,6 @@ export const updateJobStatusClient = async (
         },
       }
     );
-
-    return res;
   } catch (error) {
     return error;
   }
@@ -224,7 +222,7 @@ export const addRating = async (
       ratingDescription,
       token,
     });
-    const res = await axios.post(
+    await axios.post(
       "http://47.130.91.115/api/Client/AddRating",
       {
         _id: "",
@@ -243,8 +241,6 @@ export const addRating = async (
         },
       }
     );
-
-    return res;
   } catch (error) {
     return error;
   }

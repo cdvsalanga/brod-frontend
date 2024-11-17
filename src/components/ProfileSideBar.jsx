@@ -89,10 +89,10 @@ const ProfileSideBar = ({ role, profile }) => {
               Edit profile
             </button>
           </Link>
-          <button className="mb-12 flex-center profile-btn profile-trade">
+          {/* <button className="mb-12 flex-center profile-btn profile-trade">
             <Briefcase color="#FFFFFF" className="profile-trade" />
             Become a tradesperson
-          </button>
+          </button> */}
         </div>
         {/* <div className="flex-center flex-between gray-bg">
           <div className="profile-review-text profile-font-w-500 gray-bg">
@@ -128,7 +128,7 @@ const ProfileSideBar = ({ role, profile }) => {
                 className="profile-img"
               />
             )}
-            <div className="profile-status gray-bg">
+            {/* <div className="profile-status gray-bg">
               {profile.publishedAds > 0 ? (
                 <div className="status-available flex-center mb-16">
                   <div className="green-dot" />
@@ -139,7 +139,7 @@ const ProfileSideBar = ({ role, profile }) => {
                   Not available for work
                 </div>
               )}
-              {/* <div className="profile-review flex-center gray-bg">
+              <div className="profile-review flex-center gray-bg">
                 <Star
                   width={20}
                   height={20}
@@ -151,8 +151,8 @@ const ProfileSideBar = ({ role, profile }) => {
                 <span className="profile-reviews gray-bg">
                   ({profile.clientReviews.length - 1} reviews)
                 </span>
-              </div> */}
-            </div>
+              </div>
+            </div> */}
           </div>
           <div className="gray-bg">
             <h1 className="profile-name gray-bg mb-8">
@@ -197,14 +197,28 @@ const ProfileSideBar = ({ role, profile }) => {
               <Mail color="#595959" className="gray-bg" />
               {profile.email}
             </div>
-            <div className="profile-contacts flex-center gray-bg mb-8">
-              <img width={24} height={24} src={Facebook} className="gray-bg" />
-              {profile.facebookAccount}
-            </div>
-            <div className="profile-contacts flex-center gray-bg">
-              <img width={24} height={24} src={Instagram} className="gray-bg" />
-              {profile.igAccount}
-            </div>
+            {profile.facebookAccount && (
+              <div className="profile-contacts flex-center gray-bg mb-8">
+                <img
+                  width={24}
+                  height={24}
+                  src={Facebook}
+                  className="gray-bg"
+                />
+                {profile.facebookAccount}
+              </div>
+            )}
+            {profile.igAccount && (
+              <div className="profile-contacts flex-center gray-bg">
+                <img
+                  width={24}
+                  height={24}
+                  src={Instagram}
+                  className="gray-bg"
+                />
+                {profile.igAccount}
+              </div>
+            )}
           </div>
         </div>
         <div className="gray-bg">
@@ -214,10 +228,10 @@ const ProfileSideBar = ({ role, profile }) => {
               Edit profile
             </button>
           </Link>
-          <button className="profile-btn profile-trade flex-center">
+          {/* <button className="profile-btn profile-trade flex-center">
             <UserRoundSearch color="#FFFFFF" className="icon-bg-black" />
             Switch to hiring someone
-          </button>
+          </button> */}
         </div>
       </div>
     );

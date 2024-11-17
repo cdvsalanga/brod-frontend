@@ -151,6 +151,7 @@
 
   .inbox-contents {
     width: 361px;
+    padding: 16px;
     margin: 20px auto;
     overflow: auto;
   }
@@ -183,7 +184,7 @@
 
   .inbox-messages {
     width: 100%;
-    height: calc(100vh - 174px);
+    height: calc(100vh - 150px);
     overflow: auto;
   }
 
@@ -389,14 +390,14 @@
 
   .inbox-messages {
     width: 100%;
-    height: calc(100vh - 190px);
+    height: calc(100vh - 230px);
     overflow: auto;
   }
 
   .inbox-message-input {
     border: 1px solid #d9d9d9;
     border-radius: 4px;
-    width: 581.44px;
+    width: 599px;
     height: 22px;
     padding: 12px 47.56px 12px 12px;
     font-size: 14px;
@@ -404,10 +405,9 @@
 
   .inbox-message-input-container {
     position: fixed;
-    right: 42px;
     bottom: 32px;
     z-index: 1;
-    width: 643px;
+    width: 661px;
   }
 
   .header-red-dot {

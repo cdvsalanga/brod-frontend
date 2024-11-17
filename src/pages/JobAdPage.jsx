@@ -35,6 +35,12 @@ const JobAdPage = () => {
           status,
           userInfo.token
         ).then((jobs) => {
+          if (jobs && jobs.status === 401) {
+            alert("Your session expired, please login again.");
+            localStorage.removeItem("userInfo");
+            navigate("/login");
+            return;
+          }
           console.log(jobs);
           setBookmarks(jobs);
           setLoading(false);

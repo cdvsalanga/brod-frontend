@@ -31,7 +31,7 @@ const ProfileEditPage = () => {
   const [proximityToWork, setProximityToWork] = useState("");
   const [businessAddress, setBusinessAddress] = useState();
   const [aboutMeDescription, setAboutMeDescription] = useState();
-  const [services, setServices] = useState();
+  const [services, setServices] = useState([]);
   const [website, setWebsite] = useState();
   const [facebookAccount, setFacebookAccount] = useState();
   const [igAccount, setIgAccount] = useState();
@@ -94,14 +94,18 @@ const ProfileEditPage = () => {
     profileDetails.callOutRate = "";
     profileDetails.businessAddress = "";
 
-    await updateClientProfile(profileDetails, token).then(() => {
+    await updateClientProfile(profileDetails, token).then((res) => {
+      if (res && res.status === 401) {
+        alert("Your session expired, please login again.");
+        localStorage.removeItem("userInfo");
+        navigate("/login");
+        return;
+      }
       userInfo.profilePicture = profilePicture;
 
       localStorage.setItem("userInfo", JSON.stringify(userInfo));
 
-      setUpdateLoading(false);
-
-      getProfileDetails();
+      window.location.reload();
     });
   };
 
@@ -128,7 +132,13 @@ const ProfileEditPage = () => {
     profileDetails.igAccount = igAccount;
     profileDetails.certificationFilesUploaded = certificationFilesUploaded;
 
-    await updateTradieProfile(profileDetails, token).then(() => {
+    await updateTradieProfile(profileDetails, token).then((res) => {
+      if (res && res.status === 401) {
+        alert("Your session expired, please login again.");
+        localStorage.removeItem("userInfo");
+        navigate("/login");
+        return;
+      }
       userInfo.profilePicture = profilePicture;
       userInfo.name = firstName + " " + lastName;
       userInfo.postalCode = postalCode;
@@ -136,9 +146,7 @@ const ProfileEditPage = () => {
 
       localStorage.setItem("userInfo", JSON.stringify(userInfo));
 
-      setUpdateLoading(false);
-
-      getProfileDetails();
+      window.location.reload();
     });
   };
 
@@ -192,6 +200,15 @@ const ProfileEditPage = () => {
     });
 
     setCredentials(uploaded);
+  };
+
+  const selectServiceHandler = (e) => {
+    const newServices = [...services];
+
+    if (!newServices.includes(e.target.value)) {
+      newServices.push(e.target.value);
+    }
+    setServices(newServices);
   };
 
   return (
@@ -341,7 +358,7 @@ const ProfileEditPage = () => {
                 type="submit"
                 className={
                   updateLoading
-                    ? "profile-edit-btn"
+                    ? "profile-edit-btn link-disabled"
                     : "profile-edit-btn pointer"
                 }
               >
@@ -400,6 +417,7 @@ const ProfileEditPage = () => {
                     className="profile-edit-half-input profile-edit-input"
                     defaultValue={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
+                    disabled={updateLoading}
                   />
                 </div>
                 <div className="profile-edit-half">
@@ -409,6 +427,7 @@ const ProfileEditPage = () => {
                     className="profile-edit-half-input profile-edit-input"
                     defaultValue={lastName}
                     onChange={(e) => setLastName(e.target.value)}
+                    disabled={updateLoading}
                   />
                 </div>
               </div>
@@ -421,6 +440,7 @@ const ProfileEditPage = () => {
                     placeholder="0000"
                     defaultValue={businessPostCode}
                     onChange={(e) => setBusinessPostCode(e.target.value)}
+                    disabled={updateLoading}
                   />
                 </div>
                 <div className="profile-edit-half">
@@ -429,11 +449,16 @@ const ProfileEditPage = () => {
                     defaultValue={proximityToWork}
                     className="profile-edit-select profile-edit-select-half profile-edit-input"
                     onChange={(e) => setProximityToWork(e.target.value)}
+                    disabled={updateLoading}
                   >
                     <option value={""} disabled hidden>
                       Select distance
                     </option>
-                    <option>Asd</option>
+                    <option value={"Can work within 1km"}>1km</option>
+                    <option value={"Can work within 5km"}>5km</option>
+                    <option value={"Can work within 10km"}>10km</option>
+                    <option value={"Can work within 25km"}>25km</option>
+                    <option value={"Can work within 50km"}>50km</option>
                   </select>
                 </div>
               </div>
@@ -447,6 +472,7 @@ const ProfileEditPage = () => {
                   className="profile-edit-full-input profile-edit-input"
                   defaultValue={businessAddress}
                   onChange={(e) => setBusinessAddress(e.target.value)}
+                  disabled={updateLoading}
                 />
               </div>
               <div className="mb-32">
@@ -459,13 +485,180 @@ const ProfileEditPage = () => {
                   placeholder="Enter a short introduction and describe what you do."
                   defaultValue={aboutMeDescription}
                   onChange={(e) => setAboutMeDescription(e.target.value)}
+                  disabled={updateLoading}
                 />
               </div>
               <div className="mb-32">
                 <label className="block mb-12">Your Services</label>
-                <select className="profile-edit-select profile-edit-select-full profile-edit-input">
-                  <option>Select your service/s</option>
+
+                <select
+                  defaultValue={""}
+                  className="profile-edit-select profile-edit-select-full profile-edit-input mb-12"
+                  onChange={(e) => selectServiceHandler(e)}
+                  disabled={updateLoading}
+                >
+                  <option value={""} disabled hidden>
+                    Select your service/s
+                  </option>
+                  <option>Air Conditioning Installer / Supplier</option>
+                  <option>Antenna Installer / Supplier</option>
+                  <option>Appliance Installer</option>
+                  <option>Appliance Repairer</option>
+                  <option>Arborist</option>
+                  <option>Architect</option>
+                  <option>Asbestos Removal Expert</option>
+                  <option>Awning Installer / Supplier</option>
+                  <option>Balustrading Installer</option>
+                  <option>Bamboo Flooring Installer / Supplier</option>
+                  <option>Bath and Basin Resurfacing</option>
+                  <option>Bathroom Building / Renovation</option>
+                  <option>Blinds Installer / Supplier</option>
+                  <option>Bricklayer</option>
+                  <option>Builder</option>
+                  <option>Building Certifier</option>
+                  <option>Building Consultant</option>
+                  <option>Building Designer</option>
+                  <option>Building Inspector</option>
+                  <option>Building Surveyor</option>
+                  <option>Cabinet Maker</option>
+                  <option>Carpenter</option>
+                  <option>Carpet / Upholstery Cleaning</option>
+                  <option>Carpet Layer / Repairs</option>
+                  <option>Carport Builder</option>
+                  <option>Chimney Installer</option>
+                  <option>House Cleaning Services</option>
+                  <option>Commercial Cleaning Services</option>
+                  <option>Concrete Kerb Builder</option>
+                  <option>Concrete Resurfacer</option>
+                  <option>Concretor</option>
+                  <option>Curtain Installer / Supplier</option>
+                  <option>Custom Furniture Designer</option>
+                  <option>Damp Proofing Services</option>
+                  <option>Deck Builder</option>
+                  <option>Deep Cleaning</option>
+                  <option>Demolition Services</option>
+                  <option>Door Installer / Supplier</option>
+                  <option>Drafter</option>
+                  <option>Drains Installer / Maintenance</option>
+                  <option>Electrician</option>
+                  <option>Equipment Hire Supplier</option>
+                  <option>EV Charger Installation</option>
+                  <option>Excavation Services</option>
+                  <option>Renovation and Extensions Builder</option>
+                  <option>Fence Builder</option>
+                  <option>Floor Coating</option>
+                  <option>Floor Sanding and Polishing Services</option>
+                  <option>Fly Screen Installer / Supplier</option>
+                  <option>Frame and Truss Maintenance</option>
+                  <option>Removalist</option>
+                  <option>Garage Builder</option>
+                  <option>Garden Designer</option>
+                  <option>Gardener</option>
+                  <option>Gas Fitter</option>
+                  <option>Gate Insaller / Supplier</option>
+                  <option>Gazebo Builder / Supplier</option>
+                  <option>Glazier</option>
+                  <option>Glass Balustrade Installer / Supplier</option>
+                  <option>Gutter Installer / Maintenance / Supplier</option>
+                  <option>Handyman</option>
+                  <option>Heating System Installer / Supplier</option>
+                  <option>Hot Water System Installer / Supplier</option>
+                  <option>Hybrid Flooring</option>
+                  <option>IKEA Kitchen Installer</option>
+                  <option>Insulation Installer / Supplier</option>
+                  <option>Interior Decorator</option>
+                  <option>Interior Designer</option>
+                  <option>Irrigation System Expert</option>
+                  <option>Joiner</option>
+                  <option>Kitchen Designer</option>
+                  <option>Kitchen Building / Renovations</option>
+                  <option>Landscape Architect</option>
+                  <option>Landscaper</option>
+                  <option>Lawn and Turf Installer / Supplier</option>
+                  <option>Lawn Mowing Services</option>
+                  <option>Leak Detection</option>
+                  <option>Lighting Expert</option>
+                  <option>Locksmith</option>
+                  <option>Mattres Cleaning</option>
+                  <option>Painter</option>
+                  <option>Patio Builder</option>
+                  <option>Paving Supplier</option>
+                  <option>Paving</option>
+                  <option>Pergola Builder</option>
+                  <option>Pest Control Services</option>
+                  <option>Pest Inspector</option>
+                  <option>Plasterer</option>
+                  <option>Plumber</option>
+                  <option>Pool Builder</option>
+                  <option>Pool Fence Installer / Maintenance</option>
+                  <option>Pool Maintenance Services</option>
+                  <option>Pressure Cleaning Services</option>
+                  <option>Construction Project Manager</option>
+                  <option>Rainwater Tanks Installer / Supplier</option>
+                  <option>Renderer</option>
+                  <option>Reproduction Stone Supplier</option>
+                  <option>Retaining Wall Builder</option>
+                  <option>Roller Door Installer / Supplier</option>
+                  <option>Roofer</option>
+                  <option>Rubbish Removal Services</option>
+                  <option>Scaffolding Services</option>
+                  <option>Screen Enclosure Supplier</option>
+                  <option>Security Screen Installer / Supplier</option>
+                  <option>Security Systems Specialist</option>
+                  <option>Shade and Sail Installer / Supplier</option>
+                  <option>Shed Builder / Supplier</option>
+                  <option>Shopfitter</option>
+                  <option>Shower Screen Installer / Supplier</option>
+                  <option>Skip and Truck Hire Services</option>
+                  <option>Skylight Installer / Supplier</option>
+                  <option>Soil Testing</option>
+                  <option>Solar Power Installer / Maintenance</option>
+                  <option>Splashback Intaller / Supplier</option>
+                  <option>Stonemason</option>
+                  <option>Storage Services</option>
+                  <option>Structural Engineer</option>
+                  <option>Surveyor</option>
+                  <option>Tile Supplier</option>
+                  <option>Tiler</option>
+                  <option>Timber Floor Installation / Repairs</option>
+                  <option>Town Planner</option>
+                  <option>Tree Feller</option>
+                  <option>Underfloor Heating Installer / Supplier</option>
+                  <option>Underpinning Services</option>
+                  <option>Upholstery Repairer</option>
+                  <option>Ventilation System Specialists</option>
+                  <option>Vinyl and Laminate Installer</option>
+                  <option>Wallpaper Installer / Supplier</option>
+                  <option>Wardrobe Builder</option>
+                  <option>Waterproofer</option>
+                  <option>Window Cleaning Services</option>
+                  <option>Window Installer / Repairs</option>
+                  <option>Window Shutter Installer / Supplier</option>
+                  <option>Window Tinting Services</option>
                 </select>
+                <div className="profile-edit-services">
+                  {services.length > 0 &&
+                    services.map((service, i) => (
+                      <span
+                        key={i}
+                        className="profile-edit-service flex-center gap-4"
+                      >
+                        {service}
+                        {i !== 0 && (
+                          <X
+                            width={20}
+                            height={20}
+                            className="profile-edit-service-remove pointer"
+                            onClick={() => {
+                              const newServices = [...services];
+                              newServices.splice(i, 1);
+                              setServices(newServices);
+                            }}
+                          />
+                        )}
+                      </span>
+                    ))}
+                </div>
               </div>
               <div className={!isMobile && "flex-between mb-32"}>
                 <div className="profile-edit-half">
@@ -475,6 +668,7 @@ const ProfileEditPage = () => {
                     className="profile-edit-half-input profile-edit-input"
                     defaultValue={contactNumber}
                     onChange={(e) => setContactNumber(e.target.value)}
+                    disabled={updateLoading}
                   />
                 </div>
                 <div className="profile-edit-half">
@@ -488,6 +682,7 @@ const ProfileEditPage = () => {
                     placeholder="@email.com"
                     defaultValue={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    disabled={updateLoading}
                   />
                 </div>
               </div>
@@ -503,6 +698,7 @@ const ProfileEditPage = () => {
                     placeholder="www.website.com"
                     defaultValue={website}
                     onChange={(e) => setWebsite(e.target.value)}
+                    disabled={updateLoading}
                   />
                 </div>
                 <div className="profile-edit-half">
@@ -512,6 +708,7 @@ const ProfileEditPage = () => {
                     className="profile-edit-half-input profile-edit-input"
                     defaultValue={facebookAccount}
                     onChange={(e) => setFacebookAccount(e.target.value)}
+                    disabled={updateLoading}
                   />
                 </div>
               </div>
@@ -523,6 +720,7 @@ const ProfileEditPage = () => {
                     className="profile-edit-half-input profile-edit-input"
                     defaultValue={igAccount}
                     onChange={(e) => setIgAccount(e.target.value)}
+                    disabled={updateLoading}
                   />
                 </div>
               </div>
@@ -560,8 +758,23 @@ const ProfileEditPage = () => {
                 </div>
               </div>
 
-              <button type="submit" className="profile-edit-btn pointer">
-                Save
+              <button
+                type="submit"
+                className={
+                  updateLoading
+                    ? "profile-edit-btn link-disabled"
+                    : "profile-edit-btn pointer"
+                }
+              >
+                {updateLoading ? (
+                  <TailSpin
+                    stroke="#ffffff"
+                    speed={1}
+                    className="icon-bg-black"
+                  />
+                ) : (
+                  "Save"
+                )}
               </button>
             </form>
           )}

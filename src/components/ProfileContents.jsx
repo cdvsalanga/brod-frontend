@@ -29,21 +29,34 @@ const ProfileContents = ({ role, userInfo, profile }) => {
 
   const getJobAdDataTradie = async () => {
     await getPublishedAds(userId, token).then((res) => {
-      if (res.message === "Request failed with status code 401") {
+      if (res && res.status === 401) {
+        alert("Your session expired, please login again.");
         localStorage.removeItem("userInfo");
         navigate("/login");
-      } else {
-        setPublishedData(res);
+        return;
       }
+      setPublishedData(res);
     });
 
     await getUnPublishedAds(userId, token).then((res) => {
+      if (res && res.status === 401) {
+        alert("Your session expired, please login again.");
+        localStorage.removeItem("userInfo");
+        navigate("/login");
+        return;
+      }
       setUnpublishedData(res);
     });
 
     const status = "Completed";
 
     await getJobsByStatusTradie(userId, status, token).then((res) => {
+      if (res && res.status === 401) {
+        alert("Your session expired, please login again.");
+        localStorage.removeItem("userInfo");
+        navigate("/login");
+        return;
+      }
       setCompletedJobs(res);
     });
 
@@ -54,20 +67,25 @@ const ProfileContents = ({ role, userInfo, profile }) => {
     let status;
     await getJobsByStatusClient(userId, (status = "In Progress"), token).then(
       (res) => {
-        if (res.message === "Request failed with status code 401") {
-          if (confirm("Your session expired, please login again.")) {
-            localStorage.removeItem("userInfo");
-            navigate("/login");
-          }
-        } else {
-          setInProgressJobs(res);
-          console.log(res);
+        if (res && res.status === 401) {
+          alert("Your session expired, please login again.");
+          localStorage.removeItem("userInfo");
+          navigate("/login");
+          return;
         }
+        console.log(res);
+        setInProgressJobs(res);
       }
     );
 
     await getJobsByStatusClient(userId, (status = "Pending"), token).then(
       (res) => {
+        if (res && res.status === 401) {
+          alert("Your session expired, please login again.");
+          localStorage.removeItem("userInfo");
+          navigate("/login");
+          return;
+        }
         setPendingJobs(res);
         console.log(res);
       }
@@ -75,6 +93,12 @@ const ProfileContents = ({ role, userInfo, profile }) => {
 
     await getJobsByStatusClient(userId, (status = "Completed"), token).then(
       (res) => {
+        if (res && res.status === 401) {
+          alert("Your session expired, please login again.");
+          localStorage.removeItem("userInfo");
+          navigate("/login");
+          return;
+        }
         setCompletedJobs(res);
         console.log(res);
       }
@@ -82,6 +106,12 @@ const ProfileContents = ({ role, userInfo, profile }) => {
 
     await getJobsByStatusClient(userId, (status = "Bookmarked"), token).then(
       (res) => {
+        if (res && res.status === 401) {
+          alert("Your session expired, please login again.");
+          localStorage.removeItem("userInfo");
+          navigate("/login");
+          return;
+        }
         setBookmarkedJobs(res);
         console.log(res);
       }

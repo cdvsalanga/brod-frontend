@@ -23,6 +23,12 @@ const FavoritesPage = () => {
     setLoading(true);
     await getJobsByStatusClient(userInfo.userId, status, userInfo.token).then(
       async (jobs) => {
+        if (jobs && jobs.status === 401) {
+          alert("Your session expired, please login again.");
+          localStorage.removeItem("userInfo");
+          navigate("/login");
+          return;
+        }
         console.log(jobs);
         setBookmarks(jobs);
 

@@ -108,8 +108,8 @@ const ServicesList = ({ content, services, bookmarks }) => {
                 recommendedServices.map((service) => (
                   <Card
                     width={content === "search" ? "search" : ""}
-                    service={service}
-                    key={service._id}
+                    service={service && service}
+                    key={service && service._id}
                     bookmarks={bookmarks}
                   />
                 ))
@@ -119,8 +119,8 @@ const ServicesList = ({ content, services, bookmarks }) => {
                   nearLimit.map((service) => (
                     <Card
                       width={content === "search" ? "search" : ""}
-                      service={service}
-                      key={service._id}
+                      service={service && service}
+                      key={service && service._id}
                       bookmarks={bookmarks}
                     />
                   ))
@@ -128,8 +128,8 @@ const ServicesList = ({ content, services, bookmarks }) => {
                   nearServices.map((service) => (
                     <Card
                       width={content === "search" ? "search" : ""}
-                      service={service}
-                      key={service._id}
+                      service={service && service}
+                      key={service && service._id}
                       bookmarks={bookmarks}
                     />
                   ))
@@ -138,8 +138,8 @@ const ServicesList = ({ content, services, bookmarks }) => {
                 ? searchServices.map((service) => (
                     <Card
                       width={content === "search" ? "search" : ""}
-                      service={service}
-                      key={service._id}
+                      service={service && service}
+                      key={service && service._id}
                       bookmarks={bookmarks && bookmarks}
                     />
                   ))
@@ -147,8 +147,8 @@ const ServicesList = ({ content, services, bookmarks }) => {
                   services.map((service) => (
                     <Card
                       width={content === "search" ? "search" : ""}
-                      service={service}
-                      key={service._id}
+                      service={service && service}
+                      key={service && service._id}
                       bookmarks={bookmarks && bookmarks}
                     />
                   ))
@@ -162,8 +162,8 @@ const ServicesList = ({ content, services, bookmarks }) => {
                         ? "favorites"
                         : ""
                     }
-                    service={service}
-                    key={service.service._id}
+                    service={service && service}
+                    key={service && service.service._id}
                     bookmarks={bookmarks}
                   />
                 ))}

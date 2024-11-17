@@ -34,12 +34,29 @@ const LoginBox = () => {
           (userInfo.name = res.firstName + " " + res.lastName),
           (userInfo.status = res.status),
           (userInfo.postalCode = res.postalCode),
+          (userInfo.businessPostCode = res.businessPostCode),
           (userInfo.contactNumber = res.contactNumber),
           (userInfo.profilePicture = res.profilePicture)
         );
         localStorage.setItem("userInfo", JSON.stringify(userInfo));
         setLoading(false);
-
+        if (res.isSuspended) {
+          alert(
+            `You are suspended for ${res.weeksSuspended} ${
+              res.weeksSuspended === 1 ? "week" : "weeks"
+            }. Please contact us if you have concerns.`
+          );
+          localStorage.removeItem("userInfo");
+          navigate("/");
+          return;
+        } else if (res.status === "Declined") {
+          alert(
+            `You are declined by the admin. Please contact us if you have concerns.`
+          );
+          localStorage.removeItem("userInfo");
+          navigate("/");
+          return;
+        }
         if (res.role === "Admin") {
           navigate("/admin");
         } else if (res.role === "Tradie") {

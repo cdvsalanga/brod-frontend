@@ -20,12 +20,24 @@ const DashboardContents = ({ userInfo }) => {
     let status;
     await getJobsByStatusTradie(userId, (status = "In Progress"), token).then(
       (res) => {
+        if (res && res.status === 401) {
+          alert("Your session expired, please login again.");
+          localStorage.removeItem("userInfo");
+          navigate("/login");
+          return;
+        }
         setInProgressJobs(res);
       }
     );
 
     await getJobsByStatusTradie(userId, (status = "Pending"), token).then(
       (res) => {
+        if (res && res.status === 401) {
+          alert("Your session expired, please login again.");
+          localStorage.removeItem("userInfo");
+          navigate("/login");
+          return;
+        }
         setPendingOffers(res);
       }
     );

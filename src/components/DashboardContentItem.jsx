@@ -12,10 +12,14 @@ import React, { useState } from "react";
 import "../styles/DashboardTradie.css";
 import { updateJobStatusTradie } from "../action/tradieActions";
 import { useMediaQuery } from "react-responsive";
+import dateFormat, { masks } from "dateformat";
+import { TailSpin } from "react-loading-icons";
+import { addNotification } from "../action/userActions";
 
 const DashboardContentItem = ({ item, data, userInfo }) => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
 
+  const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showBtns, setShowBtns] = useState(false);
   const [jobModal, setJobModal] = useState();
@@ -26,30 +30,56 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
 
   const updateJobStatusHandler = async (job, status, e) => {
     e.stopPropagation();
-    const date = new Date();
-
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-
-    // This arrangement can be altered based on how we want the date's format to appear.
-    const currentDate = `${year}-${month}-${day}`;
-    console.log(currentDate);
+    setLoading(true);
+    const timeStamp = new Date().toISOString();
 
     await updateJobStatusTradie(
       tradieID,
       job._id,
       status,
-      currentDate,
+      timeStamp,
       token
-    ).then(() => {
-      window.location.reload();
+    ).then(async (res) => {
+      if (res && res.status === 401) {
+        alert("Your session expired, please login again.");
+        localStorage.removeItem("userInfo");
+        navigate("/login");
+        return;
+      }
+      let content = "";
+      if (status === "Cancelled" && job.status === "Pending") {
+        content = `${userInfo.name} declined your offer for job service ${job.jobPostAdTitle}.`;
+      } else if (status === "Cancelled" && job.status !== "Pending") {
+        content = `${userInfo.name} cancelled the job service ${job.jobPostAdTitle}.`;
+      } else if (status === "In Progress") {
+        content = `${userInfo.name} accepted your offer for job service ${job.jobPostAdTitle}.`;
+      } else if (status === "Completed") {
+        content = `${userInfo.name} completed the job service ${job.jobPostAdTitle}.`;
+      }
+      await addNotification(
+        job.clientID,
+        content,
+        userInfo.profilePicture,
+        timeStamp
+      ).then(() => {
+        window.location.reload();
+      });
     });
   };
 
   if (data) {
     console.log(data);
-    return (
+    return loading ? (
+      <div
+        className={
+          isMobile
+            ? "loading loading-page"
+            : "inbox-message-container loading-page"
+        }
+      >
+        <TailSpin stroke="#1f1f23" speed={1} />
+      </div>
+    ) : (
       <>
         {data.map((job) => (
           <div
@@ -76,7 +106,9 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
                 </div>
                 <div>
                   {item === "job" ? "Target completed on" : "Target start date"}{" "}
-                  <span className="dashboard-item-date">{job.startDate}</span>
+                  <span className="dashboard-item-date">
+                    {dateFormat(job.startDate, "mmmm d, yyyy")}
+                  </span>
                 </div>
               </div>
               <div className="dashboard-item-details mb-12">
@@ -116,7 +148,12 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
               />
             ) : item === "job" ? (
               <div className="flex-between">
-                <button className="dashboard-item-btn dashboard-item-cancel flex-center">
+                <button
+                  className="dashboard-item-btn dashboard-item-cancel flex-center pointer"
+                  onClick={(e) =>
+                    updateJobStatusHandler(job, (status = "Cancelled"), e)
+                  }
+                >
                   <CircleX color="#820014" />
                   Cancel job
                 </button>
@@ -137,7 +174,12 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
               </div>
             ) : (
               <div className="flex-end gap-16">
-                <button className="dashboard-item-btn dashboard-item-decline flex-center">
+                <button
+                  className="dashboard-item-btn dashboard-item-decline flex-center pointer"
+                  onClick={(e) =>
+                    updateJobStatusHandler(job, (status = "Cancelled"), e)
+                  }
+                >
                   <CircleX width={20} height={20} color="#820014" />
                   Decline
                 </button>
@@ -162,22 +204,42 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
                 <div className="dashboard-item-btns">
                   {item === "job" ? (
                     <div>
-                      <button className="dashboard-btn-mobile dashboard-btn-mobile-cancel flex-center pointer">
+                      <button
+                        className="dashboard-btn-mobile dashboard-btn-mobile-cancel flex-center pointer"
+                        onClick={(e) =>
+                          updateJobStatusHandler(job, (status = "Cancelled"), e)
+                        }
+                      >
                         <CircleX width={28} height={28} />
                         Cancel job
                       </button>
-                      <button className="dashboard-btn-mobile flex-center pointer">
+                      <button
+                        className="dashboard-btn-mobile flex-center pointer"
+                        onClick={(e) =>
+                          updateJobStatusHandler(job, (status = "Completed"), e)
+                        }
+                      >
                         <Check width={28} height={28} color="#8C8C8C" />
                         Mark as completed
                       </button>
                     </div>
                   ) : (
                     <div>
-                      <button className="dashboard-btn-mobile dashboard-btn-mobile-cancel flex-center pointer">
+                      <button
+                        className="dashboard-btn-mobile dashboard-btn-mobile-cancel flex-center pointer"
+                        onClick={(e) =>
+                          updateJobStatusHandler(job, (status = "Cancelled"), e)
+                        }
+                      >
                         <CircleX width={28} height={28} />
                         Decline
                       </button>
-                      <button className="dashboard-btn-mobile flex-center pointer">
+                      <button
+                        className="dashboard-btn-mobile flex-center pointer"
+                        onClick={(e) =>
+                          updateJobStatusHandler(job, (status = "Completed"), e)
+                        }
+                      >
                         <Check width={28} height={28} color="#8C8C8C" />
                         Accept offer
                       </button>
@@ -262,11 +324,29 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
                       isMobile ? "dashboard-modal-btns" : "flex-end gap-16"
                     }
                   >
-                    <button className="dashboard-item-btn dashboard-item-cancel flex-center">
+                    <button
+                      className="dashboard-item-btn dashboard-item-cancel flex-center"
+                      onClick={(e) =>
+                        updateJobStatusHandler(
+                          jobModal,
+                          (status = "Cancelled"),
+                          e
+                        )
+                      }
+                    >
                       <CircleX color="#820014" />
                       Cancel job
                     </button>
-                    <button className="dashboard-item-btn dashboard-item-complete flex-center pointer">
+                    <button
+                      className="dashboard-item-btn dashboard-item-complete flex-center pointer"
+                      onClick={(e) =>
+                        updateJobStatusHandler(
+                          jobModal,
+                          (status = "Completed"),
+                          e
+                        )
+                      }
+                    >
                       <Check
                         width={20}
                         height={20}
@@ -282,7 +362,16 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
                       isMobile ? "dashboard-modal-btns" : "flex-end gap-16"
                     }
                   >
-                    <button className="dashboard-item-btn dashboard-item-decline flex-center">
+                    <button
+                      className="dashboard-item-btn dashboard-item-decline flex-center pointer"
+                      onClick={(e) =>
+                        updateJobStatusHandler(
+                          jobModal,
+                          (status = "Cancelled"),
+                          e
+                        )
+                      }
+                    >
                       <CircleX width={20} height={20} color="#820014" />
                       Decline
                     </button>

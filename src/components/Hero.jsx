@@ -71,13 +71,21 @@ const Hero = () => {
             </div>
             <div className="hero-interact-content">
               <div className="text-1">Enter your business postcode</div>
-              <form className="search">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  navigate("/signup?role=tradesperson");
+                }}
+                className="search"
+              >
                 <input
                   type="text"
                   className="search-bar location-bar"
                   placeholder="(e.g., 4000)"
                 />
-                <button className="search-btn">Get Started</button>
+                <button type="submit" className="search-btn">
+                  Get Started
+                </button>
               </form>
               <div className="text-2">
                 Are you a skilled trade professional looking to expand your

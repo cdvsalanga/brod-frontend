@@ -7,14 +7,20 @@ import {
   emailOtp,
   emailVerifyOtp,
   getUserDetails,
+  googleLoginClient,
+  googleLoginTradie,
   signup,
   smsOtp,
   smsVerifyOtp,
 } from "../action/userActions";
 import ActiveRadio from "../assets/icons/active-radio.svg";
 import OTPInput from "react-otp-input";
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
+import { TailSpin } from "react-loading-icons";
 
 const SignUpBox = ({ chosen }) => {
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState("signup");
   const [showPass, setShowPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
@@ -52,8 +58,11 @@ const SignUpBox = ({ chosen }) => {
       userDetails.then((res) => {
         setUserInfo(
           (userInfo.role = res.role),
+          (userInfo.name = res.firstName + " " + res.lastName),
           (userInfo.status = res.status),
           (userInfo.postalCode = res.postalCode),
+          (userInfo.businessPostCode = res.businessPostCode),
+          (userInfo.contactNumber = res.contactNumber),
           (userInfo.profilePicture = res.profilePicture)
         );
         localStorage.setItem("userInfo", JSON.stringify(userInfo));
@@ -66,7 +75,7 @@ const SignUpBox = ({ chosen }) => {
           } else {
             navigate(`/signup/${userInfo.userId}`);
           }
-        } else {
+        } else if (res.role === "Client") {
           navigate("/services");
         }
       });
@@ -105,19 +114,73 @@ const SignUpBox = ({ chosen }) => {
   const verifyOtpHandler = async (e) => {
     e.preventDefault();
 
-    if (otp !== "123456") {
-      setShowOtpError(true);
-    } else {
-      setShowOtpError(false);
-    }
+    const services = [typeofWork];
+
+    const timeStamp = new Date().toISOString();
 
     if (chosenOTP === "sms") {
-      await smsVerifyOtp(contactNumber, otp).then((res) => {
+      await smsVerifyOtp(contactNumber, otp).then(async (res) => {
         console.log(res);
+        if (res && res.status !== 200) {
+          setShowOtpError(true);
+        } else {
+          await signup(
+            email,
+            password,
+            role,
+            businessPostCode,
+            firstName,
+            lastName,
+            contactNumber,
+            city,
+            state,
+            postalCode,
+            registeredBusinessName,
+            australianBusinessNumber,
+            typeofWork,
+            services,
+            certificationFilesUploaded,
+            timeStamp
+          ).then((res) => {
+            if (res && res.status === 400) {
+              alert(res.message);
+              window.location.reload;
+            }
+            setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
+          });
+        }
       });
     } else {
-      await emailVerifyOtp(email, otp).then((res) => {
+      await emailVerifyOtp(email, otp).then(async (res) => {
         console.log(res);
+        if (res && res.status !== 200) {
+          setShowOtpError(true);
+        } else {
+          await signup(
+            email,
+            password,
+            role,
+            businessPostCode,
+            firstName,
+            lastName,
+            contactNumber,
+            city,
+            state,
+            postalCode,
+            registeredBusinessName,
+            australianBusinessNumber,
+            typeofWork,
+            services,
+            certificationFilesUploaded,
+            timeStamp
+          ).then((res) => {
+            if (res && res.status === 400) {
+              alert(res.message);
+              window.location.reload;
+            }
+            setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
+          });
+        }
       });
     }
     console.log(otp);
@@ -127,9 +190,6 @@ const SignUpBox = ({ chosen }) => {
     e.preventDefault();
 
     if (password === confirmPassword) {
-      // await signup(email, password, role);
-
-      // setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
       if (chosen === "client") {
         setPage("clientDetails");
       } else {
@@ -140,10 +200,55 @@ const SignUpBox = ({ chosen }) => {
     }
   };
 
+  const googleLoginHandler = async (res) => {
+    console.log(res);
+
+    setLoading(true);
+
+    if (chosen === "client") {
+      await googleLoginClient(
+        res.email,
+        res.email_verified.toString(),
+        res.name,
+        res.picture,
+        res.given_name,
+        res.family_name
+      ).then((data) => {
+        setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
+        setLoading(false);
+      });
+    } else {
+      await googleLoginTradie(
+        res.email,
+        res.email_verified.toString(),
+        res.name,
+        res.picture,
+        res.given_name,
+        res.family_name
+      ).then((data) => {
+        setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
+        setLoading(false);
+      });
+    }
+  };
+
   const detailsHandler = (e) => {
     e.preventDefault();
 
     setPage("otpChoose");
+  };
+
+  const resendHandler = async () => {
+    setLoading(true);
+    if (chosenOTP === "email") {
+      await emailOtp(email).then(() => {
+        setLoading(false);
+      });
+    } else {
+      await smsOtp(contactNumber).then(() => {
+        setLoading(false);
+      });
+    }
   };
 
   if (page === "signup") {
@@ -165,7 +270,7 @@ const SignUpBox = ({ chosen }) => {
             type="email"
             className="signup-input"
             onChange={(e) => setEmail(e.target.value)}
-            // required
+            required
           />
 
           <label className="signup-label">Password</label>
@@ -174,7 +279,7 @@ const SignUpBox = ({ chosen }) => {
               type={showPass ? "text" : "password"}
               className="signup-input"
               onChange={(e) => setPassword(e.target.value)}
-              // required
+              required
             />
             {showPass ? (
               <Eye onClick={() => setShowPass(false)} className="show-pass" />
@@ -189,7 +294,7 @@ const SignUpBox = ({ chosen }) => {
               type={showConfirmPass ? "text" : "password"}
               className="signup-input mb-24"
               onChange={(e) => setConfirmPassword(e.target.value)}
-              // required
+              required
             />
             {showConfirmPass ? (
               <Eye
@@ -218,6 +323,15 @@ const SignUpBox = ({ chosen }) => {
           <div>OR</div>
           <div className="signup-separator-line" />
         </div>
+        <GoogleLogin
+          onSuccess={(res) => {
+            console.log(res);
+            googleLoginHandler(jwtDecode(res.credential));
+          }}
+          onError={() => alert("Login Failed")}
+          disabled={loading}
+          text="Sign up with Google"
+        />
       </div>
     );
   } else if (page === "clientDetails") {
@@ -231,7 +345,7 @@ const SignUpBox = ({ chosen }) => {
               type="text"
               className="signup-info-input"
               onChange={(e) => setFirstName(e.target.value)}
-              // required
+              required
             />
           </div>
           <div className="signup-info-halfw">
@@ -240,7 +354,7 @@ const SignUpBox = ({ chosen }) => {
               type="text"
               className="signup-info-input"
               onChange={(e) => setLastName(e.target.value)}
-              // required
+              required
             />
           </div>
           <div className="signup-info-halfw">
@@ -250,7 +364,7 @@ const SignUpBox = ({ chosen }) => {
               className="signup-info-input"
               placeholder="+61 000 000 000"
               onChange={(e) => setContactNumber(e.target.value)}
-              // required
+              required
             />
           </div>
           <div className="signup-info-halfw">
@@ -259,7 +373,7 @@ const SignUpBox = ({ chosen }) => {
               type="text"
               className="signup-info-input"
               onChange={(e) => setCity(e.target.value)}
-              // required
+              required
             />
           </div>
           <div className="signup-info-halfw">
@@ -268,7 +382,7 @@ const SignUpBox = ({ chosen }) => {
               type="text"
               className="signup-info-input"
               onChange={(e) => setState(e.target.value)}
-              // required
+              required
             />
           </div>
           <div className="signup-info-halfw">
@@ -278,7 +392,7 @@ const SignUpBox = ({ chosen }) => {
               className="signup-info-input"
               placeholder="0000"
               onChange={(e) => setPostalCode(e.target.value)}
-              // required
+              required
             />
           </div>
           <button
@@ -309,7 +423,7 @@ const SignUpBox = ({ chosen }) => {
               className="signup-info-input"
               placeholder="0000"
               onChange={(e) => setBusinessPostCode(e.target.value)}
-              // required
+              required
             />
           </div>
           <div className="signup-info-halfw">
@@ -320,7 +434,7 @@ const SignUpBox = ({ chosen }) => {
               className="signup-info-input signup-info-select pointer"
               defaultValue={""}
               onChange={(e) => setTypeofWork(e.target.value)}
-              // required
+              required
             >
               <option value={""} disabled hidden>
                 Select
@@ -471,7 +585,7 @@ const SignUpBox = ({ chosen }) => {
               type="text"
               className="signup-info-input"
               onChange={(e) => setFirstName(e.target.value)}
-              // required
+              required
             />
           </div>
           <div className="signup-info-halfw">
@@ -480,7 +594,7 @@ const SignUpBox = ({ chosen }) => {
               type="text"
               className="signup-info-input"
               onChange={(e) => setLastName(e.target.value)}
-              // required
+              required
             />
           </div>
           <div className="signup-info-halfw">
@@ -490,7 +604,7 @@ const SignUpBox = ({ chosen }) => {
               className="signup-info-input"
               placeholder="+61 000 000 000"
               onChange={(e) => setContactNumber(e.target.value)}
-              // required
+              required
             />
           </div>
           <div className="signup-info-halfw">
@@ -502,7 +616,7 @@ const SignUpBox = ({ chosen }) => {
               className="signup-info-input"
               placeholder="00000000000"
               onChange={(e) => setAustralianBusinessNumber(e.target.value)}
-              // required
+              required
             />
           </div>
           <div className="signup-info-maxw">
@@ -513,7 +627,7 @@ const SignUpBox = ({ chosen }) => {
               type="text"
               className="signup-info-input signup-info-input-maxw"
               onChange={(e) => setRegisteredBusinessName(e.target.value)}
-              // required
+              required
             />
           </div>
           <div className="signup-info-maxw">
@@ -624,8 +738,10 @@ const SignUpBox = ({ chosen }) => {
               className="signup-otp-btn pointer"
               onClick={async () => {
                 await emailOtp(email).then((res) => {
+                  if (res && res.status !== 200) {
+                    setPage("otp");
+                  }
                   console.log(res);
-                  setPage("otp");
                 });
               }}
             >
@@ -637,8 +753,10 @@ const SignUpBox = ({ chosen }) => {
               className="signup-otp-btn pointer"
               onClick={async () => {
                 await smsOtp(contactNumber).then((res) => {
+                  if (res && res.status !== 200) {
+                    setPage("otp");
+                  }
                   console.log(res);
-                  setPage("otp");
                 });
               }}
             >
@@ -680,7 +798,13 @@ const SignUpBox = ({ chosen }) => {
         />
         <div className="mb-12">
           Didn't receive OTP code?{" "}
-          <span className="signup-otp-resend pointer">Resend Code</span>
+          {loading ? (
+            <TailSpin stroke="#1f1f23" speed={1} />
+          ) : (
+            <span className="signup-otp-resend pointer" onClick={resendHandler}>
+              Resend Code
+            </span>
+          )}
         </div>
         <button
           type="submit"

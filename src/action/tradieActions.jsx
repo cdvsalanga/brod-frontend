@@ -34,7 +34,7 @@ export const addTradieJobAd = async (
   isActive
 ) => {
   try {
-    console.log(
+    console.log({
       userID,
       businessPostcode,
       jobCategory,
@@ -46,8 +46,8 @@ export const addTradieJobAd = async (
       thumbnailImage,
       projectGallery,
       token,
-      isActive
-    );
+      isActive,
+    });
 
     await axios.post(
       "http://47.130.91.115/api/Tradie/add-tradie-job-ad",
@@ -222,7 +222,7 @@ export const updateJobStatusTradie = async (
 
     await axios.put(
       "http://47.130.91.115/api/Tradie/UpdateJobStatus",
-      { tradieID, jobID, status, jobActionDate, token },
+      { tradieID, jobID, status, jobActionDate },
       {
         headers: {
           "Content-Type": "application/json",

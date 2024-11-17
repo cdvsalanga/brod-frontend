@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "../styles/JobAd.css";
 import "../styles/Header.css";
 import DefaultProfilePicture from "../assets/images/default-profile-picture.png";
@@ -20,13 +20,21 @@ import Complete from "../assets/images/complete.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { hireTradie } from "../action/clientActions";
 import { useMediaQuery } from "react-responsive";
+import {
+  addNotification,
+  clientAddMessage,
+  getMessagesById,
+} from "../action/userActions";
+import { TailSpin } from "react-loading-icons";
+import dateFormat, { masks } from "dateformat";
 
 const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
 
+  const [loading, setLoading] = useState(false);
+  const [hireLoading, setHireLoading] = useState(false);
   const [showOffer, setShowOffer] = useState(false);
   const [showInbox, setShowInbox] = useState(false);
-  const [showMessage, setShowMessage] = useState(false);
   const [complete, setComplete] = useState(false);
   const [token] = useState(userInfo && userInfo.token);
   const [clientID] = useState(userInfo && userInfo.userId);
@@ -45,20 +53,27 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
   const [completionDate, setCompletionDate] = useState("");
   const [clientBudget, setClientBudget] = useState("");
   const [budgetCurrency, setBudgetCurrency] = useState("AUD");
+  const [messages, setMessages] = useState([]);
+  const [addMessage, setAddMessage] = useState("");
 
   const navigate = useNavigate();
 
+  const divRef = useRef();
+
+  const scrollToBottom = () => {
+    const { current } = divRef;
+    console.log(current);
+    if (current !== null) {
+      current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
-    const date = new Date();
+    setHireLoading(true);
 
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-
-    // This arrangement can be altered based on how we want the date's format to appear.
-    const currentDate = `${year}-${month}-${day}`;
-    console.log(currentDate); // "17-6-2022"
+    const content = `You have a new job service request from ${userInfo.name}.`;
+    const timeStamp = new Date().toISOString();
 
     await hireTradie(
       clientID,
@@ -73,18 +88,25 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
       completionDate,
       clientBudget,
       budgetCurrency,
-      currentDate,
+      timeStamp,
       token
-    ).then((res) => {
-      if (res.message === "Request failed with status code 401") {
-        if (confirm("Your session expired, please login again.")) {
-          localStorage.removeItem("userInfo");
-          navigate("/login");
-        }
-      } else {
-        console.log(res);
-        setComplete(true);
+    ).then(async (res) => {
+      if (res && res.status === 401) {
+        alert("Your session expired, please login again.");
+        localStorage.removeItem("userInfo");
+        navigate("/login");
+        return;
       }
+      console.log(res);
+      await addNotification(
+        tradieID,
+        content,
+        userInfo.profilePicture,
+        timeStamp
+      ).then(() => {
+        setComplete(true);
+        setHireLoading(false);
+      });
     });
   };
 
@@ -94,6 +116,56 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
     } else {
       navigate("/login");
     }
+  };
+
+  const getMessagesByIdHandler = async () => {
+    if (!userInfo) {
+      navigate("/login");
+    }
+    setLoading(true);
+    setShowInbox(true);
+
+    await getMessagesById(userInfo.userId, userDetails._id).then((res) => {
+      console.log(res);
+
+      const sortMessages = [];
+      res.clientMessages.forEach((message) => {
+        sortMessages.push(message);
+      });
+      res.tradieMessages.forEach((message) => {
+        sortMessages.push(message);
+      });
+      sortMessages.sort((a, b) => {
+        return a.timeStamp > b.timeStamp ? 1 : -1;
+      });
+      console.log(sortMessages);
+      setMessages(sortMessages);
+      setLoading(false);
+
+      const timeout = setTimeout(() => {
+        scrollToBottom();
+      }, 1);
+
+      return () => clearTimeout(timeout);
+    });
+  };
+
+  const addMessageHandler = async (e) => {
+    e.preventDefault();
+
+    setLoading(true);
+
+    const timeStamp = new Date().toISOString();
+
+    await clientAddMessage(
+      userInfo.userId,
+      userDetails._id,
+      addMessage,
+      timeStamp
+    ).then((res) => {
+      setAddMessage("");
+      getMessagesByIdHandler();
+    });
   };
 
   if (userDetails && jobAdDetails) {
@@ -118,10 +190,11 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
                 <div className="gray-bg flex-center">
                   <span className="gray-bg tradie-rate-num">
                     {"$" + jobAdDetails.pricingStartsAt}
+                    {jobAdDetails.pricingOption === "Per hour" ? "/hr" : "/day"}
                   </span>
-                  <span className="gray-bg tradie-rate-text">
-                    {jobAdDetails.pricingOption}
-                  </span>
+                  {/* <span className="gray-bg tradie-rate-text">
+                    {jobAdDetails.pricingOption === "Per hour" ? "/hr" : "/day"}
+                  </span> */}
                 </div>
               )}
             </div>
@@ -155,13 +228,15 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
           {isMobile ? (
             <div className="tradie-btns">
               <button
+                type="button"
                 className="tradie-btn tradie-btn-chat flex-center pointer"
-                onClick={() => setShowInbox(true)}
+                onClick={() => getMessagesByIdHandler()}
               >
                 <Mail />
                 Chat
               </button>
               <button
+                type="button"
                 className="tradie-btn tradie-btn-hire flex-center pointer"
                 onClick={hireHandler}
               >
@@ -172,6 +247,7 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
           ) : (
             <div className="gray-bg">
               <button
+                type="button"
                 className="tradie-btn tradie-btn-hire flex-center mb-12 pointer"
                 onClick={hireHandler}
               >
@@ -179,8 +255,9 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
                 Hire
               </button>
               <button
+                type="button"
                 className="tradie-btn tradie-btn-chat flex-center pointer"
-                onClick={() => setShowInbox(true)}
+                onClick={getMessagesByIdHandler}
               >
                 <Mail />
                 Chat
@@ -270,173 +347,184 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
               </div>
             ) : (
               <div className="offer-form">
-                <form onSubmit={submitHandler}>
-                  {isMobile && (
-                    <div className="offer-h1-container flex-center mb-8">
-                      <ArrowLeft
-                        width={24}
-                        height={24}
-                        color="#717171"
-                        className="pointer"
-                        onClick={() => setShowOffer(false)}
-                      />
-                      <h1 className="offer-h1">
-                        Provide Job Details and Make an Offer
-                      </h1>
-                    </div>
-                  )}
-                  <div className="offer-input-container mb-24">
-                    <label className="block mb-12">Job Ad Title</label>
-                    <input
-                      className="offer-title offer-input"
-                      type="text"
-                      value={jobAdDetails.jobAdTitle}
-                      disabled
-                    />
+                {hireLoading ? (
+                  <div className="loading loading-page">
+                    <TailSpin stroke="#1f1f23" speed={1} />
                   </div>
-                  <div className="offer-input-container mb-24">
-                    <label className="block mb-12">
-                      Detailed description of the service you need.{" "}
-                      <span className="offer-required">(required)</span>
-                    </label>
-                    <textarea
-                      className="offer-textbox offer-input"
-                      onChange={(e) =>
-                        setDescriptionServiceNeeded(e.target.value)
-                      }
-                      required
-                    />
-                  </div>
-                  <div
-                    className={
-                      isMobile
-                        ? "offer-input-container mb-24"
-                        : "mb-24 flex-between"
-                    }
-                  >
-                    <div className={isMobile ? "mb-24" : "half-inputs"}>
-                      <label className="block mb-12">
-                        Your Postcode{" "}
-                        <span className="offer-required">(required)</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="offer-input offer-input-half"
-                        placeholder="0000"
-                        defaultValue={clientPostCode}
-                        onChange={(e) => setClientPostCode(e.target.value)}
-                        required
-                      />
-                    </div>
-                    <div className={isMobile ? "mb-24" : "half-inputs"}>
-                      <label className="block mb-12">
-                        Contact Number{" "}
-                        <span className="offer-required">(required)</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="offer-input offer-input-half"
-                        defaultValue={clientContactNumber}
-                        onChange={(e) => setClientContactNumber(e.target.value)}
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div
-                    className={
-                      isMobile
-                        ? "offer-input-container mb-24"
-                        : "mb-24 flex-between"
-                    }
-                  >
-                    <div className={isMobile ? "mb-24" : "half-inputs"}>
-                      <label className="block mb-12">
-                        Target Start Date{" "}
-                        <span className="offer-required">(required)</span>
-                      </label>
-                      <input
-                        type="date"
-                        className="offer-input offer-input-half"
-                        onChange={(e) => setStartDate(e.target.value)}
-                        required
-                      />
-                    </div>
-                    <div className={isMobile ? "mb-24" : "half-inputs"}>
-                      <label className="block mb-12">
-                        Target Completion Date{" "}
-                        <span className="offer-required">(required)</span>
-                      </label>
-                      <input
-                        type="date"
-                        className="offer-input offer-input-half"
-                        onChange={(e) => setCompletionDate(e.target.value)}
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div
-                    className={
-                      isMobile
-                        ? "offer-input-container mb-32"
-                        : "mb-32 half-inputs"
-                    }
-                  >
-                    <label className="block mb-12">Your Budget</label>
-                    <div className="flex-between">
-                      <input
-                        type="text"
-                        className="offer-input offer-budget-text"
-                        placeholder="000"
-                        onChange={(e) => setClientBudget(e.target.value)}
-                      />
-                      <select
-                        defaultValue={budgetCurrency}
-                        className="offer-input offer-budget-select"
+                ) : (
+                  <>
+                    <form onSubmit={submitHandler}>
+                      {isMobile && (
+                        <div className="offer-h1-container flex-center mb-8">
+                          <ArrowLeft
+                            width={24}
+                            height={24}
+                            color="#717171"
+                            className="pointer"
+                            onClick={() => setShowOffer(false)}
+                          />
+                          <h1 className="offer-h1">
+                            Provide Job Details and Make an Offer
+                          </h1>
+                        </div>
+                      )}
+                      <div className="offer-input-container mb-24">
+                        <label className="block mb-12">Job Ad Title</label>
+                        <input
+                          className="offer-title offer-input"
+                          type="text"
+                          value={jobAdDetails.jobAdTitle}
+                          disabled
+                        />
+                      </div>
+                      <div className="offer-input-container mb-24">
+                        <label className="block mb-12">
+                          Detailed description of the service you need.{" "}
+                          <span className="offer-required">(required)</span>
+                        </label>
+                        <textarea
+                          className="offer-textbox offer-input"
+                          onChange={(e) =>
+                            setDescriptionServiceNeeded(e.target.value)
+                          }
+                          required
+                        />
+                      </div>
+                      <div
+                        className={
+                          isMobile
+                            ? "offer-input-container mb-24"
+                            : "mb-24 flex-between"
+                        }
                       >
-                        <option>AUD</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="offer-next-list gray-bg">
-                    <h2 className="offer-h2 mb-16 gray-bg">
-                      What happens next?
-                    </h2>
-                    <ol className="offer-list gray-bg">
-                      <li className="gray-bg mb-16">
-                        The Tradesperson reviews your inquiry and may ask for
-                        more details.
-                      </li>
-                      <li className="gray-bg mb-16">
-                        Discuss pricing and finalize details via chat or call.
-                      </li>
-                      <li className="gray-bg mb-16">
-                        Agree on terms, and the job gets done.
-                      </li>
-                    </ol>
-                  </div>
-                  <div className="flex-end">
+                        <div className={isMobile ? "mb-24" : "half-inputs"}>
+                          <label className="block mb-12">
+                            Your Postcode{" "}
+                            <span className="offer-required">(required)</span>
+                          </label>
+                          <input
+                            type="text"
+                            className="offer-input offer-input-half"
+                            placeholder="0000"
+                            defaultValue={clientPostCode}
+                            onChange={(e) => setClientPostCode(e.target.value)}
+                            required
+                          />
+                        </div>
+                        <div className={isMobile ? "mb-24" : "half-inputs"}>
+                          <label className="block mb-12">
+                            Contact Number{" "}
+                            <span className="offer-required">(required)</span>
+                          </label>
+                          <input
+                            type="text"
+                            className="offer-input offer-input-half"
+                            defaultValue={clientContactNumber}
+                            onChange={(e) =>
+                              setClientContactNumber(e.target.value)
+                            }
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className={
+                          isMobile
+                            ? "offer-input-container mb-24"
+                            : "mb-24 flex-between"
+                        }
+                      >
+                        <div className={isMobile ? "mb-24" : "half-inputs"}>
+                          <label className="block mb-12">
+                            Target Start Date{" "}
+                            <span className="offer-required">(required)</span>
+                          </label>
+                          <input
+                            type="date"
+                            className="offer-input offer-input-half"
+                            onChange={(e) => setStartDate(e.target.value)}
+                            required
+                          />
+                        </div>
+                        <div className={isMobile ? "mb-24" : "half-inputs"}>
+                          <label className="block mb-12">
+                            Target Completion Date{" "}
+                            <span className="offer-required">(required)</span>
+                          </label>
+                          <input
+                            type="date"
+                            className="offer-input offer-input-half"
+                            onChange={(e) => setCompletionDate(e.target.value)}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className={
+                          isMobile
+                            ? "offer-input-container mb-32"
+                            : "mb-32 half-inputs"
+                        }
+                      >
+                        <label className="block mb-12">Your Budget</label>
+                        <div className="flex-between">
+                          <input
+                            type="text"
+                            className="offer-input offer-budget-text"
+                            placeholder="000"
+                            onChange={(e) => setClientBudget(e.target.value)}
+                          />
+                          <select
+                            defaultValue={budgetCurrency}
+                            className="offer-input offer-budget-select"
+                          >
+                            <option>AUD</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="offer-next-list gray-bg">
+                        <h2 className="offer-h2 mb-16 gray-bg">
+                          What happens next?
+                        </h2>
+                        <ol className="offer-list gray-bg">
+                          <li className="gray-bg mb-16">
+                            The Tradesperson reviews your inquiry and may ask
+                            for more details.
+                          </li>
+                          <li className="gray-bg mb-16">
+                            Discuss pricing and finalize details via chat or
+                            call.
+                          </li>
+                          <li className="gray-bg mb-16">
+                            Agree on terms, and the job gets done.
+                          </li>
+                        </ol>
+                      </div>
+                      <div className="flex-end">
+                        {!isMobile && (
+                          <button
+                            className="offer-btn pointer"
+                            type="button"
+                            onClick={() => setShowOffer(false)}
+                          >
+                            Cancel
+                          </button>
+                        )}
+                        <button
+                          className="offer-btn offer-btn-blk pointer"
+                          type="submit"
+                        >
+                          Send
+                        </button>
+                      </div>
+                    </form>
                     {!isMobile && (
-                      <button
-                        className="offer-btn pointer"
-                        type="button"
+                      <X
+                        className="offer-x pointer"
                         onClick={() => setShowOffer(false)}
-                      >
-                        Cancel
-                      </button>
+                      />
                     )}
-                    <button
-                      className="offer-btn offer-btn-blk pointer"
-                      type="submit"
-                    >
-                      Send
-                    </button>
-                  </div>
-                </form>
-                {!isMobile && (
-                  <X
-                    className="offer-x pointer"
-                    onClick={() => setShowOffer(false)}
-                  />
+                  </>
                 )}
               </div>
             )}
@@ -455,98 +543,24 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
                 />
               </div>
             )}
-            <div className="inbox-contents">
-              {isMobile ? (
-                <div className="flex-center gap-8 mb-8">
-                  <ArrowLeft
-                    color="#717171"
-                    className="pointer"
-                    onClick={() => setShowInbox(false)}
-                  />
-                  <h1 className="notif-h1">Inbox</h1>
-                </div>
-              ) : (
-                <h1 className="notif-h1 mb-14">Inbox</h1>
-              )}
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  console.log(inboxSearch);
-                }}
-              >
-                <input
-                  type="text"
-                  className="inbox-search mb-14"
-                  onChange={(e) => setInboxSearch(e.target.value)}
-                  placeholder="Search"
-                />
-              </form>
+            {loading ? (
               <div
                 className={
-                  showMessage
-                    ? "inbox-contents-profile pointer gray-bg"
-                    : "inbox-contents-profile pointer"
+                  isMobile
+                    ? "loading loading-page"
+                    : "inbox-message-container loading-page"
                 }
-                onClick={() => setShowMessage(!showMessage)}
               >
-                <div
-                  className={
-                    showMessage
-                      ? "flex-center gap-8 gray-bg"
-                      : "flex-center gap-8"
-                  }
-                >
-                  <img
-                    src={DefaultProfilePicture}
-                    width={45}
-                    height={45}
-                    className={
-                      showMessage
-                        ? "inbox-profile-img gray-bg"
-                        : "inbox-profile-img"
-                    }
-                  />
-                  <div className={showMessage && "gray-bg"}>
-                    <div
-                      className={
-                        showMessage
-                          ? "inbox-profile-name gray-bg"
-                          : "inbox-profile-name"
-                      }
-                    >
-                      Name
-                    </div>
-                    <div
-                      className={
-                        showMessage
-                          ? "inbox-profile-loc flex-center gap-8 gray-bg"
-                          : "inbox-profile-loc flex-center gap-8"
-                      }
-                    >
-                      <MapPin
-                        width={12.8}
-                        height={16}
-                        color="#8C8C8C"
-                        className={showMessage && "gray-bg"}
-                      />
-                      Location
-                    </div>{" "}
-                  </div>
-                </div>
-                <ChevronRight
-                  color="#8C8C8C"
-                  className={showMessage && "gray-bg"}
-                />
+                <TailSpin stroke="#1f1f23" speed={1} />
               </div>
-            </div>
-            <div
-              className={
-                isMobile && showMessage
-                  ? "inbox-message-mobile gray-bg"
-                  : "inbox-message-container gray-bg"
-              }
-            >
-              {showMessage && (
+            ) : (
+              <div
+                className={
+                  isMobile
+                    ? "inbox-message-mobile gray-bg"
+                    : "inbox-message-container gray-bg"
+                }
+              >
                 <div className="inbox-message-mobile-container gray-bg">
                   {isMobile ? (
                     <div className="flex-center gap-12 gray-bg">
@@ -554,21 +568,24 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
                         color="#717171"
                         className="pointer gray-bg"
                         onClick={() => {
-                          setShowInbox(true);
-                          setShowMessage(false);
+                          setShowInbox(false);
                         }}
                       />
                       <div className="mb-16 gray-bg">
                         <div className="flex-center gap-8 gray-bg">
                           <img
-                            src={DefaultProfilePicture}
+                            src={
+                              userDetails.profilePicture
+                                ? userDetails.profilePicture
+                                : DefaultProfilePicture
+                            }
                             width={45}
                             height={45}
                             className="inbox-profile-img gray-bg"
                           />
                           <div className="gray-bg">
                             <div className="inbox-profile-name gray-bg">
-                              Name
+                              {userDetails.firstName} {userDetails.lastName}
                             </div>
                             <div className="inbox-profile-loc flex-center gap-8 gray-bg">
                               <MapPin
@@ -577,7 +594,7 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
                                 color="#8C8C8C"
                                 className="gray-bg"
                               />
-                              Location
+                              {userDetails.businessPostCode}
                             </div>{" "}
                           </div>
                         </div>
@@ -587,13 +604,19 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
                     <div className="mb-16 gray-bg">
                       <div className="flex-center gap-8 gray-bg">
                         <img
-                          src={DefaultProfilePicture}
+                          src={
+                            userDetails.profilePicture
+                              ? userDetails.profilePicture
+                              : DefaultProfilePicture
+                          }
                           width={45}
                           height={45}
                           className="inbox-profile-img gray-bg"
                         />
                         <div className="gray-bg">
-                          <div className="inbox-profile-name gray-bg">Name</div>
+                          <div className="inbox-profile-name gray-bg">
+                            {userDetails.firstName} {userDetails.lastName}
+                          </div>
                           <div className="inbox-profile-loc flex-center gap-8 gray-bg">
                             <MapPin
                               width={12.8}
@@ -601,97 +624,45 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
                               color="#8C8C8C"
                               className="gray-bg"
                             />
-                            Location
+                            {userDetails.businessPostCode}
                           </div>{" "}
                         </div>
                       </div>
                     </div>
                   )}
+
                   <div className="inbox-messages gray-bg">
-                    <div className="inbox-message-user mb-16 gray-bg">
-                      <div className="inbox-message-date mb-4 gray-bg">
-                        May 24, 2024 | 9:00 AM
-                      </div>
-                      <span className="inbox-message">
-                        Hi Yves, I would like to follow up on my inquiry about
-                        house painting.
-                      </span>
-                    </div>
-                    <div className="inbox-message-user mb-16 gray-bg">
-                      <div className="inbox-message-date mb-4 gray-bg">
-                        May 24, 2024 | 9:00 AM
-                      </div>
-                      <span className="inbox-message">
-                        Hi Yves, I would like to follow up on my inquiry about
-                        house painting.
-                      </span>
-                    </div>
-                    <div className="inbox-message-user mb-16 gray-bg">
-                      <div className="inbox-message-date mb-4 gray-bg">
-                        May 24, 2024 | 9:00 AM
-                      </div>
-                      <span className="inbox-message">
-                        Hi Yves, I would like to follow up on my inquiry about
-                        house painting.
-                      </span>
-                    </div>
-                    <div className="inbox-message-user mb-16 gray-bg">
-                      <div className="inbox-message-date mb-4 gray-bg">
-                        May 24, 2024 | 9:00 AM
-                      </div>
-                      <span className="inbox-message">
-                        Hi Yves, I would like to follow up on my inquiry about
-                        house painting.
-                      </span>
-                    </div>
-                    <div className="inbox-message-user mb-16 gray-bg">
-                      <div className="inbox-message-date mb-4 gray-bg">
-                        May 24, 2024 | 9:00 AM
-                      </div>
-                      <span className="inbox-message">
-                        Hi Yves, I would like to follow up on my inquiry about
-                        house painting.
-                      </span>
-                    </div>
-                    <div className="inbox-message-user mb-16 gray-bg">
-                      <div className="inbox-message-date mb-4 gray-bg">
-                        May 24, 2024 | 9:00 AM
-                      </div>
-                      <span className="inbox-message">
-                        Hi Yves, I would like to follow up on my inquiry about
-                        house painting.
-                      </span>
-                    </div>
-                    <div className="inbox-message-user mb-16 gray-bg">
-                      <div className="inbox-message-date mb-4 gray-bg">
-                        May 24, 2024 | 9:00 AM
-                      </div>
-                      <span className="inbox-message">
-                        Hi Yves, I would like to follow up on my inquiry about
-                        house painting.
-                      </span>
-                    </div>
-                    <div className="inbox-message-user mb-16 gray-bg">
-                      <div className="inbox-message-date mb-4 gray-bg">
-                        May 24, 2024 | 9:00 AM
-                      </div>
-                      <span className="inbox-message">
-                        Hi Yves, I would like to follow up on my inquiry about
-                        house painting.
-                      </span>
-                    </div>
+                    {messages &&
+                      messages.map((message) => (
+                        <div
+                          className={
+                            message.sentByClient
+                              ? "inbox-message-user mb-16 gray-bg"
+                              : "mb-16 gray-bg"
+                          }
+                          key={message._id}
+                        >
+                          <div className="inbox-message-date mb-4 gray-bg">
+                            {dateFormat(message.timeStamp, "mmmm dd, yyyy")} |{" "}
+                            {dateFormat(message.timeStamp, "h:MM TT")}
+                          </div>
+                          <span className="inbox-message">
+                            {message.message}
+                          </span>
+                        </div>
+                      ))}
+                    <div ref={divRef} />
                   </div>
                   <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      console.log("first");
-                    }}
+                    onSubmit={addMessageHandler}
                     className="inbox-message-input-container gray-bg"
                   >
                     <input
                       type="text"
                       className="inbox-message-input"
                       placeholder="Type something..."
+                      value={addMessage}
+                      onChange={(e) => setAddMessage(e.target.value)}
                     />
                     <SendHorizonal
                       width={35.56}
@@ -701,8 +672,8 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
                     />
                   </form>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         )}
       </div>

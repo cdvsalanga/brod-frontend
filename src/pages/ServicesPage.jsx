@@ -22,6 +22,12 @@ const ServicesPage = () => {
       const status = "Bookmarked";
       await getJobsByStatusClient(userInfo.userId, status, userInfo.token).then(
         (jobs) => {
+          if (jobs && jobs.status === 401) {
+            alert("Your session expired, please login again.");
+            localStorage.removeItem("userInfo");
+            navigate("/login");
+            return;
+          }
           setBookmarks(jobs);
           setLoading(false);
         }
@@ -31,6 +37,18 @@ const ServicesPage = () => {
 
   useEffect(() => {
     if (userInfo) {
+      if (userInfo.role === "Admin") {
+        navigate("/admin");
+        return;
+      } else if (userInfo.role === "Tradie") {
+        if (userInfo.status === "Approved") {
+          navigate(`/tradesperson/dashboard/${userInfo.userId}`);
+          return;
+        } else {
+          navigate("/login/application-under-review");
+          return;
+        }
+      }
       setLoading(true);
       getServicesData();
     } else {

@@ -11,6 +11,7 @@ const Card = ({ width, service, bookmarks }) => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
 
   const [userInfo] = useState(JSON.parse(localStorage.getItem("userInfo")));
+  const [loading, setLoading] = useState(false);
   const [favorite, setFavorite] = useState(() => {
     if (service && bookmarks) {
       if (width === "favorites") {
@@ -55,13 +56,29 @@ const Card = ({ width, service, bookmarks }) => {
     if (service || bookmarks) {
       console.log({ service, bookmarks });
       if (width === "favorites") {
+        let newTotal = 0;
         service.service.clientReviews.forEach((review) => {
-          setTotalStarRating(review.rating + totalStarRating);
+          newTotal = review.rating + newTotal;
         });
+        if (newTotal === 0) {
+          setTotalStarRating(0);
+        } else {
+          setTotalStarRating(
+            (newTotal / (service.service.clientReviews.length - 1)).toFixed(2)
+          );
+        }
       } else {
+        let newTotal = 0;
         service.clientReviews.forEach((review) => {
-          setTotalStarRating(review.rating + totalStarRating);
+          newTotal = review.rating + newTotal;
         });
+        if (newTotal === 0) {
+          setTotalStarRating(0);
+        } else {
+          setTotalStarRating(
+            (newTotal / (service.clientReviews.length - 1)).toFixed(2)
+          );
+        }
       }
       getTradieDetails();
     }
@@ -69,6 +86,7 @@ const Card = ({ width, service, bookmarks }) => {
 
   const favoriteOnChangeHandler = async (e) => {
     e.stopPropagation();
+    setLoading(true);
 
     const status = "Bookmarked";
 
@@ -78,8 +96,15 @@ const Card = ({ width, service, bookmarks }) => {
           (bookmark) => bookmark.serviceID === service.service._id
         );
 
-        await unBookmarkJob(bookmarkedJob._id, userInfo.token).then(() => {
+        await unBookmarkJob(bookmarkedJob._id, userInfo.token).then((res) => {
+          if (res && res.status === 401) {
+            alert("Your session expired, please login again.");
+            localStorage.removeItem("userInfo");
+            navigate("/login");
+            return;
+          }
           setFavorite(false);
+          setLoading(false);
         });
       } else {
         const date = new Date();
@@ -103,8 +128,15 @@ const Card = ({ width, service, bookmarks }) => {
           userInfo.postalCode,
           currentDate,
           userInfo.token
-        ).then(() => {
+        ).then((res) => {
+          if (res && res.status === 401) {
+            alert("Your session expired, please login again.");
+            localStorage.removeItem("userInfo");
+            navigate("/login");
+            return;
+          }
           setFavorite(true);
+          setLoading(false);
         });
       }
     } else {
@@ -113,8 +145,15 @@ const Card = ({ width, service, bookmarks }) => {
           (bookmark) => bookmark.serviceID === service._id
         );
 
-        await unBookmarkJob(bookmarkedJob._id, userInfo.token).then(() => {
+        await unBookmarkJob(bookmarkedJob._id, userInfo.token).then((res) => {
+          if (res && res.status === 401) {
+            alert("Your session expired, please login again.");
+            localStorage.removeItem("userInfo");
+            navigate("/login");
+            return;
+          }
           setFavorite(false);
+          setLoading(false);
         });
       } else {
         const date = new Date();
@@ -138,8 +177,15 @@ const Card = ({ width, service, bookmarks }) => {
           userInfo.postalCode,
           currentDate,
           userInfo.token
-        ).then(() => {
+        ).then((res) => {
+          if (res && res.status === 401) {
+            alert("Your session expired, please login again.");
+            localStorage.removeItem("userInfo");
+            navigate("/login");
+            return;
+          }
           setFavorite(true);
+          setLoading(false);
         });
       }
     }
@@ -243,7 +289,7 @@ const Card = ({ width, service, bookmarks }) => {
               {service && "$" + service.pricingStartsAt + "/"}
               {service && service.pricingOption === "Per hour" ? "hr" : "day"}
             </div>
-            {userInfo && (
+            {userInfo && !loading && (
               <Heart
                 fill={favorite ? "#1F1F23" : "none"}
                 color={favorite ? "#1F1F23" : "#D9D9D9"}

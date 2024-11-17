@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../styles/Profile.css";
 import "../styles/Header.css";
 import {
@@ -21,20 +21,43 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import { addRating, updateJobStatusClient } from "../action/clientActions";
 import DefaultProfilePicture from "../assets/images/default-profile-picture.png";
+import { TailSpin } from "react-loading-icons";
+import {
+  addNotification,
+  clientAddMessage,
+  getMessagesById,
+  getUserDetails,
+} from "../action/userActions";
+import dateFormat, { masks } from "dateformat";
 
 const ProfileContentItem = ({ item, role, data, profile }) => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
 
   const [userInfo] = useState(JSON.parse(localStorage.getItem("userInfo")));
+  const [itemData, setItemData] = useState();
+  const [loading, setLoading] = useState(false);
   const [showBtns, setShowBtns] = useState(false);
   const [showInbox, setShowInbox] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [jobAdDetails, setJobAdDetails] = useState();
+  const [tradieDetails, setTradieDetails] = useState();
   const [starRating, setStarRating] = useState(0);
   const [ratingDesc, setRatingDesc] = useState();
+  const [messages, setMessages] = useState([]);
+  const [addMessage, setAddMessage] = useState("");
 
   const navigate = useNavigate();
+
+  const divRef = useRef();
+
+  const scrollToBottom = () => {
+    const { current } = divRef;
+    console.log(current);
+    if (current !== null) {
+      current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   const { id } = useParams();
 
@@ -42,37 +65,43 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
 
   const updateJobStatusHandler = async (e, status, job) => {
     e.stopPropagation();
+    setLoading(true);
 
-    const date = new Date();
-
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-
-    // This arrangement can be altered based on how we want the date's format to appear.
-    const currentDate = `${year}-${month}-${day}`;
-    console.log(currentDate);
+    const timeStamp = new Date().toISOString();
 
     await updateJobStatusClient(
       job.tradieID,
       job._id,
       status,
-      currentDate,
+      timeStamp,
       userInfo.token
-    ).then((res) => {
-      if (res.message === "Request failed with status code 401") {
-        if (confirm("Your session expired, please login again.")) {
-          localStorage.removeItem("userInfo");
-          navigate("/login");
-        }
-      } else {
-        window.location.reload();
+    ).then(async (res) => {
+      if (res && res.status === 401) {
+        alert("Your session expired, please login again.");
+        localStorage.removeItem("userInfo");
+        navigate("/login");
+        return;
       }
+      if (status === "Cancelled") {
+        const content = `${userInfo.name} cancelled the job service ${job.jobPostAdTitle}.`;
+        await addNotification(
+          job.tradieID,
+          content,
+          userInfo.profilePicture,
+          timeStamp
+        ).then(() => {
+          window.location.reload();
+          setLoading(false);
+        });
+      }
+      window.location.reload();
+      setLoading(false);
     });
   };
 
   const addRatingHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const clientLocation = `${jobAdDetails.clientCity}, ${jobAdDetails.clientState} ${jobAdDetails.clientPostalCode}`;
 
@@ -86,23 +115,100 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
       ratingDesc,
       userInfo.token
     ).then((res) => {
-      if (res.message === "Request failed with status code 401") {
-        if (confirm("Your session expired, please login again.")) {
-          localStorage.removeItem("userInfo");
-          navigate("/login");
-        }
-      } else {
-        window.location.reload();
+      if (res && res.status === 401) {
+        alert("Your session expired, please login again.");
+        localStorage.removeItem("userInfo");
+        navigate("/login");
+        return;
       }
+      window.location.reload();
       console.log(res);
     });
   };
 
   useEffect(() => {
     if (data) {
+      setItemData(data);
       console.log(data);
     }
   }, [data]);
+
+  const getMessagesByIdHandler = async (job) => {
+    setLoading(true);
+    setShowInbox(true);
+
+    if (job) {
+      await getUserDetails(job.tradieID).then(async (tradie) => {
+        setTradieDetails(tradie);
+
+        await getMessagesById(userInfo.userId, tradie._id).then((res) => {
+          console.log(res);
+
+          const sortMessages = [];
+          res.clientMessages.forEach((message) => {
+            sortMessages.push(message);
+          });
+          res.tradieMessages.forEach((message) => {
+            sortMessages.push(message);
+          });
+          sortMessages.sort((a, b) => {
+            return a.timeStamp > b.timeStamp ? 1 : -1;
+          });
+          console.log(sortMessages);
+          setMessages(sortMessages);
+          setLoading(false);
+
+          const timeout = setTimeout(() => {
+            scrollToBottom();
+          }, 1);
+
+          return () => clearTimeout(timeout);
+        });
+      });
+    } else {
+      await getMessagesById(userInfo.userId, tradieDetails._id).then((res) => {
+        console.log(res);
+
+        const sortMessages = [];
+        res.clientMessages.forEach((message) => {
+          sortMessages.push(message);
+        });
+        res.tradieMessages.forEach((message) => {
+          sortMessages.push(message);
+        });
+        sortMessages.sort((a, b) => {
+          return a.timeStamp > b.timeStamp ? 1 : -1;
+        });
+        console.log(sortMessages);
+        setMessages(sortMessages);
+        setLoading(false);
+
+        const timeout = setTimeout(() => {
+          scrollToBottom();
+        }, 1);
+
+        return () => clearTimeout(timeout);
+      });
+    }
+  };
+
+  const addMessageHandler = async (e) => {
+    e.preventDefault();
+
+    setLoading(true);
+
+    const timeStamp = new Date().toISOString();
+
+    await clientAddMessage(
+      userInfo.userId,
+      tradieDetails._id,
+      addMessage,
+      timeStamp
+    ).then((res) => {
+      setAddMessage("");
+      getMessagesByIdHandler();
+    });
+  };
 
   if (role === "Client") {
     return (
@@ -137,7 +243,7 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
                         ? "Job completed on"
                         : "Bookmarked on"}{" "}
                       <span className="profile-font-w-500">
-                        {res.jobActionDate}
+                        {dateFormat(res.jobActionDate, "dd mmmm yyyy")}
                       </span>
                     </div>
                   </div>
@@ -194,7 +300,10 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
                             <CircleX width={28} height={28} />
                             Cancel offer
                           </button>
-                          <button className="profile-btn-mobile flex-center pointer">
+                          <button
+                            className="profile-btn-mobile flex-center pointer"
+                            onClick={() => getMessagesByIdHandler(res)}
+                          >
                             <Mail width={28} height={28} color="#8C8C8C" />
                             Chat tradesperson
                           </button>
@@ -270,7 +379,7 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
                             className="profile-btn-black profile-btn-chat flex-center pointer"
                             onClick={(e) => {
                               e.stopPropagation();
-                              setShowInbox(true);
+                              getMessagesByIdHandler(res);
                             }}
                           >
                             <Mail
@@ -285,11 +394,21 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
                         res.ratingDesc ? (
                           <div className="profile-complete-rated">
                             <div>
-                              <Star fill="#1F1F23" />
-                              <Star fill="#1F1F23" />
-                              <Star fill="#1F1F23" />
-                              <Star fill="#1F1F23" />
-                              <Star fill="#1F1F23" />
+                              <Star
+                                fill={res.rating < 1 ? "#ffffff" : "#1F1F23"}
+                              />
+                              <Star
+                                fill={res.rating < 2 ? "#ffffff" : "#1F1F23"}
+                              />
+                              <Star
+                                fill={res.rating < 3 ? "#ffffff" : "#1F1F23"}
+                              />
+                              <Star
+                                fill={res.rating < 4 ? "#ffffff" : "#1F1F23"}
+                              />
+                              <Star
+                                fill={res.rating < 5 ? "#ffffff" : "#1F1F23"}
+                              />
                             </div>
                             <span className="profile-rated-text">
                               See rating details
@@ -301,6 +420,7 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
                             className="profile-btn-black flex-center pointer"
                             onClick={(e) => {
                               e.stopPropagation();
+                              setJobAdDetails(res);
                               setOpenModal(true);
                             }}
                           >
@@ -466,7 +586,11 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
                   type="button"
                   className="profile-btn-cancel flex-center pointer"
                   onClick={(e) =>
-                    updateJobStatusHandler(e, (status = "Cancelled"), res)
+                    updateJobStatusHandler(
+                      e,
+                      (status = "Cancelled"),
+                      jobAdDetails
+                    )
                   }
                 >
                   <CircleX />
@@ -617,10 +741,24 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
                     </div>
                   </div>
 
-                  <form>
-                    <label>Rate the service</label>
-                    <input type="text" />
-                  </form>
+                  <div className="flex-center mb-12">
+                    <Star
+                      fill={jobAdDetails.rating < 1 ? "#ffffff" : "#1F1F23"}
+                    />
+                    <Star
+                      fill={jobAdDetails.rating < 2 ? "#ffffff" : "#1F1F23"}
+                    />
+                    <Star
+                      fill={jobAdDetails.rating < 3 ? "#ffffff" : "#1F1F23"}
+                    />
+                    <Star
+                      fill={jobAdDetails.rating < 4 ? "#ffffff" : "#1F1F23"}
+                    />
+                    <Star
+                      fill={jobAdDetails.rating < 5 ? "#ffffff" : "#1F1F23"}
+                    />
+                  </div>
+                  <div>{jobAdDetails.ratingDesc}</div>
                   {!isMobile && (
                     <X
                       className="profile-modal-close pointer"
@@ -844,101 +982,24 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
                 />
               </div>
             )}
-            <div className="inbox-contents">
-              {isMobile ? (
-                <div className="flex-center gap-8 mb-8">
-                  <ArrowLeft
-                    color="#717171"
-                    className="pointer"
-                    onClick={() => setShowInbox(false)}
-                  />
-                  <h1 className="notif-h1">Inbox</h1>
-                </div>
-              ) : (
-                <h1 className="notif-h1 mb-14">Inbox</h1>
-              )}
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  console.log(inboxSearch);
-                }}
-              >
-                <input
-                  type="text"
-                  className="inbox-search mb-14"
-                  onChange={(e) => setInboxSearch(e.target.value)}
-                  placeholder="Search"
-                />
-              </form>
+            {loading ? (
               <div
                 className={
-                  showMessage
-                    ? "inbox-contents-profile pointer gray-bg"
-                    : "inbox-contents-profile pointer"
+                  isMobile
+                    ? "loading loading-page"
+                    : "inbox-message-container loading-page"
                 }
-                onClick={() => {
-                  setShowMessage(!showMessage);
-                  scrollToElement();
-                }}
               >
-                <div
-                  className={
-                    showMessage
-                      ? "flex-center gap-8 gray-bg"
-                      : "flex-center gap-8"
-                  }
-                >
-                  <img
-                    src={DefaultProfilePicture}
-                    width={45}
-                    height={45}
-                    className={
-                      showMessage
-                        ? "inbox-profile-img gray-bg"
-                        : "inbox-profile-img"
-                    }
-                  />
-                  <div className={showMessage && "gray-bg"}>
-                    <div
-                      className={
-                        showMessage
-                          ? "inbox-profile-name gray-bg"
-                          : "inbox-profile-name"
-                      }
-                    >
-                      Name
-                    </div>
-                    <div
-                      className={
-                        showMessage
-                          ? "inbox-profile-loc flex-center gap-8 gray-bg"
-                          : "inbox-profile-loc flex-center gap-8"
-                      }
-                    >
-                      <MapPin
-                        width={12.8}
-                        height={16}
-                        color="#8C8C8C"
-                        className={showMessage && "gray-bg"}
-                      />
-                      Location
-                    </div>{" "}
-                  </div>
-                </div>
-                <ChevronRight
-                  color="#8C8C8C"
-                  className={showMessage && "gray-bg"}
-                />
+                <TailSpin stroke="#1f1f23" speed={1} />
               </div>
-            </div>
-            <div
-              className={
-                isMobile && showMessage
-                  ? "inbox-message-mobile gray-bg"
-                  : "inbox-message-container gray-bg"
-              }
-            >
-              {showMessage && (
+            ) : (
+              <div
+                className={
+                  isMobile
+                    ? "inbox-message-mobile gray-bg"
+                    : "inbox-message-container gray-bg"
+                }
+              >
                 <div className="inbox-message-mobile-container gray-bg">
                   {isMobile ? (
                     <div className="flex-center gap-12 gray-bg">
@@ -946,8 +1007,7 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
                         color="#717171"
                         className="pointer gray-bg"
                         onClick={() => {
-                          setShowInbox(true);
-                          setShowMessage(false);
+                          setShowInbox(false);
                         }}
                       />
                       <div className="mb-16 gray-bg">
@@ -960,7 +1020,7 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
                           />
                           <div className="gray-bg">
                             <div className="inbox-profile-name gray-bg">
-                              Name
+                              {tradieDetails.firstName} {tradieDetails.lastName}
                             </div>
                             <div className="inbox-profile-loc flex-center gap-8 gray-bg">
                               <MapPin
@@ -969,7 +1029,7 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
                                 color="#8C8C8C"
                                 className="gray-bg"
                               />
-                              Location
+                              {tradieDetails.businessPostCode}
                             </div>{" "}
                           </div>
                         </div>
@@ -979,13 +1039,19 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
                     <div className="mb-16 gray-bg">
                       <div className="flex-center gap-8 gray-bg">
                         <img
-                          src={DefaultProfilePicture}
+                          src={
+                            tradieDetails.profilePicture
+                              ? tradieDetails.profilePicture
+                              : DefaultProfilePicture
+                          }
                           width={45}
                           height={45}
                           className="inbox-profile-img gray-bg"
                         />
                         <div className="gray-bg">
-                          <div className="inbox-profile-name gray-bg">Name</div>
+                          <div className="inbox-profile-name gray-bg">
+                            {tradieDetails.firstName} {tradieDetails.lastName}
+                          </div>
                           <div className="inbox-profile-loc flex-center gap-8 gray-bg">
                             <MapPin
                               width={12.8}
@@ -993,97 +1059,45 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
                               color="#8C8C8C"
                               className="gray-bg"
                             />
-                            Location
+                            {tradieDetails.businessPostCode}
                           </div>{" "}
                         </div>
                       </div>
                     </div>
                   )}
+
                   <div className="inbox-messages gray-bg">
-                    <div className="inbox-message-user mb-16 gray-bg">
-                      <div className="inbox-message-date mb-4 gray-bg">
-                        May 24, 2024 | 9:00 AM
-                      </div>
-                      <span className="inbox-message">
-                        Hi Yves, I would like to follow up on my inquiry about
-                        house painting.
-                      </span>
-                    </div>
-                    <div className="inbox-message-user mb-16 gray-bg">
-                      <div className="inbox-message-date mb-4 gray-bg">
-                        May 24, 2024 | 9:00 AM
-                      </div>
-                      <span className="inbox-message">
-                        Hi Yves, I would like to follow up on my inquiry about
-                        house painting.
-                      </span>
-                    </div>
-                    <div className="inbox-message-user mb-16 gray-bg">
-                      <div className="inbox-message-date mb-4 gray-bg">
-                        May 24, 2024 | 9:00 AM
-                      </div>
-                      <span className="inbox-message">
-                        Hi Yves, I would like to follow up on my inquiry about
-                        house painting.
-                      </span>
-                    </div>
-                    <div className="inbox-message-user mb-16 gray-bg">
-                      <div className="inbox-message-date mb-4 gray-bg">
-                        May 24, 2024 | 9:00 AM
-                      </div>
-                      <span className="inbox-message">
-                        Hi Yves, I would like to follow up on my inquiry about
-                        house painting.
-                      </span>
-                    </div>
-                    <div className="inbox-message-user mb-16 gray-bg">
-                      <div className="inbox-message-date mb-4 gray-bg">
-                        May 24, 2024 | 9:00 AM
-                      </div>
-                      <span className="inbox-message">
-                        Hi Yves, I would like to follow up on my inquiry about
-                        house painting.
-                      </span>
-                    </div>
-                    <div className="inbox-message-user mb-16 gray-bg">
-                      <div className="inbox-message-date mb-4 gray-bg">
-                        May 24, 2024 | 9:00 AM
-                      </div>
-                      <span className="inbox-message">
-                        Hi Yves, I would like to follow up on my inquiry about
-                        house painting.
-                      </span>
-                    </div>
-                    <div className="inbox-message-user mb-16 gray-bg">
-                      <div className="inbox-message-date mb-4 gray-bg">
-                        May 24, 2024 | 9:00 AM
-                      </div>
-                      <span className="inbox-message">
-                        Hi Yves, I would like to follow up on my inquiry about
-                        house painting.
-                      </span>
-                    </div>
-                    <div className="inbox-message-user mb-16 gray-bg">
-                      <div className="inbox-message-date mb-4 gray-bg">
-                        May 24, 2024 | 9:00 AM
-                      </div>
-                      <span className="inbox-message">
-                        Hi Yves, I would like to follow up on my inquiry about
-                        house painting.
-                      </span>
-                    </div>
+                    {messages &&
+                      messages.map((message) => (
+                        <div
+                          className={
+                            message.sentByClient
+                              ? "inbox-message-user mb-16 gray-bg"
+                              : "mb-16 gray-bg"
+                          }
+                          key={message._id}
+                        >
+                          <div className="inbox-message-date mb-4 gray-bg">
+                            {dateFormat(message.timeStamp, "mmmm dd, yyyy")} |{" "}
+                            {dateFormat(message.timeStamp, "h:MM TT")}
+                          </div>
+                          <span className="inbox-message">
+                            {message.message}
+                          </span>
+                        </div>
+                      ))}
+                    <div ref={divRef} />
                   </div>
                   <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      console.log("first");
-                    }}
+                    onSubmit={addMessageHandler}
                     className="inbox-message-input-container gray-bg"
                   >
                     <input
                       type="text"
                       className="inbox-message-input"
                       placeholder="Type something..."
+                      value={addMessage}
+                      onChange={(e) => setAddMessage(e.target.value)}
                     />
                     <SendHorizonal
                       width={35.56}
@@ -1093,8 +1107,8 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
                     />
                   </form>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         )}
       </>
@@ -1105,17 +1119,7 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
       data.map((res) =>
         item === "complete" ? (
           <div key={res._id}>
-            <div
-              className="profile-item mb-16 pointer"
-              onClick={() => {
-                if (item === "bookmark") {
-                  navigate(`/job-ad/${res.serviceID}`);
-                } else {
-                  setJobAdDetails(res);
-                  setOpenModal(true);
-                }
-              }}
-            >
+            <div className="profile-item mb-16">
               <div className={!isMobile && "mb-24"}>
                 <div
                   className={
@@ -1132,160 +1136,33 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
                       ? "Job completed on"
                       : "Bookmarked on"}{" "}
                     <span className="profile-font-w-500">
-                      {res.jobActionDate}
+                      {dateFormat(res.jobActionDate, "dd mmmm yyyy")}
                     </span>
                   </div>
                 </div>
                 <div className="mb-12 profile-job-details">
                   <div className="flex-center profile-job-detail">
                     <User width={20} height={20} color="#8C8C8C" />
-                    {res.tradieName}
+                    {res.clientName}
                   </div>
                   <div className="flex-center profile-job-detail">
                     <MapPin width={20} height={20} color="#8C8C8C" />
-                    {res.tradieLocation}
+                    {res.clientCity} {res.clientState}, {res.clientPostalCode}
                   </div>
-                  <div className="flex-center profile-job-detail">
-                    <Navigation width={20} height={20} color="#8C8C8C" />
-                    {res.proximity}
-                  </div>
+                  {res.rating !== 0 && res.ratingDesc !== null && (
+                    <div className="flex-center">
+                      <Star fill={res.rating < 1 ? "#ffffff" : "#1F1F23"} />
+                      <Star fill={res.rating < 2 ? "#ffffff" : "#1F1F23"} />
+                      <Star fill={res.rating < 3 ? "#ffffff" : "#1F1F23"} />
+                      <Star fill={res.rating < 4 ? "#ffffff" : "#1F1F23"} />
+                      <Star fill={res.rating < 5 ? "#ffffff" : "#1F1F23"} />
+                    </div>
+                  )}
                 </div>
                 <div className="profile-item-details">
                   {res.jobAdDescription}
                 </div>
-                {item === "complete" && (
-                  <div className="profile-complete-rated">
-                    <div>
-                      <Star fill="#1F1F23" />
-                      <Star fill="#1F1F23" />
-                      <Star fill="#1F1F23" />
-                      <Star fill="#1F1F23" />
-                      <Star fill="#1F1F23" />
-                    </div>
-                    <span className="profile-rated-text">
-                      See rating details
-                    </span>
-                  </div>
-                )}
               </div>
-              {isMobile && (
-                <EllipsisVertical
-                  width={28}
-                  height={28}
-                  color={showBtns ? "#1F1F23" : "#717171"}
-                  className="profile-item-menu pointer"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowBtns(true);
-                  }}
-                />
-              )}
-              {isMobile && showBtns && (
-                <div className="profile-item-btns-container scroll-lock">
-                  <div className="profile-item-btns">
-                    {item === "job" ? (
-                      <div>
-                        <button className="profile-btn-mobile profile-btn-mobile-cancel flex-center pointer">
-                          <CircleX width={28} height={28} />
-                          Cancel job
-                        </button>
-                        <button className="profile-btn-mobile flex-center pointer">
-                          <Check width={28} height={28} color="#8C8C8C" />
-                          Mark as completed
-                        </button>
-                      </div>
-                    ) : item === "offer" ? (
-                      <div>
-                        <button className="profile-btn-mobile profile-btn-mobile-cancel flex-center pointer">
-                          <CircleX width={28} height={28} />
-                          Cancel offer
-                        </button>
-                        <button className="profile-btn-mobile flex-center pointer">
-                          <Mail width={28} height={28} color="#8C8C8C" />
-                          Chat tradesperson
-                        </button>
-
-                        <button className="profile-btn-mobile flex-center pointer">
-                          <FileText width={28} height={28} color="#8C8C8C" />
-                          See offer details
-                        </button>
-                      </div>
-                    ) : (
-                      <button className="profile-btn-mobile flex-center pointer">
-                        <Star width={28} height={28} color="#8C8C8C" />
-                        Rate the service
-                      </button>
-                    )}
-                    <X
-                      className="profile-item-btns-close pointer"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setShowBtns(false);
-                      }}
-                    />
-                  </div>
-                </div>
-              )}
-              {!isMobile && (
-                <div
-                  className={
-                    item === "complete" || item === "bookmark"
-                      ? "flex-end"
-                      : "flex-between"
-                  }
-                >
-                  {item === "job" || item === "offer" ? (
-                    <button className="profile-btn-cancel flex-center">
-                      <CircleX />
-                      Cancel job
-                    </button>
-                  ) : (
-                    <></>
-                  )}
-                  <div>
-                    {item === "job" ? (
-                      <button className="profile-btn-black flex-center">
-                        <Check
-                          width={20}
-                          height={20}
-                          className="icon-bg-black"
-                        />
-                        Mark as completed
-                      </button>
-                    ) : item === "offer" ? (
-                      <div className="profile-item-offer">
-                        <button className="profile-btn-offer flex-center pointer">
-                          <FileText width={20} height={20} />
-                          See offer details
-                        </button>
-                        <button className="profile-btn-black profile-btn-chat flex-center">
-                          <Mail
-                            width={20}
-                            height={20}
-                            className="icon-bg-black"
-                          />
-                          Chat
-                        </button>
-                      </div>
-                    ) : item === "complete" ? (
-                      <button className="profile-btn-black flex-center">
-                        <Star
-                          width={20}
-                          height={20}
-                          fill="#FFFFFF"
-                          className="icon-bg-black"
-                        />
-                        Rate the service
-                      </button>
-                    ) : (
-                      <div className="profile-bookmark flex-center">
-                        <Bookmark fill="#1F1F23" />
-                        Bookmarked
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
             </div>
             {openModal && (
               <div className="profile-modal scroll-lock">

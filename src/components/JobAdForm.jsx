@@ -19,7 +19,9 @@ const JobAdForm = () => {
   const [jobAdData, setJobAdData] = useState();
   const [token, setToken] = useState();
   const [userID, setUserID] = useState();
-  const [businessPostcode, setBusinessPostcode] = useState("");
+  const [businessPostcode, setBusinessPostcode] = useState(
+    userInfo ? userInfo.businessPostCode : ""
+  );
   const [jobCategory, setJobCategory] = useState("");
   const [jobAdTitle, setJobAdTitle] = useState("");
   const [descriptionOfService, setDescriptionOfService] = useState("");
@@ -37,6 +39,12 @@ const JobAdForm = () => {
 
   const getJobAdDetailsByServiceIdData = async () => {
     await getJobAdDetailsByServiceId(serviceId, userInfo.token).then((res) => {
+      if (res && res.status === 401) {
+        alert("Your session expired, please login again.");
+        localStorage.removeItem("userInfo");
+        navigate("/login");
+        return;
+      }
       console.log(res);
       setJobAdData(res);
       setBusinessPostcode(res.businessPostcode);
@@ -95,6 +103,7 @@ const JobAdForm = () => {
   };
 
   const AddJobHandler = async (isActive) => {
+    setLoading(true);
     await addTradieJobAd(
       userID,
       businessPostcode,
@@ -108,23 +117,46 @@ const JobAdForm = () => {
       projectGallery,
       token,
       isActive
-    );
+    ).then((res) => {
+      if (res && res.status === 401) {
+        alert("Your session expired, please login again.");
+        localStorage.removeItem("userInfo");
+        navigate("/login");
+        return;
+      }
+      alert(`Job Ad ${jobAdTitle} posted!`);
+      setLoading(false);
+      window.location.reload();
+    });
   };
 
   const updateToUnpublishedHandler = async () => {
-    await updateIsActive(serviceId, (isActive = false), token).then(() => {
+    await updateIsActive(serviceId, (isActive = false), token).then((res) => {
+      if (res && res.status === 401) {
+        alert("Your session expired, please login again.");
+        localStorage.removeItem("userInfo");
+        navigate("/login");
+        return;
+      }
       navigate(`/profile/${userID}`);
     });
   };
 
   const updateToPublishedHandler = async () => {
-    await updateIsActive(serviceId, (isActive = true), token).then(() => {
+    await updateIsActive(serviceId, (isActive = true), token).then((res) => {
+      if (res && res.status === 401) {
+        alert("Your session expired, please login again.");
+        localStorage.removeItem("userInfo");
+        navigate("/login");
+        return;
+      }
       navigate(`/profile/${userID}`);
     });
   };
 
   const updateJobAdHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     jobAdData.businessPostcode = businessPostcode;
     jobAdData.jobCategory = jobCategory;
@@ -136,7 +168,15 @@ const JobAdForm = () => {
     jobAdData.thumbnailImage = thumbnailImage;
     jobAdData.projectGallery = projectGallery;
 
-    await updateJobAdDetails(jobAdData, token);
+    await updateJobAdDetails(jobAdData, token).then((res) => {
+      if (res && res.status === 401) {
+        alert("Your session expired, please login again.");
+        localStorage.removeItem("userInfo");
+        navigate("/login");
+        return;
+      }
+      window.location.reload();
+    });
   };
 
   return loading ? (

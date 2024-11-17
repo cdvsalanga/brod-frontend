@@ -27,7 +27,13 @@ const JobAdDetails = ({ jobAdDetails, userDetails, userInfo, bookmarks }) => {
         (bookmark) => bookmark.serviceID === jobAdDetails._id
       );
 
-      await unBookmarkJob(bookmarkedJob._id, userInfo.token).then(() => {
+      await unBookmarkJob(bookmarkedJob._id, userInfo.token).then((res) => {
+        if (res && res.status === 401) {
+          alert("Your session expired, please login again.");
+          localStorage.removeItem("userInfo");
+          navigate("/login");
+          return;
+        }
         setFavorite(false);
       });
     } else {
@@ -53,7 +59,13 @@ const JobAdDetails = ({ jobAdDetails, userDetails, userInfo, bookmarks }) => {
         userInfo.postalCode,
         currentDate,
         userInfo.token
-      ).then(() => {
+      ).then((res) => {
+        if (res && res.status === 401) {
+          alert("Your session expired, please login again.");
+          localStorage.removeItem("userInfo");
+          navigate("/login");
+          return;
+        }
         setFavorite(true);
       });
     }

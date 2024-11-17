@@ -1,6 +1,6 @@
 import { Circle, Eye, EyeOff, Mail, Phone, Upload, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import "../styles/Signup.css";
+import "../styles/SignUp.css";
 import "../styles/SignUpInfo.css";
 import { Link, useNavigate } from "react-router-dom";
 import {

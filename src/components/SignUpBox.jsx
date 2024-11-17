@@ -76,7 +76,7 @@ const SignUpBox = ({ chosen }) => {
             navigate(`/signup/${userInfo.userId}`);
           }
         } else if (res.role === "Client") {
-          navigate("/services");
+          navigate(`/profile/${userInfo.userId}/edit`);
         }
       });
     }
@@ -346,7 +346,7 @@ const SignUpBox = ({ chosen }) => {
             Log in
           </Link>
         </div>
-        {/* <div className="signup-separator">
+        <div className="signup-separator">
           <div className="signup-separator-line" />
           <div>OR</div>
           <div className="signup-separator-line" />
@@ -359,7 +359,7 @@ const SignUpBox = ({ chosen }) => {
           onError={() => alert("Login Failed")}
           disabled={loading}
           text="Sign up with Google"
-        /> */}
+        />
       </div>
     );
   } else if (page === "clientDetails") {

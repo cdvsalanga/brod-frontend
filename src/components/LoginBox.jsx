@@ -158,20 +158,20 @@ const LoginBox = () => {
           Sign Up
         </Link>{" "}
       </div>
-      <div className="login-separator mb-32">
+      {/* <div className="login-separator mb-32">
         <div className="login-separator-line" />
         <div>OR</div>
         <div className="login-separator-line" />
-      </div>
+      </div> */}
       {/* Google and apple logins */}
-      <GoogleLogin
+      {/* <GoogleLogin
         onSuccess={(res) => {
           console.log(res);
           googleLoginHandler(jwtDecode(res.credential));
         }}
         onError={() => alert("Login Failed")}
         disabled={loading}
-      />
+      /> */}
     </div>
   );
 };

@@ -210,7 +210,13 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
     });
   };
 
-  if (role === "Client") {
+  if (loading) {
+    return (
+      <div className="loading loading-page">
+        <TailSpin stroke="#1f1f23" speed={1} />
+      </div>
+    );
+  } else if (role === "Client" && !loading) {
     return (
       <>
         {data &&
@@ -1113,7 +1119,7 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
         )}
       </>
     );
-  } else if (role === "Tradie") {
+  } else if (role === "Tradie" && !loading) {
     return (
       data &&
       data.map((res) =>
@@ -1149,7 +1155,7 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
                     <MapPin width={20} height={20} color="#8C8C8C" />
                     {res.clientCity} {res.clientState}, {res.clientPostalCode}
                   </div>
-                  {res.rating !== 0 && res.ratingDesc !== null && (
+                  {res.rating !== 0 && res.ratingDesc !== null ? (
                     <div className="flex-center">
                       <Star fill={res.rating < 1 ? "#ffffff" : "#1F1F23"} />
                       <Star fill={res.rating < 2 ? "#ffffff" : "#1F1F23"} />
@@ -1157,11 +1163,17 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
                       <Star fill={res.rating < 4 ? "#ffffff" : "#1F1F23"} />
                       <Star fill={res.rating < 5 ? "#ffffff" : "#1F1F23"} />
                     </div>
+                  ) : (
+                    <div className="profile-job-detail">Not Reviewed</div>
                   )}
                 </div>
-                <div className="profile-item-details">
-                  {res.jobAdDescription}
-                </div>
+                {res.ratingDesc !== null ? (
+                  <div className="profile-item-details">{res.ratingDesc}</div>
+                ) : (
+                  <div className="profile-item-details">
+                    {res.jobAdDescription}
+                  </div>
+                )}
               </div>
             </div>
             {openModal && (

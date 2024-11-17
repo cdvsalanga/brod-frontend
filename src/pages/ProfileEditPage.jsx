@@ -130,6 +130,9 @@ const ProfileEditPage = () => {
     profileDetails.website = website;
     profileDetails.facebookAccount = facebookAccount;
     profileDetails.igAccount = igAccount;
+    profileDetails.city = city;
+    profileDetails.state = state;
+    profileDetails.postalCode = postalCode;
     profileDetails.certificationFilesUploaded = certificationFilesUploaded;
 
     await updateTradieProfile(profileDetails, token).then((res) => {
@@ -712,7 +715,7 @@ const ProfileEditPage = () => {
                   />
                 </div>
               </div>
-              <div className="mb-32">
+              <div className={!isMobile && "flex-between mb-32"}>
                 <div className="profile-edit-half">
                   <label className="block mb-12">Instagram Username</label>
                   <input
@@ -720,6 +723,38 @@ const ProfileEditPage = () => {
                     className="profile-edit-half-input profile-edit-input"
                     defaultValue={igAccount}
                     onChange={(e) => setIgAccount(e.target.value)}
+                    disabled={updateLoading}
+                  />
+                </div>
+                <div className="profile-edit-half">
+                  <label className="block mb-12">City</label>
+                  <input
+                    type="text"
+                    className="profile-edit-half-input profile-edit-input"
+                    defaultValue={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    disabled={updateLoading}
+                  />
+                </div>
+              </div>
+              <div className={!isMobile && "flex-between mb-32"}>
+                <div className="profile-edit-half">
+                  <label className="block mb-12">State</label>
+                  <input
+                    type="text"
+                    className="profile-edit-half-input profile-edit-input"
+                    defaultValue={state}
+                    onChange={(e) => setState(e.target.value)}
+                    disabled={updateLoading}
+                  />
+                </div>
+                <div className="profile-edit-half">
+                  <label className="block mb-12">Postal Code</label>
+                  <input
+                    type="text"
+                    className="profile-edit-half-input profile-edit-input"
+                    defaultValue={postalCode}
+                    onChange={(e) => setPostalCode(e.target.value)}
                     disabled={updateLoading}
                   />
                 </div>

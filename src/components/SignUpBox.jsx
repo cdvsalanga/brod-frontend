@@ -189,12 +189,40 @@ const SignUpBox = ({ chosen }) => {
   const signupHandler = async (e) => {
     e.preventDefault();
 
+    const services = [typeofWork];
+
+    const timeStamp = new Date().toISOString();
+
     if (password === confirmPassword) {
-      if (chosen === "client") {
-        setPage("clientDetails");
-      } else {
-        setPage("tradieDetails");
-      }
+      await signup(
+        email,
+        password,
+        role,
+        businessPostCode,
+        firstName,
+        lastName,
+        contactNumber,
+        city,
+        state,
+        postalCode,
+        registeredBusinessName,
+        australianBusinessNumber,
+        typeofWork,
+        services,
+        certificationFilesUploaded,
+        timeStamp
+      ).then((res) => {
+        if (res && res.status === 400) {
+          alert(res.message);
+          window.location.reload;
+        }
+        setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
+      });
+      // if (chosen === "client") {
+      //   setPage("clientDetails");
+      // } else {
+      //   setPage("tradieDetails");
+      // }
     } else {
       setShowError(true);
     }
@@ -318,7 +346,7 @@ const SignUpBox = ({ chosen }) => {
             Log in
           </Link>
         </div>
-        <div className="signup-separator">
+        {/* <div className="signup-separator">
           <div className="signup-separator-line" />
           <div>OR</div>
           <div className="signup-separator-line" />
@@ -331,7 +359,7 @@ const SignUpBox = ({ chosen }) => {
           onError={() => alert("Login Failed")}
           disabled={loading}
           text="Sign up with Google"
-        />
+        /> */}
       </div>
     );
   } else if (page === "clientDetails") {

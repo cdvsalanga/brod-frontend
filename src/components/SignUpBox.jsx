@@ -76,7 +76,7 @@ const SignUpBox = ({ chosen }) => {
             navigate(`/signup/${userInfo.userId}`);
           }
         } else if (res.role === "Client") {
-          navigate(`/profile/${userInfo.userId}/edit`);
+          navigate(`/services`);
         }
       });
     }
@@ -175,8 +175,8 @@ const SignUpBox = ({ chosen }) => {
             timeStamp
           ).then((res) => {
             if (res && res.status === 400) {
-              alert(res.message);
-              window.location.reload;
+              alert("User already exists");
+              window.location.reload();
             }
             setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
           });
@@ -189,40 +189,41 @@ const SignUpBox = ({ chosen }) => {
   const signupHandler = async (e) => {
     e.preventDefault();
 
-    const services = [typeofWork];
+    // const services = [typeofWork];
 
-    const timeStamp = new Date().toISOString();
+    // const timeStamp = new Date().toISOString();
+
+    // await signup(
+    //   email,
+    //   password,
+    //   role,
+    //   businessPostCode,
+    //   firstName,
+    //   lastName,
+    //   contactNumber,
+    //   city,
+    //   state,
+    //   postalCode,
+    //   registeredBusinessName,
+    //   australianBusinessNumber,
+    //   typeofWork,
+    //   services,
+    //   certificationFilesUploaded,
+    //   timeStamp
+    // ).then((res) => {
+    //   if (res && res.status === 400) {
+    //     alert(res.message);
+    //     window.location.reload;
+    //   }
+    //   setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
+    // });
 
     if (password === confirmPassword) {
-      await signup(
-        email,
-        password,
-        role,
-        businessPostCode,
-        firstName,
-        lastName,
-        contactNumber,
-        city,
-        state,
-        postalCode,
-        registeredBusinessName,
-        australianBusinessNumber,
-        typeofWork,
-        services,
-        certificationFilesUploaded,
-        timeStamp
-      ).then((res) => {
-        if (res && res.status === 400) {
-          alert(res.message);
-          window.location.reload;
-        }
-        setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
-      });
-      // if (chosen === "client") {
-      //   setPage("clientDetails");
-      // } else {
-      //   setPage("tradieDetails");
-      // }
+      if (chosen === "client") {
+        setPage("clientDetails");
+      } else {
+        setPage("tradieDetails");
+      }
     } else {
       setShowError(true);
     }
@@ -766,9 +767,8 @@ const SignUpBox = ({ chosen }) => {
               className="signup-otp-btn pointer"
               onClick={async () => {
                 await emailOtp(email).then((res) => {
-                  if (res && res.status !== 200) {
-                    setPage("otp");
-                  }
+                  setPage("otp");
+
                   console.log(res);
                 });
               }}
@@ -781,9 +781,8 @@ const SignUpBox = ({ chosen }) => {
               className="signup-otp-btn pointer"
               onClick={async () => {
                 await smsOtp(contactNumber).then((res) => {
-                  if (res && res.status !== 200) {
-                    setPage("otp");
-                  }
+                  setPage("otp");
+
                   console.log(res);
                 });
               }}

@@ -246,7 +246,7 @@ export const smsVerifyOtp = async (phoneNumber, userEnteredOtp) => {
 export const emailVerifyOtp = async (email, userEnteredOtp) => {
   try {
     await axios.post(
-      `http://47.130.91.115/api/Auth/sms-email-otp?email=${email}&userEnteredOtp=${userEnteredOtp}`,
+      `http://47.130.91.115/api/Auth/email-verify-otp?email=${email}&userEnteredOtp=${userEnteredOtp}`,
       ""
     );
   } catch (error) {

@@ -102,6 +102,9 @@ const ProfileEditPage = () => {
         return;
       }
       userInfo.profilePicture = profilePicture;
+      userInfo.name = firstName + " " + lastName;
+      userInfo.postalCode = postalCode;
+      userInfo.contactNumber = contactNumber;
 
       localStorage.setItem("userInfo", JSON.stringify(userInfo));
 

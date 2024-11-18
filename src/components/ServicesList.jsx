@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 
-const ServicesList = ({ content, services, bookmarks }) => {
+const ServicesList = ({ content, services, bookmarks = [] }) => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
 
   const [userInfo] = useState(JSON.parse(localStorage.getItem("userInfo")));
@@ -26,6 +26,7 @@ const ServicesList = ({ content, services, bookmarks }) => {
   const searchResult = searchSplit[1];
 
   useEffect(() => {
+    console.log(services);
     if (services) {
       console.log(services);
       if (content === "recommend") {
@@ -70,7 +71,7 @@ const ServicesList = ({ content, services, bookmarks }) => {
     }
   }, []);
 
-  if (services || bookmarks) {
+  if (services || bookmarks.length) {
     return (
       <div className="services">
         <div
@@ -103,56 +104,62 @@ const ServicesList = ({ content, services, bookmarks }) => {
             )}
           </div>
           <div className="services-cards">
-            {content === "recommend"
-              ? recommendedServices &&
+            {services.length > 0 ? (
+              content === "recommend" ? (
+                recommendedServices &&
                 recommendedServices.map((service) => (
                   <Card
                     width={content === "search" ? "search" : ""}
                     service={service && service}
                     key={service && service._id}
-                    bookmarks={bookmarks}
+                    bookmarks={bookmarks.length > 0 && bookmarks}
                   />
                 ))
-              : content === "near"
-              ? seeAll
-                ? nearLimit &&
+              ) : content === "near" ? (
+                seeAll ? (
+                  nearLimit &&
                   nearLimit.map((service) => (
                     <Card
                       width={content === "search" ? "search" : ""}
                       service={service && service}
                       key={service && service._id}
-                      bookmarks={bookmarks}
+                      bookmarks={bookmarks.length > 0 && bookmarks}
                     />
                   ))
-                : nearServices &&
+                ) : (
+                  nearServices &&
                   nearServices.map((service) => (
                     <Card
                       width={content === "search" ? "search" : ""}
                       service={service && service}
                       key={service && service._id}
-                      bookmarks={bookmarks}
+                      bookmarks={bookmarks.length > 0 && bookmarks}
                     />
                   ))
-              : content === "search"
-              ? searchServices && !showMore && seeMore && !isMobile
-                ? searchServices.map((service) => (
+                )
+              ) : content === "search" ? (
+                searchServices && !showMore && seeMore && !isMobile ? (
+                  searchServices.map((service) => (
                     <Card
                       width={content === "search" ? "search" : ""}
                       service={service && service}
                       key={service && service._id}
-                      bookmarks={bookmarks && bookmarks}
+                      bookmarks={bookmarks.length > 0 && bookmarks}
                     />
                   ))
-                : services &&
+                ) : (
+                  services &&
                   services.map((service) => (
                     <Card
                       width={content === "search" ? "search" : ""}
                       service={service && service}
                       key={service && service._id}
-                      bookmarks={bookmarks && bookmarks}
+                      bookmarks={bookmarks.length > 0 && bookmarks}
                     />
                   ))
-              : services &&
+                )
+              ) : (
+                services &&
                 services.map((service) => (
                   <Card
                     width={
@@ -164,9 +171,13 @@ const ServicesList = ({ content, services, bookmarks }) => {
                     }
                     service={service && service}
                     key={service && service.service._id}
-                    bookmarks={bookmarks}
+                    bookmarks={bookmarks.length > 0 && bookmarks}
                   />
-                ))}
+                ))
+              )
+            ) : (
+              <div className={isMobile && "gray-bg"}>No services</div>
+            )}
           </div>
           {content === "near" && seeAll && (
             <button

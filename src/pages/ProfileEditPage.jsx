@@ -101,10 +101,14 @@ const ProfileEditPage = () => {
         navigate("/login");
         return;
       }
-      userInfo.profilePicture = profilePicture;
+
+      userInfo.role = profileDetails.role;
       userInfo.name = firstName + " " + lastName;
+      userInfo.status = profileDetails.status;
       userInfo.postalCode = postalCode;
+      userInfo.businessPostCode = businessPostCode;
       userInfo.contactNumber = contactNumber;
+      userInfo.profilePicture = profilePicture;
 
       localStorage.setItem("userInfo", JSON.stringify(userInfo));
 
@@ -144,11 +148,24 @@ const ProfileEditPage = () => {
         localStorage.removeItem("userInfo");
         navigate("/login");
         return;
+      } else if (res && res.message === "Network Error") {
+        console.log(res);
+        alert("File too big");
+        window.location.reload();
+        return;
+      } else if (res && res.status !== 200) {
+        alert(res.message);
+        window.location.reload();
+        return;
       }
-      userInfo.profilePicture = profilePicture;
+
+      userInfo.role = profileDetails.role;
       userInfo.name = firstName + " " + lastName;
+      userInfo.status = profileDetails.status;
       userInfo.postalCode = postalCode;
+      userInfo.businessPostCode = businessPostCode;
       userInfo.contactNumber = contactNumber;
+      userInfo.profilePicture = profilePicture;
 
       localStorage.setItem("userInfo", JSON.stringify(userInfo));
 

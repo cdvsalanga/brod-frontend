@@ -73,7 +73,7 @@ const SignUpBox = ({ chosen }) => {
           if (res.status === "Approved") {
             navigate(`/tradesperson/dashboard/${userInfo.userId}`);
           } else {
-            navigate(`/signup/${userInfo.userId}`);
+            navigate("/login/application-under-review");
           }
         } else if (res.role === "Client") {
           navigate(`/services`);
@@ -256,6 +256,7 @@ const SignUpBox = ({ chosen }) => {
         res.family_name
       ).then((data) => {
         setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
+        navigate(`/signup/${data.userId}`);
         setLoading(false);
       });
     }
@@ -648,14 +649,41 @@ const SignUpBox = ({ chosen }) => {
               required
             />
           </div>
-          <div className="signup-info-maxw">
+          <div className="signup-info-halfw">
             <label className="signup-info-label">
               Registered Business Name
             </label>
             <input
               type="text"
-              className="signup-info-input signup-info-input-maxw"
+              className="signup-info-input"
               onChange={(e) => setRegisteredBusinessName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="signup-info-halfw">
+            <label className="signup-info-label">City</label>
+            <input
+              type="text"
+              className="signup-info-input"
+              onChange={(e) => setCity(e.target.value)}
+              required
+            />
+          </div>
+          <div className="signup-info-halfw">
+            <label className="signup-info-label">State</label>
+            <input
+              type="text"
+              className="signup-info-input"
+              onChange={(e) => setState(e.target.value)}
+              required
+            />
+          </div>
+          <div className="signup-info-halfw">
+            <label className="signup-info-label">Postal Code</label>
+            <input
+              type="text"
+              className="signup-info-input"
+              onChange={(e) => setPostalCode(e.target.value)}
               required
             />
           </div>

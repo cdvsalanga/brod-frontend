@@ -18,6 +18,9 @@ const TradespersonInfoForm = ({ page }) => {
   const [contactNumber, setContactNumber] = useState();
   const [registeredBusinessName, setRegisteredBusinessName] = useState();
   const [australianBusinessNumber, setAustralianBusinessNumber] = useState();
+  const [city, setCity] = useState();
+  const [state, setState] = useState();
+  const [postalCode, setPostalCode] = useState();
   const [typeofWork, setTypeofWork] = useState();
   const [certificationFilesUploaded, setCertificationFilesUploaded] =
     useState();
@@ -42,6 +45,9 @@ const TradespersonInfoForm = ({ page }) => {
       setContactNumber(user.contactNumber);
       setRegisteredBusinessName(user.registeredBusinessName);
       setAustralianBusinessNumber(user.australianBusinessNumber);
+      setCity(user.city);
+      setState(user.state);
+      setPostalCode(user.postalCode);
       setTypeofWork(user.typeofWork);
       setCertificationFilesUploaded(user.certificationFilesUploaded);
       setLoading(false);
@@ -78,6 +84,9 @@ const TradespersonInfoForm = ({ page }) => {
     userDetails.contactNumber = contactNumber;
     userDetails.registeredBusinessName = registeredBusinessName;
     userDetails.australianBusinessNumber = australianBusinessNumber;
+    userDetails.city = city;
+    userDetails.state = state;
+    userDetails.postalCode = postalCode;
     userDetails.typeofWork = typeofWork;
     userDetails.certificationFilesUploaded = certificationFilesUploaded;
     userDetails.businessAddress = "";
@@ -436,15 +445,48 @@ const TradespersonInfoForm = ({ page }) => {
               disabled={page === "signup" ? false : true}
             />
           </div>
-          <div className="signup-info-maxw">
+          <div className="signup-info-halfw">
             <label className="signup-info-label">
               Registered Business Name
             </label>
             <input
               type="text"
-              className="signup-info-input signup-info-input-maxw"
+              className="signup-info-input"
               defaultValue={registeredBusinessName}
               onChange={(e) => setRegisteredBusinessName(e.target.value)}
+              required
+              disabled={page === "signup" ? false : true}
+            />
+          </div>
+          <div className="signup-info-halfw">
+            <label className="signup-info-label">City</label>
+            <input
+              type="text"
+              className="signup-info-input"
+              defaultValue={city}
+              onChange={(e) => setCity(e.target.value)}
+              required
+              disabled={page === "signup" ? false : true}
+            />
+          </div>
+          <div className="signup-info-halfw">
+            <label className="signup-info-label">State</label>
+            <input
+              type="text"
+              className="signup-info-input"
+              defaultValue={state}
+              onChange={(e) => setState(e.target.value)}
+              required
+              disabled={page === "signup" ? false : true}
+            />
+          </div>
+          <div className="signup-info-halfw">
+            <label className="signup-info-label">Postal Code</label>
+            <input
+              type="text"
+              className="signup-info-input"
+              defaultValue={postalCode}
+              onChange={(e) => setPostalCode(e.target.value)}
               required
               disabled={page === "signup" ? false : true}
             />

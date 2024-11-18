@@ -125,12 +125,12 @@ const JobAdForm = () => {
         return;
       }
       alert(`Job Ad ${jobAdTitle} posted!`);
-      setLoading(false);
       window.location.reload();
     });
   };
 
   const updateToUnpublishedHandler = async () => {
+    setLoading(true);
     await updateIsActive(serviceId, (isActive = false), token).then((res) => {
       if (res && res.status === 401) {
         alert("Your session expired, please login again.");
@@ -143,6 +143,7 @@ const JobAdForm = () => {
   };
 
   const updateToPublishedHandler = async () => {
+    setLoading(true);
     await updateIsActive(serviceId, (isActive = true), token).then((res) => {
       if (res && res.status === 401) {
         alert("Your session expired, please login again.");

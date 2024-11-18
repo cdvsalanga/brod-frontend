@@ -72,11 +72,11 @@ const Header = ({ notHidden = true, headerText }) => {
   };
 
   const getNotificationsData = async () => {
+    setShowNotif(!showNotif);
     setLoading(true);
     await getNotifications(userInfo.userId).then((res) => {
       console.log(res);
       setNotifications(res);
-      setShowNotif(!showNotif);
       setLoading(false);
     });
   };
@@ -625,7 +625,7 @@ const Header = ({ notHidden = true, headerText }) => {
                             setShowMessage(false);
                           }}
                         />
-                        <div className="mb-16 gray-bg">
+                        <div className="gray-bg">
                           <div className="flex-center gap-8 gray-bg">
                             <img
                               src={

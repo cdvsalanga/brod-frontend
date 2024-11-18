@@ -31,24 +31,6 @@ export const signup = async (
   certificationFilesUploaded,
   timeStamp
 ) => {
-  
-    email,
-    password,
-    role,
-    businessPostCode,
-    firstName,
-    lastName,
-    contactNumber,
-    city,
-    state,
-    postalCode,
-    registeredBusinessName,
-    australianBusinessNumber,
-    typeofWork,
-    services,
-    certificationFilesUploaded,
-    timeStamp,
-  });
   try {
     await axios.post("http://47.130.91.115/api/Auth/signup", {
       _id: "",
@@ -128,15 +110,6 @@ export const googleLoginClient = async (
   family_name
 ) => {
   try {
-    
-      email,
-      email_verified,
-      name,
-      picture,
-      given_name,
-      family_name,
-    });
-
     const { data } = await axios.post(
       `http://47.130.91.115/api/Auth/google-login-client`,
       { email, email_verified, name, picture, given_name, family_name }
@@ -157,15 +130,6 @@ export const googleLoginTradie = async (
   family_name
 ) => {
   try {
-    
-      email,
-      email_verified,
-      name,
-      picture,
-      given_name,
-      family_name,
-    });
-
     const { data } = await axios.post(
       `http://47.130.91.115/api/Auth/google-login-tradie`,
       { email, email_verified, name, picture, given_name, family_name }
@@ -180,8 +144,6 @@ export const googleLoginTradie = async (
 
 export const getJobPostDetails = async (id) => {
   try {
-    
-
     const { data } = await axios.post(
       "http://47.130.91.115/api/Auth/JobPostDetails",
       {
@@ -197,8 +159,6 @@ export const getJobPostDetails = async (id) => {
 
 export const getFilteredServices = async (filters) => {
   try {
-    
-
     const { data } = await axios.post(
       "http://47.130.91.115/api/Auth/FilteredServices",
       filters
@@ -287,7 +247,6 @@ export const addNotification = async (
   timeStamp
 ) => {
   try {
-    
     await axios.post(`http://47.130.91.115/api/Auth/AddNotification`, {
       _id: "",
       userID,
@@ -308,8 +267,6 @@ export const clientAddMessage = async (
   timeStamp
 ) => {
   try {
-    
-
     await axios.post(`http://47.130.91.115/api/Auth/Client-AddMessage`, {
       _id: "",
       clientId,

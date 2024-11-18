@@ -145,6 +145,10 @@ const SignUpBox = ({ chosen }) => {
             if (res && res.status === 400) {
               alert(res.message);
               window.location.reload;
+            } else if (res && res.status !== 200) {
+              alert(res.message);
+              window.location.reload();
+              return;
             }
             setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
           });
@@ -177,6 +181,10 @@ const SignUpBox = ({ chosen }) => {
             if (res && res.status === 400) {
               alert("User already exists");
               window.location.reload();
+            } else if (res && res.status !== 200) {
+              alert(res.message);
+              window.location.reload();
+              return;
             }
             setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
           });

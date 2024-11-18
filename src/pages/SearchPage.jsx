@@ -59,6 +59,11 @@ const SearchPage = () => {
     //   (filters.pricingStartsMin = 0),
     //   (filters.pricingStartsMax = 0),
     await getFilteredServices(filters).then(async (data) => {
+      if (data && data.status !== 200) {
+        alert(data.message);
+        window.location.reload();
+        return;
+      }
       console.log(data);
       setFilteredServices(data);
       if (userInfo) {

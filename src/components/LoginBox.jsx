@@ -97,6 +97,11 @@ const LoginBox = () => {
       res.given_name,
       res.family_name
     ).then((res) => {
+      if (res && res.status !== 200) {
+        alert(res.message);
+        window.location.reload();
+        return;
+      }
       setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
     });
   };

@@ -18,6 +18,11 @@ const ServicesPage = () => {
 
   const getServicesData = async () => {
     await getAllServices().then(async (res) => {
+      if (res && res.status !== 200) {
+        alert(res.message);
+        window.location.reload();
+        return;
+      }
       setAllServices(res);
       const status = "Bookmarked";
       await getJobsByStatusClient(userInfo.userId, status, userInfo.token).then(

@@ -100,6 +100,10 @@ const ProfileEditPage = () => {
         localStorage.removeItem("userInfo");
         navigate("/login");
         return;
+      } else if (res && res.status !== 200) {
+        alert(res.message);
+        window.location.reload();
+        return;
       }
 
       userInfo.role = profileDetails.role;

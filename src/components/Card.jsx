@@ -104,6 +104,10 @@ const Card = ({ width, service, bookmarks = [] }) => {
             localStorage.removeItem("userInfo");
             navigate("/login");
             return;
+          } else if (res && res.status !== 200) {
+            alert(res.message);
+            window.location.reload();
+            return;
           }
           setFavorite(false);
           setLoading(false);
@@ -136,6 +140,10 @@ const Card = ({ width, service, bookmarks = [] }) => {
             localStorage.removeItem("userInfo");
             navigate("/login");
             return;
+          } else if (res && res.status !== 200) {
+            alert(res.message);
+            window.location.reload();
+            return;
           }
           setFavorite(true);
           setLoading(false);
@@ -152,6 +160,10 @@ const Card = ({ width, service, bookmarks = [] }) => {
             alert("Your session expired, please login again.");
             localStorage.removeItem("userInfo");
             navigate("/login");
+            return;
+          } else if (res && res.status !== 200) {
+            alert(res.message);
+            window.location.reload();
             return;
           }
           setFavorite(false);
@@ -184,6 +196,10 @@ const Card = ({ width, service, bookmarks = [] }) => {
             alert("Your session expired, please login again.");
             localStorage.removeItem("userInfo");
             navigate("/login");
+            return;
+          } else if (res && res.status !== 200) {
+            alert(res.message);
+            window.location.reload();
             return;
           }
           setFavorite(true);

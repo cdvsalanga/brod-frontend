@@ -66,6 +66,11 @@ const Header = ({ notHidden = true, headerText }) => {
 
   const getNotificationsNoUpdateData = async () => {
     await getNotificationsNoUpdate(userInfo.userId).then((res) => {
+      if (res && res.status !== 200) {
+        alert(res.message);
+        window.location.reload();
+        return;
+      }
       console.log(res);
       setNotificationsNoUpdate(res);
     });
@@ -75,6 +80,11 @@ const Header = ({ notHidden = true, headerText }) => {
     setShowNotif(!showNotif);
     setLoading(true);
     await getNotifications(userInfo.userId).then((res) => {
+      if (res && res.status !== 200) {
+        alert(res.message);
+        window.location.reload();
+        return;
+      }
       console.log(res);
       setNotifications(res);
       setLoading(false);
@@ -94,12 +104,22 @@ const Header = ({ notHidden = true, headerText }) => {
     setShowInbox(true);
     if (userInfo.role === "Client") {
       await clientGetAllMessages(userInfo.userId).then((res) => {
+        if (res && res.status !== 200) {
+          alert(res.message);
+          window.location.reload();
+          return;
+        }
         console.log(res);
         setAllMessages(res);
         setInboxLoading(false);
       });
     } else {
       await tradieGetAllMessages(userInfo.userId).then((res) => {
+        if (res && res.status !== 200) {
+          alert(res.message);
+          window.location.reload();
+          return;
+        }
         console.log(res);
         setAllMessages(res);
         setInboxLoading(false);
@@ -117,6 +137,11 @@ const Header = ({ notHidden = true, headerText }) => {
         messageDetails.clientId,
         messageDetails.tradieId
       ).then((res) => {
+        if (res && res.status !== 200) {
+          alert(res.message);
+          window.location.reload();
+          return;
+        }
         console.log(res);
 
         const sortMessages = [];
@@ -142,6 +167,11 @@ const Header = ({ notHidden = true, headerText }) => {
     } else {
       await getMessagesById(onMessage.clientId, onMessage.tradieId).then(
         (res) => {
+          if (res && res.status !== 200) {
+            alert(res.message);
+            window.location.reload();
+            return;
+          }
           console.log(res);
 
           const sortMessages = [];
@@ -181,6 +211,11 @@ const Header = ({ notHidden = true, headerText }) => {
       addMessage,
       timeStamp
     ).then((res) => {
+      if (res && res.status !== 200) {
+        alert(res.message);
+        window.location.reload();
+        return;
+      }
       setAddMessage("");
       getMessagesByIdHandler();
     });

@@ -99,6 +99,10 @@ const TradespersonInfoForm = ({ page }) => {
         localStorage.removeItem("userInfo");
         navigate("/login");
         return;
+      } else if (res && res.status !== 200) {
+        alert(res.message);
+        window.location.reload();
+        return;
       }
     });
 
@@ -143,6 +147,10 @@ const TradespersonInfoForm = ({ page }) => {
         localStorage.removeItem("userInfo");
         navigate("/login");
         return;
+      } else if (res && res.status !== 200) {
+        alert(res.message);
+        window.location.reload();
+        return;
       }
       console.log("Success");
       getUser();
@@ -159,6 +167,10 @@ const TradespersonInfoForm = ({ page }) => {
         alert("Your session expired, please login again.");
         localStorage.removeItem("userInfo");
         navigate("/login");
+        return;
+      } else if (res && res.status !== 200) {
+        alert(res.message);
+        window.location.reload();
         return;
       }
       console.log("Success");

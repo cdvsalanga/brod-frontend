@@ -33,6 +33,10 @@ const JobAdDetails = ({ jobAdDetails, userDetails, userInfo, bookmarks }) => {
           localStorage.removeItem("userInfo");
           navigate("/login");
           return;
+        } else if (res && res.status !== 200) {
+          alert(res.message);
+          window.location.reload();
+          return;
         }
         setFavorite(false);
       });
@@ -64,6 +68,10 @@ const JobAdDetails = ({ jobAdDetails, userDetails, userInfo, bookmarks }) => {
           alert("Your session expired, please login again.");
           localStorage.removeItem("userInfo");
           navigate("/login");
+          return;
+        } else if (res && res.status !== 200) {
+          alert(res.message);
+          window.location.reload();
           return;
         }
         setFavorite(true);

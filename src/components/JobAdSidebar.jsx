@@ -96,6 +96,10 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
         localStorage.removeItem("userInfo");
         navigate("/login");
         return;
+      } else if (res && res.status !== 200) {
+        alert(res.message);
+        window.location.reload();
+        return;
       }
       console.log(res);
       await addNotification(
@@ -103,7 +107,12 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
         content,
         userInfo.profilePicture,
         timeStamp
-      ).then(() => {
+      ).then((res) => {
+        if (res && res.status !== 200) {
+          alert(res.message);
+          window.location.reload();
+          return;
+        }
         setComplete(true);
         setHireLoading(false);
       });
@@ -126,6 +135,11 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
     setShowInbox(true);
 
     await getMessagesById(userInfo.userId, userDetails._id).then((res) => {
+      if (res && res.status !== 200) {
+        alert(res.message);
+        window.location.reload();
+        return;
+      }
       console.log(res);
 
       const sortMessages = [];
@@ -163,6 +177,11 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
       addMessage,
       timeStamp
     ).then((res) => {
+      if (res && res.status !== 200) {
+        alert(res.message);
+        window.location.reload();
+        return;
+      }
       setAddMessage("");
       getMessagesByIdHandler();
     });

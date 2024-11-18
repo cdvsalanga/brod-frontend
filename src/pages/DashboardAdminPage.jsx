@@ -62,6 +62,10 @@ const DashboardAdminPage = () => {
         localStorage.removeItem("userInfo");
         navigate("/login");
         return;
+      } else if (res && res.status !== 200) {
+        alert(res.message);
+        window.location.reload();
+        return;
       }
       console.log(res);
       // res.reverse();
@@ -86,6 +90,10 @@ const DashboardAdminPage = () => {
         alert("Your session expired, please login again.");
         localStorage.removeItem("userInfo");
         navigate("/login");
+        return;
+      } else if (res && res.status !== 200) {
+        alert(res.message);
+        window.location.reload();
         return;
       }
       console.log(res);
@@ -127,6 +135,10 @@ const DashboardAdminPage = () => {
           localStorage.removeItem("userInfo");
           navigate("/login");
           return;
+        } else if (res && res.status !== 200) {
+          alert(res.message);
+          window.location.reload();
+          return;
         }
         console.log(res);
         // res.reverse();
@@ -147,6 +159,10 @@ const DashboardAdminPage = () => {
           alert("Your session expired, please login again.");
           localStorage.removeItem("userInfo");
           navigate("/login");
+          return;
+        } else if (res && res.status !== 200) {
+          alert(res.message);
+          window.location.reload();
           return;
         }
         console.log(res);
@@ -183,6 +199,10 @@ const DashboardAdminPage = () => {
         alert("Your session expired, please login again.");
         localStorage.removeItem("userInfo");
         navigate("/login");
+        return;
+      } else if (res && res.status !== 200) {
+        alert(res.message);
+        window.location.reload();
         return;
       }
       window.location.reload();

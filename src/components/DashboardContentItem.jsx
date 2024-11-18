@@ -45,6 +45,10 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
         localStorage.removeItem("userInfo");
         navigate("/login");
         return;
+      } else if (res && res.status !== 200) {
+        alert(res.message);
+        window.location.reload();
+        return;
       }
       let content = "";
       if (status === "Cancelled" && job.status === "Pending") {
@@ -61,7 +65,12 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
         content,
         userInfo.profilePicture,
         timeStamp
-      ).then(() => {
+      ).then((res) => {
+        if (res && res.status !== 200) {
+          alert(res.message);
+          window.location.reload();
+          return;
+        }
         window.location.reload();
       });
     });

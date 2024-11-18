@@ -81,6 +81,10 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
         localStorage.removeItem("userInfo");
         navigate("/login");
         return;
+      } else if (res && res.status !== 200) {
+        alert(res.message);
+        window.location.reload();
+        return;
       }
       if (status === "Cancelled") {
         const content = `${userInfo.name} cancelled the job service ${job.jobPostAdTitle}.`;
@@ -89,7 +93,12 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
           content,
           userInfo.profilePicture,
           timeStamp
-        ).then(() => {
+        ).then((res) => {
+          if (res && res.status !== 200) {
+            alert(res.message);
+            window.location.reload();
+            return;
+          }
           window.location.reload();
           setLoading(false);
         });
@@ -120,6 +129,10 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
         localStorage.removeItem("userInfo");
         navigate("/login");
         return;
+      } else if (res && res.status !== 200) {
+        alert(res.message);
+        window.location.reload();
+        return;
       }
       window.location.reload();
       console.log(res);
@@ -142,6 +155,11 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
         setTradieDetails(tradie);
 
         await getMessagesById(userInfo.userId, tradie._id).then((res) => {
+          if (res && res.status !== 200) {
+            alert(res.message);
+            window.location.reload();
+            return;
+          }
           console.log(res);
 
           const sortMessages = [];
@@ -167,6 +185,11 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
       });
     } else {
       await getMessagesById(userInfo.userId, tradieDetails._id).then((res) => {
+        if (res && res.status !== 200) {
+          alert(res.message);
+          window.location.reload();
+          return;
+        }
         console.log(res);
 
         const sortMessages = [];
@@ -205,6 +228,11 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
       addMessage,
       timeStamp
     ).then((res) => {
+      if (res && res.status !== 200) {
+        alert(res.message);
+        window.location.reload();
+        return;
+      }
       setAddMessage("");
       getMessagesByIdHandler();
     });

@@ -34,6 +34,10 @@ const ProfileContents = ({ role, userInfo, profile }) => {
         localStorage.removeItem("userInfo");
         navigate("/login");
         return;
+      } else if (res && res.status !== 200) {
+        alert(res.message);
+        window.location.reload();
+        return;
       }
       setPublishedData(res);
     });
@@ -43,6 +47,10 @@ const ProfileContents = ({ role, userInfo, profile }) => {
         alert("Your session expired, please login again.");
         localStorage.removeItem("userInfo");
         navigate("/login");
+        return;
+      } else if (res && res.status !== 200) {
+        alert(res.message);
+        window.location.reload();
         return;
       }
       setUnpublishedData(res);

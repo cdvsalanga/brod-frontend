@@ -62,17 +62,12 @@ const DashboardAdminPage = () => {
         localStorage.removeItem("userInfo");
         navigate("/login");
         return;
-      } else if (res && res.status !== 200) {
-        alert(res.message);
-        window.location.reload();
-        return;
       }
-      console.log(res);
+
       // res.reverse();
       setAllTradies(res);
 
       const endOffset = itemOffset + itemsPerPage;
-      console.log(endOffset);
 
       const currentItems = res.slice(itemOffset, endOffset);
 
@@ -91,19 +86,14 @@ const DashboardAdminPage = () => {
         localStorage.removeItem("userInfo");
         navigate("/login");
         return;
-      } else if (res && res.status !== 200) {
-        alert(res.message);
-        window.location.reload();
-        return;
       }
-      console.log(res);
+
       // res.reverse();
       const filteredUsers = res.filter((user) => user.role !== "Admin");
-      console.log(filteredUsers);
+
       setAllUsers(filteredUsers);
 
       const endOffset = itemOffset + itemsPerPage;
-      console.log(endOffset);
 
       const currentItems = filteredUsers.slice(itemOffset, endOffset);
 
@@ -135,12 +125,8 @@ const DashboardAdminPage = () => {
           localStorage.removeItem("userInfo");
           navigate("/login");
           return;
-        } else if (res && res.status !== 200) {
-          alert(res.message);
-          window.location.reload();
-          return;
         }
-        console.log(res);
+
         // res.reverse();
         setAllTradies(res);
         setTradies(res);
@@ -160,15 +146,11 @@ const DashboardAdminPage = () => {
           localStorage.removeItem("userInfo");
           navigate("/login");
           return;
-        } else if (res && res.status !== 200) {
-          alert(res.message);
-          window.location.reload();
-          return;
         }
-        console.log(res);
+
         // res.reverse();
         const filteredUsers = res.filter((user) => user.role !== "Admin");
-        console.log(filteredUsers);
+
         setAllUsers(filteredUsers);
         setUsers(filteredUsers);
         setLoading(false);
@@ -185,7 +167,7 @@ const DashboardAdminPage = () => {
     setKeyword("");
     itemOffset = 0;
     activePage = 1;
-    console.log({ itemOffset, activePage });
+
     if (item === "Tradies") {
       getAllTradies();
     } else {
@@ -199,10 +181,6 @@ const DashboardAdminPage = () => {
         alert("Your session expired, please login again.");
         localStorage.removeItem("userInfo");
         navigate("/login");
-        return;
-      } else if (res && res.status !== 200) {
-        alert(res.message);
-        window.location.reload();
         return;
       }
       window.location.reload();

@@ -120,7 +120,6 @@ const SignUpBox = ({ chosen }) => {
 
     if (chosenOTP === "sms") {
       await smsVerifyOtp(contactNumber, otp).then(async (res) => {
-        console.log(res);
         if (res && res.status !== 200) {
           setShowOtpError(true);
         } else {
@@ -145,10 +144,6 @@ const SignUpBox = ({ chosen }) => {
             if (res && res.status === 400) {
               alert(res.message);
               window.location.reload;
-            } else if (res && res.status !== 200) {
-              alert(res.message);
-              window.location.reload();
-              return;
             }
             setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
           });
@@ -156,7 +151,6 @@ const SignUpBox = ({ chosen }) => {
       });
     } else {
       await emailVerifyOtp(email, otp).then(async (res) => {
-        console.log(res);
         if (res && res.status !== 200) {
           setShowOtpError(true);
         } else {
@@ -181,17 +175,12 @@ const SignUpBox = ({ chosen }) => {
             if (res && res.status === 400) {
               alert("User already exists");
               window.location.reload();
-            } else if (res && res.status !== 200) {
-              alert(res.message);
-              window.location.reload();
-              return;
             }
             setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
           });
         }
       });
     }
-    console.log(otp);
   };
 
   const signupHandler = async (e) => {
@@ -238,8 +227,6 @@ const SignUpBox = ({ chosen }) => {
   };
 
   const googleLoginHandler = async (res) => {
-    console.log(res);
-
     setLoading(true);
 
     if (chosen === "client") {
@@ -363,7 +350,6 @@ const SignUpBox = ({ chosen }) => {
         </div>
         <GoogleLogin
           onSuccess={(res) => {
-            console.log(res);
             googleLoginHandler(jwtDecode(res.credential));
           }}
           onError={() => alert("Login Failed")}
@@ -804,8 +790,6 @@ const SignUpBox = ({ chosen }) => {
               onClick={async () => {
                 await emailOtp(email).then((res) => {
                   setPage("otp");
-
-                  console.log(res);
                 });
               }}
             >
@@ -818,8 +802,6 @@ const SignUpBox = ({ chosen }) => {
               onClick={async () => {
                 await smsOtp(contactNumber).then((res) => {
                   setPage("otp");
-
-                  console.log(res);
                 });
               }}
             >

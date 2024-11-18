@@ -21,7 +21,6 @@ const ProfileSideBar = ({ role, profile }) => {
 
   useEffect(() => {
     if (profile) {
-      console.log(profile);
     }
   }, []);
 

@@ -29,7 +29,7 @@ const FavoritesPage = () => {
           navigate("/login");
           return;
         }
-        console.log(jobs);
+
         setBookmarks(jobs);
 
         const array = [...favorites];

@@ -24,10 +24,8 @@ const JobAdPage = () => {
   const getJobAdDetails = async () => {
     setLoading(true);
     await getJobPostDetails(id).then(async (res) => {
-      console.log(res);
       setJobAdDetails(res.service);
       await getUserDetails(res.service.userID).then(async (user) => {
-        console.log(user);
         setUserDetails(user);
         const status = "Bookmarked";
         await getJobsByStatusClient(
@@ -41,7 +39,7 @@ const JobAdPage = () => {
             navigate("/login");
             return;
           }
-          console.log(jobs);
+
           setBookmarks(jobs);
           setLoading(false);
         });
@@ -52,10 +50,8 @@ const JobAdPage = () => {
   const getJobAdDetailsNoUserInfo = async () => {
     setLoading(true);
     await getJobPostDetails(id).then(async (res) => {
-      console.log(res);
       setJobAdDetails(res.service);
       await getUserDetails(res.service.userID).then(async (user) => {
-        console.log(user);
         setUserDetails(user);
         setLoading(false);
       });

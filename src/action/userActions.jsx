@@ -31,7 +31,7 @@ export const signup = async (
   certificationFilesUploaded,
   timeStamp
 ) => {
-  console.log({
+  
     email,
     password,
     role,
@@ -128,7 +128,7 @@ export const googleLoginClient = async (
   family_name
 ) => {
   try {
-    console.log({
+    
       email,
       email_verified,
       name,
@@ -157,7 +157,7 @@ export const googleLoginTradie = async (
   family_name
 ) => {
   try {
-    console.log({
+    
       email,
       email_verified,
       name,
@@ -180,7 +180,7 @@ export const googleLoginTradie = async (
 
 export const getJobPostDetails = async (id) => {
   try {
-    console.log({ id });
+    
 
     const { data } = await axios.post(
       "http://47.130.91.115/api/Auth/JobPostDetails",
@@ -197,7 +197,7 @@ export const getJobPostDetails = async (id) => {
 
 export const getFilteredServices = async (filters) => {
   try {
-    console.log(filters);
+    
 
     const { data } = await axios.post(
       "http://47.130.91.115/api/Auth/FilteredServices",
@@ -287,7 +287,7 @@ export const addNotification = async (
   timeStamp
 ) => {
   try {
-    console.log({ userID, content, profilePicture, timeStamp });
+    
     await axios.post(`http://47.130.91.115/api/Auth/AddNotification`, {
       _id: "",
       userID,
@@ -308,7 +308,7 @@ export const clientAddMessage = async (
   timeStamp
 ) => {
   try {
-    console.log({ clientId, tradieId, message, timeStamp });
+    
 
     await axios.post(`http://47.130.91.115/api/Auth/Client-AddMessage`, {
       _id: "",

@@ -26,9 +26,7 @@ const ServicesList = ({ content, services, bookmarks = [] }) => {
   const searchResult = searchSplit[1];
 
   useEffect(() => {
-    console.log(services);
     if (services) {
-      console.log(services);
       if (content === "recommend") {
         const randomServices = [...recommendedServices];
         for (let i = 0; i < 8; i++) {
@@ -37,14 +35,13 @@ const ServicesList = ({ content, services, bookmarks = [] }) => {
             randomServices.push(services[random]);
           }
         }
-        console.log(randomServices);
+
         setRecommendedServices(randomServices);
       } else if (content === "near") {
         let array = services.filter(
           (service) => service.businessPostcode === userInfo.postalCode
         );
 
-        console.log(array);
         if (array.length > 8) {
           setSeeAll(true);
         }
@@ -56,7 +53,7 @@ const ServicesList = ({ content, services, bookmarks = [] }) => {
             arrayLimit.push(array[i]);
           }
         }
-        console.log(arrayLimit);
+
         setNearLimit(arrayLimit);
       } else if (content === "search") {
         const lessSearch = [...searchServices];
@@ -65,7 +62,7 @@ const ServicesList = ({ content, services, bookmarks = [] }) => {
             lessSearch.push(services[i]);
           }
         }
-        console.log(lessSearch);
+
         setSearchServices(lessSearch);
       }
     }

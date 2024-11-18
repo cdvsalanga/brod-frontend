@@ -59,12 +59,6 @@ const SearchPage = () => {
     //   (filters.pricingStartsMin = 0),
     //   (filters.pricingStartsMax = 0),
     await getFilteredServices(filters).then(async (data) => {
-      if (data && data.status !== 200) {
-        alert(data.message);
-        window.location.reload();
-        return;
-      }
-      console.log(data);
       setFilteredServices(data);
       if (userInfo) {
         const status = "Bookmarked";
@@ -110,7 +104,7 @@ const SearchPage = () => {
 
     // setLoading(true);
     // await getFilteredServices(filters).then((data) => {
-    //   console.log(data);
+    //
     //   setFilteredServices(data);
     //   setLoading(false);
     // });
@@ -160,7 +154,6 @@ const SearchPage = () => {
   };
 
   const jobCategoriesChangeHandler = (e) => {
-    console.log(e.target.value);
     if (e.target.checked) {
       jobCategories.push(e.target.value);
     } else {
@@ -178,18 +171,14 @@ const SearchPage = () => {
       clearFilter();
       getFilteredServicesData();
     }
-    console.log(checked);
   }, [search, checked]);
 
   const clearCheckbox = () => {
-    console.log({ ref, availRef });
     for (let i = 0; i < ref.current.length; i++) {
-      console.log(i);
       ref.current[i].checked = false;
     }
 
     for (let i = 0; i < availRef.current.length; i++) {
-      console.log(i);
       availRef.current[i].checked = false;
     }
   };

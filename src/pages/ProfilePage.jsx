@@ -22,8 +22,6 @@ const ProfilePage = () => {
   const getProfileDetails = async () => {
     setLoading(true);
     await getUserDetails(id).then((res) => {
-      console.log(res);
-
       setRole(res.role);
       setProfileDetails(res);
       setLoading(false);
@@ -33,7 +31,6 @@ const ProfilePage = () => {
   useEffect(() => {
     if (userInfo) {
       getProfileDetails();
-      console.log(isMobile);
     } else {
       navigate("/login");
     }

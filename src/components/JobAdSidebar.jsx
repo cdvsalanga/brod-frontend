@@ -62,7 +62,7 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
 
   const scrollToBottom = () => {
     const { current } = divRef;
-    console.log(current);
+
     if (current !== null) {
       current.scrollIntoView({ behavior: "smooth" });
     }
@@ -96,23 +96,14 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
         localStorage.removeItem("userInfo");
         navigate("/login");
         return;
-      } else if (res && res.status !== 200) {
-        alert(res.message);
-        window.location.reload();
-        return;
       }
-      console.log(res);
+
       await addNotification(
         tradieID,
         content,
         userInfo.profilePicture,
         timeStamp
       ).then((res) => {
-        if (res && res.status !== 200) {
-          alert(res.message);
-          window.location.reload();
-          return;
-        }
         setComplete(true);
         setHireLoading(false);
       });
@@ -135,13 +126,6 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
     setShowInbox(true);
 
     await getMessagesById(userInfo.userId, userDetails._id).then((res) => {
-      if (res && res.status !== 200) {
-        alert(res.message);
-        window.location.reload();
-        return;
-      }
-      console.log(res);
-
       const sortMessages = [];
       res.clientMessages.forEach((message) => {
         sortMessages.push(message);
@@ -152,7 +136,7 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
       sortMessages.sort((a, b) => {
         return a.timeStamp > b.timeStamp ? 1 : -1;
       });
-      console.log(sortMessages);
+
       setMessages(sortMessages);
       setLoading(false);
 
@@ -177,11 +161,6 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
       addMessage,
       timeStamp
     ).then((res) => {
-      if (res && res.status !== 200) {
-        alert(res.message);
-        window.location.reload();
-        return;
-      }
       setAddMessage("");
       getMessagesByIdHandler();
     });

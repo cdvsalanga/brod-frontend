@@ -85,8 +85,6 @@ const LoginBox = () => {
   };
 
   const googleLoginHandler = async (res) => {
-    console.log(res);
-
     setLoading(true);
 
     await googleLoginClient(
@@ -97,11 +95,6 @@ const LoginBox = () => {
       res.given_name,
       res.family_name
     ).then((res) => {
-      if (res && res.status !== 200) {
-        alert(res.message);
-        window.location.reload();
-        return;
-      }
       setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
     });
   };
@@ -170,7 +163,6 @@ const LoginBox = () => {
       </div>
       <GoogleLogin
         onSuccess={(res) => {
-          console.log(res);
           googleLoginHandler(jwtDecode(res.credential));
         }}
         onError={() => alert("Login Failed")}

@@ -38,7 +38,7 @@ const TradespersonInfoForm = ({ page }) => {
     setLoading(true);
     await getUserDetails(id).then((user) => {
       setUserDetails(user);
-      console.log(user);
+
       setBusinessPostCode(user.businessPostCode);
       setFirstName(user.firstName);
       setLastName(user.lastName);
@@ -91,17 +91,11 @@ const TradespersonInfoForm = ({ page }) => {
     userDetails.certificationFilesUploaded = certificationFilesUploaded;
     userDetails.businessAddress = "";
 
-    console.log(userDetails);
-
     await updateTradieProfile(userDetails, token).then((res) => {
       if (res && res.status === 401) {
         alert("Your session expired, please login again.");
         localStorage.removeItem("userInfo");
         navigate("/login");
-        return;
-      } else if (res && res.status !== 200) {
-        alert(res.message);
-        window.location.reload();
         return;
       }
     });
@@ -147,19 +141,15 @@ const TradespersonInfoForm = ({ page }) => {
         localStorage.removeItem("userInfo");
         navigate("/login");
         return;
-      } else if (res && res.status !== 200) {
-        alert(res.message);
-        window.location.reload();
-        return;
       }
-      console.log("Success");
+
       getUser();
     });
   };
 
   const declineTradieHandler = async (e) => {
     e.preventDefault();
-    console.log({ declineReason });
+
     const status = "Declined";
 
     await updateTradieStatus(id, status, token).then((res) => {
@@ -168,12 +158,8 @@ const TradespersonInfoForm = ({ page }) => {
         localStorage.removeItem("userInfo");
         navigate("/login");
         return;
-      } else if (res && res.status !== 200) {
-        alert(res.message);
-        window.location.reload();
-        return;
       }
-      console.log("Success");
+
       setOpenModal(false);
       getUser();
     });

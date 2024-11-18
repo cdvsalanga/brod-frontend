@@ -44,12 +44,8 @@ const JobAdForm = () => {
         localStorage.removeItem("userInfo");
         navigate("/login");
         return;
-      } else if (res && res.status !== 200) {
-        alert(res.message);
-        window.location.reload();
-        return;
       }
-      console.log(res);
+
       setJobAdData(res);
       setBusinessPostcode(res.businessPostcode);
       setJobCategory(res.jobCategory);
@@ -127,10 +123,6 @@ const JobAdForm = () => {
         localStorage.removeItem("userInfo");
         navigate("/login");
         return;
-      } else if (res && res.status !== 200) {
-        alert(res.message);
-        window.location.reload();
-        return;
       }
       alert(`Job Ad ${jobAdTitle} posted!`);
       window.location.reload();
@@ -145,10 +137,6 @@ const JobAdForm = () => {
         localStorage.removeItem("userInfo");
         navigate("/login");
         return;
-      } else if (res && res.status !== 200) {
-        alert(res.message);
-        window.location.reload();
-        return;
       }
       navigate(`/profile/${userID}`);
     });
@@ -161,10 +149,6 @@ const JobAdForm = () => {
         alert("Your session expired, please login again.");
         localStorage.removeItem("userInfo");
         navigate("/login");
-        return;
-      } else if (res && res.status !== 200) {
-        alert(res.message);
-        window.location.reload();
         return;
       }
       navigate(`/profile/${userID}`);
@@ -190,10 +174,6 @@ const JobAdForm = () => {
         alert("Your session expired, please login again.");
         localStorage.removeItem("userInfo");
         navigate("/login");
-        return;
-      } else if (res && res.status !== 200) {
-        alert(res.message);
-        window.location.reload();
         return;
       }
       window.location.reload();

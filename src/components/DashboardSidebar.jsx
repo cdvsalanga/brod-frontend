@@ -7,9 +7,7 @@ import { useMediaQuery } from "react-responsive";
 const DashboardSidebar = ({ profile }) => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
 
-  useEffect(() => {
-    console.log(profile);
-  }, []);
+  useEffect(() => {}, []);
 
   if (profile) {
     return (

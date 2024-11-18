@@ -34,10 +34,6 @@ const ProfileContents = ({ role, userInfo, profile }) => {
         localStorage.removeItem("userInfo");
         navigate("/login");
         return;
-      } else if (res && res.status !== 200) {
-        alert(res.message);
-        window.location.reload();
-        return;
       }
       setPublishedData(res);
     });
@@ -47,10 +43,6 @@ const ProfileContents = ({ role, userInfo, profile }) => {
         alert("Your session expired, please login again.");
         localStorage.removeItem("userInfo");
         navigate("/login");
-        return;
-      } else if (res && res.status !== 200) {
-        alert(res.message);
-        window.location.reload();
         return;
       }
       setUnpublishedData(res);
@@ -81,7 +73,7 @@ const ProfileContents = ({ role, userInfo, profile }) => {
           navigate("/login");
           return;
         }
-        console.log(res);
+
         setInProgressJobs(res);
       }
     );
@@ -95,7 +87,6 @@ const ProfileContents = ({ role, userInfo, profile }) => {
           return;
         }
         setPendingJobs(res);
-        console.log(res);
       }
     );
 
@@ -108,7 +99,6 @@ const ProfileContents = ({ role, userInfo, profile }) => {
           return;
         }
         setCompletedJobs(res);
-        console.log(res);
       }
     );
 
@@ -121,7 +111,6 @@ const ProfileContents = ({ role, userInfo, profile }) => {
           return;
         }
         setBookmarkedJobs(res);
-        console.log(res);
       }
     );
 

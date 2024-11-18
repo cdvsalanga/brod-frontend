@@ -42,19 +42,16 @@ const Card = ({ width, service, bookmarks = [] }) => {
     if (width === "favorites") {
       await getUserDetails(service.service.userID).then((res) => {
         setTradieDetails(res);
-        console.log(res);
       });
     } else {
       await getUserDetails(service.userID).then((res) => {
         setTradieDetails(res);
-        console.log(res);
       });
     }
   };
 
   useEffect(() => {
     if (service || bookmarks) {
-      console.log({ service, bookmarks });
       if (service) {
         if (width === "favorites") {
           let newTotal = 0;
@@ -104,10 +101,6 @@ const Card = ({ width, service, bookmarks = [] }) => {
             localStorage.removeItem("userInfo");
             navigate("/login");
             return;
-          } else if (res && res.status !== 200) {
-            alert(res.message);
-            window.location.reload();
-            return;
           }
           setFavorite(false);
           setLoading(false);
@@ -121,7 +114,6 @@ const Card = ({ width, service, bookmarks = [] }) => {
 
         // This arrangement can be altered based on how we want the date's format to appear.
         const currentDate = `${year}-${month}-${day}`;
-        console.log(currentDate);
 
         await bookmarkJob(
           userInfo.userId,
@@ -140,10 +132,6 @@ const Card = ({ width, service, bookmarks = [] }) => {
             localStorage.removeItem("userInfo");
             navigate("/login");
             return;
-          } else if (res && res.status !== 200) {
-            alert(res.message);
-            window.location.reload();
-            return;
           }
           setFavorite(true);
           setLoading(false);
@@ -161,10 +149,6 @@ const Card = ({ width, service, bookmarks = [] }) => {
             localStorage.removeItem("userInfo");
             navigate("/login");
             return;
-          } else if (res && res.status !== 200) {
-            alert(res.message);
-            window.location.reload();
-            return;
           }
           setFavorite(false);
           setLoading(false);
@@ -178,7 +162,6 @@ const Card = ({ width, service, bookmarks = [] }) => {
 
         // This arrangement can be altered based on how we want the date's format to appear.
         const currentDate = `${year}-${month}-${day}`;
-        console.log(currentDate);
 
         await bookmarkJob(
           userInfo.userId,
@@ -196,10 +179,6 @@ const Card = ({ width, service, bookmarks = [] }) => {
             alert("Your session expired, please login again.");
             localStorage.removeItem("userInfo");
             navigate("/login");
-            return;
-          } else if (res && res.status !== 200) {
-            alert(res.message);
-            window.location.reload();
             return;
           }
           setFavorite(true);

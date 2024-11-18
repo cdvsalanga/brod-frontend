@@ -64,7 +64,7 @@ const ProfileEditPage = () => {
     setIgAccount(userDetails.igAccount);
     setCertificationFilesUploaded(userDetails.certificationFilesUploaded);
     defaultUploadedFiles(userDetails.certificationFilesUploaded);
-    console.log(userDetails);
+
     setLoading(false);
   };
 
@@ -99,10 +99,6 @@ const ProfileEditPage = () => {
         alert("Your session expired, please login again.");
         localStorage.removeItem("userInfo");
         navigate("/login");
-        return;
-      } else if (res && res.status !== 200) {
-        alert(res.message);
-        window.location.reload();
         return;
       }
 
@@ -153,12 +149,7 @@ const ProfileEditPage = () => {
         navigate("/login");
         return;
       } else if (res && res.message === "Network Error") {
-        console.log(res);
         alert("File too big");
-        window.location.reload();
-        return;
-      } else if (res && res.status !== 200) {
-        alert(res.message);
         window.location.reload();
         return;
       }
@@ -192,7 +183,6 @@ const ProfileEditPage = () => {
   };
 
   const fileHandler = async (e) => {
-    console.log(e.target.files[0]);
     const uploaded = [...credentials];
     const uploadedBase64 = [...certificationFilesUploaded];
     const file = e.target.files[0];

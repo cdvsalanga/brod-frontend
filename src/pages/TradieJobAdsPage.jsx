@@ -34,7 +34,6 @@ const TradieJobAdsPage = () => {
       } else {
         getProfileDetails();
       }
-      console.log(isMobile);
     } else {
       navigate("/login");
     }

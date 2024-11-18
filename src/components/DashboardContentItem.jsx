@@ -45,10 +45,6 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
         localStorage.removeItem("userInfo");
         navigate("/login");
         return;
-      } else if (res && res.status !== 200) {
-        alert(res.message);
-        window.location.reload();
-        return;
       }
       let content = "";
       if (status === "Cancelled" && job.status === "Pending") {
@@ -66,18 +62,12 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
         userInfo.profilePicture,
         timeStamp
       ).then((res) => {
-        if (res && res.status !== 200) {
-          alert(res.message);
-          window.location.reload();
-          return;
-        }
         window.location.reload();
       });
     });
   };
 
   if (data) {
-    console.log(data);
     return loading ? (
       <div
         className={

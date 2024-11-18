@@ -53,7 +53,7 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
 
   const scrollToBottom = () => {
     const { current } = divRef;
-    console.log(current);
+
     if (current !== null) {
       current.scrollIntoView({ behavior: "smooth" });
     }
@@ -81,10 +81,6 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
         localStorage.removeItem("userInfo");
         navigate("/login");
         return;
-      } else if (res && res.status !== 200) {
-        alert(res.message);
-        window.location.reload();
-        return;
       }
       if (status === "Cancelled") {
         const content = `${userInfo.name} cancelled the job service ${job.jobPostAdTitle}.`;
@@ -94,11 +90,6 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
           userInfo.profilePicture,
           timeStamp
         ).then((res) => {
-          if (res && res.status !== 200) {
-            alert(res.message);
-            window.location.reload();
-            return;
-          }
           window.location.reload();
           setLoading(false);
         });
@@ -129,20 +120,14 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
         localStorage.removeItem("userInfo");
         navigate("/login");
         return;
-      } else if (res && res.status !== 200) {
-        alert(res.message);
-        window.location.reload();
-        return;
       }
       window.location.reload();
-      console.log(res);
     });
   };
 
   useEffect(() => {
     if (data) {
       setItemData(data);
-      console.log(data);
     }
   }, [data]);
 
@@ -155,13 +140,6 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
         setTradieDetails(tradie);
 
         await getMessagesById(userInfo.userId, tradie._id).then((res) => {
-          if (res && res.status !== 200) {
-            alert(res.message);
-            window.location.reload();
-            return;
-          }
-          console.log(res);
-
           const sortMessages = [];
           res.clientMessages.forEach((message) => {
             sortMessages.push(message);
@@ -172,7 +150,7 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
           sortMessages.sort((a, b) => {
             return a.timeStamp > b.timeStamp ? 1 : -1;
           });
-          console.log(sortMessages);
+
           setMessages(sortMessages);
           setLoading(false);
 
@@ -185,13 +163,6 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
       });
     } else {
       await getMessagesById(userInfo.userId, tradieDetails._id).then((res) => {
-        if (res && res.status !== 200) {
-          alert(res.message);
-          window.location.reload();
-          return;
-        }
-        console.log(res);
-
         const sortMessages = [];
         res.clientMessages.forEach((message) => {
           sortMessages.push(message);
@@ -202,7 +173,7 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
         sortMessages.sort((a, b) => {
           return a.timeStamp > b.timeStamp ? 1 : -1;
         });
-        console.log(sortMessages);
+
         setMessages(sortMessages);
         setLoading(false);
 
@@ -228,11 +199,6 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
       addMessage,
       timeStamp
     ).then((res) => {
-      if (res && res.status !== 200) {
-        alert(res.message);
-        window.location.reload();
-        return;
-      }
       setAddMessage("");
       getMessagesByIdHandler();
     });

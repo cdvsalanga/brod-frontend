@@ -77,6 +77,8 @@ const TradespersonInfoForm = ({ page }) => {
 
     delete userDetails._id;
 
+    const services = [typeofWork];
+
     userDetails.id = id;
     userDetails.firstName = firstName;
     userDetails.lastName = lastName;
@@ -90,6 +92,7 @@ const TradespersonInfoForm = ({ page }) => {
     userDetails.typeofWork = typeofWork;
     userDetails.certificationFilesUploaded = certificationFilesUploaded;
     userDetails.businessAddress = "";
+    userDetails.services = services;
 
     await updateTradieProfile(userDetails, token).then((res) => {
       if (res && res.status === 401) {
@@ -133,6 +136,7 @@ const TradespersonInfoForm = ({ page }) => {
   };
 
   const approveTradieHandler = async () => {
+    setLoading(true);
     const status = "Approved";
 
     await updateTradieStatus(id, status, token).then((res) => {
@@ -149,6 +153,7 @@ const TradespersonInfoForm = ({ page }) => {
 
   const declineTradieHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const status = "Declined";
 

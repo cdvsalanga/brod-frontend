@@ -159,7 +159,7 @@ const ProfileSideBar = ({ role, profile }) => {
             </h1>
             <div className="profile-info flex-center gray-bg mb-8">
               <MapPin color="#8C8C8C" className="gray-bg" />
-              {profile.businessAddress + " " + profile.businessPostCode}
+              {profile.businessPostCode}
             </div>
             <div className="profile-info flex-center gray-bg">
               <Navigation color="#8C8C8C" className="gray-bg" />

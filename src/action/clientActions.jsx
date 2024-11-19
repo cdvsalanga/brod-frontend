@@ -3,7 +3,7 @@ import axios from "axios";
 export const updateClientProfile = async (profileDetails, token) => {
   try {
     await axios.put(
-      "http://47.130.91.115/api/Client/update-profile",
+      "https://localhost:7127/api/Client/update-profile",
       profileDetails,
       {
         headers: {
@@ -35,7 +35,7 @@ export const hireTradie = async (
 ) => {
   try {
     await axios.post(
-      "http://47.130.91.115/api/Client/HireTradie",
+      "https://localhost:7127/api/Client/HireTradie",
       {
         clientID,
         tradieID,
@@ -77,7 +77,7 @@ export const bookmarkJob = async (
 ) => {
   try {
     await axios.post(
-      "http://47.130.91.115/api/Client/BookmarkJob",
+      "https://localhost:7127/api/Client/BookmarkJob",
       {
         clientID,
         tradieID,
@@ -108,7 +108,7 @@ export const bookmarkJob = async (
 export const unBookmarkJob = async (bookmarkedJobId, token) => {
   try {
     await axios.post(
-      `http://47.130.91.115/api/Client/UnBookmarkJob?bookmarkedJobId=${bookmarkedJobId}`,
+      `https://localhost:7127/api/Client/UnBookmarkJob?bookmarkedJobId=${bookmarkedJobId}`,
       "",
       {
         headers: {
@@ -125,7 +125,7 @@ export const unBookmarkJob = async (bookmarkedJobId, token) => {
 export const getJobsByStatusClient = async (userID, status, token) => {
   try {
     const { data } = await axios.post(
-      "http://47.130.91.115/api/Client/GetJobsByStatus",
+      "https://localhost:7127/api/Client/GetJobsByStatus",
       { userID, status },
       {
         headers: {
@@ -150,7 +150,7 @@ export const updateJobStatusClient = async (
 ) => {
   try {
     await axios.put(
-      "http://47.130.91.115/api/Client/UpdateJobStatus",
+      "https://localhost:7127/api/Client/UpdateJobStatus",
       { tradieID, jobID, status, jobActionDate },
       {
         headers: {
@@ -176,7 +176,7 @@ export const addRating = async (
 ) => {
   try {
     await axios.post(
-      "http://47.130.91.115/api/Client/AddRating",
+      "https://localhost:7127/api/Client/AddRating",
       {
         _id: "",
         tradieId,

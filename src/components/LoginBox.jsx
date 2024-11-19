@@ -8,9 +8,11 @@ import {
   login,
 } from "../action/userActions";
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin } from "@react-oauth/google";
+import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { TailSpin } from "react-loading-icons";
+import axios from "axios";
+import GoogleIcon from "../assets/icons/google.svg";
 
 const LoginBox = () => {
   const [showPass, setShowPass] = useState(false);
@@ -89,7 +91,7 @@ const LoginBox = () => {
 
     await googleLoginClient(
       res.email,
-      res.email_verified.toString(),
+      res.verified_email.toString(),
       res.name,
       res.picture,
       res.given_name,
@@ -98,6 +100,26 @@ const LoginBox = () => {
       setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
     });
   };
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: (tokenResponse) => {
+      axios
+        .get(
+          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${tokenResponse.access_token}`,
+          {
+            headers: {
+              Authorization: `Bearer ${tokenResponse.access_token}`,
+              Accept: "application/json",
+            },
+          }
+        )
+        .then(async (res) => {
+          googleLoginHandler(res.data);
+        })
+        .catch((err) => console.log(err));
+    },
+    onError: () => alert("Login Failed"),
+  });
 
   return (
     <div className="login-box">
@@ -161,13 +183,21 @@ const LoginBox = () => {
         <div>OR</div>
         <div className="login-separator-line" />
       </div>
-      <GoogleLogin
+      <button
+        type="button"
+        className="google-login"
+        onClick={() => googleLogin()}
+      >
+        <img src={GoogleIcon} />
+        Continue with Google
+      </button>
+      {/* <GoogleLogin
         onSuccess={(res) => {
           googleLoginHandler(jwtDecode(res.credential));
         }}
         onError={() => alert("Login Failed")}
         disabled={loading}
-      />
+      /> */}
     </div>
   );
 };

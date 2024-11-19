@@ -255,28 +255,13 @@ const Header = ({ notHidden = true, headerText }) => {
                     className="header-img"
                     onClick={() => setShowProfile(!showProfile)}
                   />
-                  {showProfile &&
-                    (userInfo.role === "Admin" ||
-                    (userInfo.status !== "Approved" &&
-                      userInfo.role === "Tradie") ? (
-                      <div className="header-profile header-w-91">
-                        <div className="pointer" onClick={logOutHandler}>
-                          Log out
-                        </div>
+                  {showProfile && (
+                    <div className="header-profile header-w-91">
+                      <div className="pointer" onClick={logOutHandler}>
+                        Log out
                       </div>
-                    ) : (
-                      <div className="header-profile">
-                        <Link
-                          to={`/profile/${userInfo.userId}`}
-                          className="link-none mb-16"
-                        >
-                          My Account
-                        </Link>
-                        <div className="pointer" onClick={logOutHandler}>
-                          Log out
-                        </div>
-                      </div>
-                    ))}
+                    </div>
+                  )}
                 </div>
               )
             : !isMobile && (

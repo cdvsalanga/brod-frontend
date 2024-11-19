@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const login = async (email, password) => {
   try {
-    const { data } = await axios.post("http://47.130.91.115/api/Auth/login", {
+    const { data } = await axios.post("https://localhost:7127/api/Auth/login", {
       email,
       password,
     });
@@ -32,7 +32,7 @@ export const signup = async (
   timeStamp
 ) => {
   try {
-    await axios.post("http://47.130.91.115/api/Auth/signup", {
+    await axios.post("https://localhost:7127/api/Auth/signup", {
       _id: "",
       username: "",
       email,
@@ -80,7 +80,7 @@ export const signup = async (
 export const getUserDetails = async (userId) => {
   try {
     const { data } = await axios.get(
-      `http://47.130.91.115/api/Auth/userDetails?id=${userId}`
+      `https://localhost:7127/api/Auth/userDetails?id=${userId}`
     );
 
     return data;
@@ -92,7 +92,7 @@ export const getUserDetails = async (userId) => {
 export const getAllServices = async () => {
   try {
     const { data } = await axios.get(
-      `http://47.130.91.115/api/Auth/allServices`
+      `https://localhost:7127/api/Auth/allServices`
     );
 
     return data;
@@ -111,7 +111,7 @@ export const googleLoginClient = async (
 ) => {
   try {
     const { data } = await axios.post(
-      `http://47.130.91.115/api/Auth/google-login-client`,
+      `https://localhost:7127/api/Auth/google-login-client`,
       { email, email_verified, name, picture, given_name, family_name }
     );
 
@@ -131,7 +131,7 @@ export const googleLoginTradie = async (
 ) => {
   try {
     const { data } = await axios.post(
-      `http://47.130.91.115/api/Auth/google-login-tradie`,
+      `https://localhost:7127/api/Auth/google-login-tradie`,
       { email, email_verified, name, picture, given_name, family_name }
     );
 
@@ -145,7 +145,7 @@ export const googleLoginTradie = async (
 export const getJobPostDetails = async (id) => {
   try {
     const { data } = await axios.post(
-      "http://47.130.91.115/api/Auth/JobPostDetails",
+      "https://localhost:7127/api/Auth/JobPostDetails",
       {
         id,
       }
@@ -160,7 +160,7 @@ export const getJobPostDetails = async (id) => {
 export const getFilteredServices = async (filters) => {
   try {
     const { data } = await axios.post(
-      "http://47.130.91.115/api/Auth/FilteredServices",
+      "https://localhost:7127/api/Auth/FilteredServices",
       filters
     );
 
@@ -173,7 +173,7 @@ export const getFilteredServices = async (filters) => {
 export const smsOtp = async (phoneNumber) => {
   try {
     await axios.post(
-      `http://47.130.91.115/api/Auth/sms-otp?phoneNumber=${phoneNumber}`,
+      `https://localhost:7127/api/Auth/sms-otp?phoneNumber=${phoneNumber}`,
       ""
     );
   } catch (error) {
@@ -184,7 +184,7 @@ export const smsOtp = async (phoneNumber) => {
 export const emailOtp = async (email) => {
   try {
     await axios.post(
-      `http://47.130.91.115/api/Auth/email-otp?email=${email}`,
+      `https://localhost:7127/api/Auth/email-otp?email=${email}`,
       ""
     );
   } catch (error) {
@@ -195,7 +195,7 @@ export const emailOtp = async (email) => {
 export const smsVerifyOtp = async (phoneNumber, userEnteredOtp) => {
   try {
     await axios.post(
-      `http://47.130.91.115/api/Auth/sms-verify-otp?phoneNumber=${phoneNumber}&userEnteredOtp=${userEnteredOtp}`,
+      `https://localhost:7127/api/Auth/sms-verify-otp?phoneNumber=${phoneNumber}&userEnteredOtp=${userEnteredOtp}`,
       ""
     );
   } catch (error) {
@@ -206,7 +206,7 @@ export const smsVerifyOtp = async (phoneNumber, userEnteredOtp) => {
 export const emailVerifyOtp = async (email, userEnteredOtp) => {
   try {
     await axios.post(
-      `http://47.130.91.115/api/Auth/email-verify-otp?email=${email}&userEnteredOtp=${userEnteredOtp}`,
+      `https://localhost:7127/api/Auth/email-verify-otp?email=${email}&userEnteredOtp=${userEnteredOtp}`,
       ""
     );
   } catch (error) {
@@ -217,7 +217,7 @@ export const emailVerifyOtp = async (email, userEnteredOtp) => {
 export const getNotifications = async (userId) => {
   try {
     const { data } = await axios.post(
-      `http://47.130.91.115/api/Auth/GetNotifications?userId=${userId}`,
+      `https://localhost:7127/api/Auth/GetNotifications?userId=${userId}`,
       ""
     );
 
@@ -230,7 +230,7 @@ export const getNotifications = async (userId) => {
 export const getNotificationsNoUpdate = async (userId) => {
   try {
     const { data } = await axios.post(
-      `http://47.130.91.115/api/Auth/GetNotificationsNoUpdate?userId=${userId}`,
+      `https://localhost:7127/api/Auth/GetNotificationsNoUpdate?userId=${userId}`,
       ""
     );
 
@@ -247,7 +247,7 @@ export const addNotification = async (
   timeStamp
 ) => {
   try {
-    await axios.post(`http://47.130.91.115/api/Auth/AddNotification`, {
+    await axios.post(`https://localhost:7127/api/Auth/AddNotification`, {
       _id: "",
       userID,
       content,
@@ -267,7 +267,7 @@ export const clientAddMessage = async (
   timeStamp
 ) => {
   try {
-    await axios.post(`http://47.130.91.115/api/Auth/Client-AddMessage`, {
+    await axios.post(`https://localhost:7127/api/Auth/Client-AddMessage`, {
       _id: "",
       clientId,
       tradieId,
@@ -285,7 +285,7 @@ export const clientAddMessage = async (
 
 export const tradieAddMessage = async (clientId, tradieId, message) => {
   try {
-    await axios.post(`http://47.130.91.115/api/Auth/Tradie-AddMessage`, {
+    await axios.post(`https://localhost:7127/api/Auth/Tradie-AddMessage`, {
       _id: "",
       clientId,
       tradieId,
@@ -304,7 +304,7 @@ export const tradieAddMessage = async (clientId, tradieId, message) => {
 export const clientGetAllMessages = async (clientId) => {
   try {
     const { data } = await axios.post(
-      `http://47.130.91.115/api/Auth/Client-GetAll-Messages`,
+      `https://localhost:7127/api/Auth/Client-GetAll-Messages`,
       {
         clientId,
         tradieId: "",
@@ -320,7 +320,7 @@ export const clientGetAllMessages = async (clientId) => {
 export const tradieGetAllMessages = async (tradieId) => {
   try {
     const { data } = await axios.post(
-      `http://47.130.91.115/api/Auth/Tradie-GetAll-Messages`,
+      `https://localhost:7127/api/Auth/Tradie-GetAll-Messages`,
       {
         clientId: "",
         tradieId,
@@ -336,7 +336,7 @@ export const tradieGetAllMessages = async (tradieId) => {
 export const getMessagesById = async (clientId, tradieId) => {
   try {
     const { data } = await axios.post(
-      `http://47.130.91.115/api/Auth/GetMessages-ByID`,
+      `https://localhost:7127/api/Auth/GetMessages-ByID`,
       {
         clientId,
         tradieId,

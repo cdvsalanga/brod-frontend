@@ -2,12 +2,15 @@ import axios from "axios";
 
 export const getTradies = async (token) => {
   try {
-    const { data } = await axios.get("http://47.130.91.115/api/Admin/tradies", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const { data } = await axios.get(
+      "https://localhost:7127/api/Admin/tradies",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     return data;
   } catch (error) {
@@ -18,7 +21,7 @@ export const getTradies = async (token) => {
 export const updateTradieStatus = async (id, status, token) => {
   try {
     await axios.put(
-      "http://47.130.91.115/api/Admin/tradie/update-status",
+      "https://localhost:7127/api/Admin/tradie/update-status",
       { id, status },
       {
         headers: {
@@ -34,7 +37,7 @@ export const updateTradieStatus = async (id, status, token) => {
 
 export const getUsers = async (token) => {
   try {
-    const { data } = await axios.get("http://47.130.91.115/api/Admin/users", {
+    const { data } = await axios.get("https://localhost:7127/api/Admin/users", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -57,7 +60,7 @@ export const getFilteredTradies = async (
 ) => {
   try {
     const { data } = await axios.post(
-      "http://47.130.91.115/api/Admin/GetFilteredTradies",
+      "https://localhost:7127/api/Admin/GetFilteredTradies",
       { typeOfWork, status, submissionDateFrom, submissionDateTo, keyword },
       {
         headers: {
@@ -83,7 +86,7 @@ export const getFilteredUsers = async (
 ) => {
   try {
     const { data } = await axios.post(
-      "http://47.130.91.115/api/Admin/GetFilteredUsers",
+      "https://localhost:7127/api/Admin/GetFilteredUsers",
       { typeOfWork, status, submissionDateFrom, submissionDateTo, keyword },
       {
         headers: {
@@ -102,7 +105,7 @@ export const getFilteredUsers = async (
 export const suspendUser = async (userID, weeksSuspended, token) => {
   try {
     await axios.put(
-      "http://47.130.91.115/api/Admin/suspendUser",
+      "https://localhost:7127/api/Admin/suspendUser",
       { userID, weeksSuspended, isSuspended: true },
       {
         headers: {

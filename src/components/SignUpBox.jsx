@@ -15,9 +15,11 @@ import {
 } from "../action/userActions";
 import ActiveRadio from "../assets/icons/active-radio.svg";
 import OTPInput from "react-otp-input";
-import { GoogleLogin } from "@react-oauth/google";
+import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { TailSpin } from "react-loading-icons";
+import GoogleIcon from "../assets/icons/google.svg";
+import axios from "axios";
 
 const SignUpBox = ({ chosen }) => {
   const [loading, setLoading] = useState(false);
@@ -232,7 +234,7 @@ const SignUpBox = ({ chosen }) => {
     if (chosen === "client") {
       await googleLoginClient(
         res.email,
-        res.email_verified.toString(),
+        res.verified_email.toString(),
         res.name,
         res.picture,
         res.given_name,
@@ -244,18 +246,39 @@ const SignUpBox = ({ chosen }) => {
     } else {
       await googleLoginTradie(
         res.email,
-        res.email_verified.toString(),
+        res.verified_email.toString(),
         res.name,
         res.picture,
         res.given_name,
         res.family_name
       ).then((data) => {
-        setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
+        data.role = "Tradie";
+        data.status = "New";
+        localStorage.setItem("userInfo", JSON.stringify(data));
         navigate(`/signup/${data.userId}`);
         setLoading(false);
       });
     }
   };
+  const googleLogin = useGoogleLogin({
+    onSuccess: (tokenResponse) => {
+      axios
+        .get(
+          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${tokenResponse.access_token}`,
+          {
+            headers: {
+              Authorization: `Bearer ${tokenResponse.access_token}`,
+              Accept: "application/json",
+            },
+          }
+        )
+        .then(async (res) => {
+          googleLoginHandler(res.data);
+        })
+        .catch((err) => console.log(err));
+    },
+    onError: () => alert("Login Failed"),
+  });
 
   const detailsHandler = (e) => {
     e.preventDefault();
@@ -348,14 +371,14 @@ const SignUpBox = ({ chosen }) => {
           <div>OR</div>
           <div className="signup-separator-line" />
         </div>
-        <GoogleLogin
-          onSuccess={(res) => {
-            googleLoginHandler(jwtDecode(res.credential));
-          }}
-          onError={() => alert("Login Failed")}
-          disabled={loading}
-          text="Sign up with Google"
-        />
+        <button
+          type="button"
+          className="google-login"
+          onClick={() => googleLogin()}
+        >
+          <img src={GoogleIcon} />
+          Sign up with Google
+        </button>
       </div>
     );
   } else if (page === "clientDetails") {

@@ -36,6 +36,8 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
   const [userInfo] = useState(JSON.parse(localStorage.getItem("userInfo")));
   const [itemData, setItemData] = useState();
   const [loading, setLoading] = useState(false);
+  const [chatLoading, setChatLoading] = useState(false);
+  const [sendChatLoading, setSendChatLoading] = useState(false);
   const [showBtns, setShowBtns] = useState(false);
   const [showInbox, setShowInbox] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
@@ -128,11 +130,12 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
   useEffect(() => {
     if (data) {
       setItemData(data);
+      console.log(data);
     }
   }, [data]);
 
   const getMessagesByIdHandler = async (job) => {
-    setLoading(true);
+    setChatLoading(true);
     setShowInbox(true);
 
     if (job) {
@@ -152,7 +155,7 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
           });
 
           setMessages(sortMessages);
-          setLoading(false);
+          setChatLoading(false);
 
           const timeout = setTimeout(() => {
             scrollToBottom();
@@ -175,7 +178,7 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
         });
 
         setMessages(sortMessages);
-        setLoading(false);
+        setChatLoading(false);
 
         const timeout = setTimeout(() => {
           scrollToBottom();
@@ -189,7 +192,7 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
   const addMessageHandler = async (e) => {
     e.preventDefault();
 
-    setLoading(true);
+    setSendChatLoading(true);
 
     const timeStamp = new Date().toISOString();
 
@@ -200,6 +203,7 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
       timeStamp
     ).then((res) => {
       setAddMessage("");
+      setSendChatLoading(false);
       getMessagesByIdHandler();
     });
   };
@@ -274,61 +278,11 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
                     onClick={(e) => {
                       e.stopPropagation();
                       setShowBtns(true);
+                      setJobAdDetails(res);
                     }}
                   />
                 )}
-                {isMobile && showBtns && (
-                  <div
-                    className="profile-item-btns-container scroll-lock"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <div className="profile-item-btns">
-                      {item === "job" ? (
-                        <div>
-                          <button className="profile-btn-mobile profile-btn-mobile-cancel flex-center pointer">
-                            <CircleX width={28} height={28} />
-                            Cancel job
-                          </button>
-                          <button className="profile-btn-mobile flex-center pointer">
-                            <Check width={28} height={28} color="#8C8C8C" />
-                            Mark as completed
-                          </button>
-                        </div>
-                      ) : item === "offer" ? (
-                        <div>
-                          <button className="profile-btn-mobile profile-btn-mobile-cancel flex-center pointer">
-                            <CircleX width={28} height={28} />
-                            Cancel offer
-                          </button>
-                          <button
-                            className="profile-btn-mobile flex-center pointer"
-                            onClick={() => getMessagesByIdHandler(res)}
-                          >
-                            <Mail width={28} height={28} color="#8C8C8C" />
-                            Chat tradesperson
-                          </button>
 
-                          <button className="profile-btn-mobile flex-center pointer">
-                            <FileText width={28} height={28} color="#8C8C8C" />
-                            See offer details
-                          </button>
-                        </div>
-                      ) : (
-                        <button className="profile-btn-mobile flex-center pointer">
-                          <Star width={28} height={28} color="#8C8C8C" />
-                          Rate the service
-                        </button>
-                      )}
-                      <X
-                        className="profile-item-btns-close pointer"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setShowBtns(false);
-                        }}
-                      />
-                    </div>
-                  </div>
-                )}
                 {!isMobile && (
                   <div
                     className={
@@ -445,6 +399,139 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
               </div>
             </div>
           ))}
+        {isMobile && showBtns && (
+          <div
+            className="profile-item-btns-container scroll-lock"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="profile-item-btns">
+              {item === "job" ? (
+                <div>
+                  <button
+                    type="button"
+                    className="profile-btn-mobile profile-btn-mobile-cancel flex-center pointer"
+                    onClick={(e) => {
+                      updateJobStatusHandler(
+                        e,
+                        (status = "Cancelled"),
+                        jobAdDetails
+                      );
+                      setShowBtns(false);
+                    }}
+                  >
+                    <CircleX width={28} height={28} />
+                    Cancel job
+                  </button>
+                  <button
+                    type="button"
+                    className="profile-btn-mobile flex-center pointer"
+                    onClick={(e) => {
+                      updateJobStatusHandler(
+                        e,
+                        (status = "Completed"),
+                        jobAdDetails
+                      );
+
+                      setShowBtns(false);
+                    }}
+                  >
+                    <Check width={28} height={28} color="#8C8C8C" />
+                    Mark as completed
+                  </button>
+                </div>
+              ) : item === "offer" ? (
+                <div>
+                  <button
+                    type="button"
+                    className="profile-btn-mobile profile-btn-mobile-cancel flex-center pointer"
+                    onClick={(e) => {
+                      updateJobStatusHandler(
+                        e,
+                        (status = "Cancelled"),
+                        jobAdDetails
+                      );
+                      setShowBtns(false);
+                    }}
+                  >
+                    <CircleX width={28} height={28} />
+                    Cancel offer
+                  </button>
+                  <button
+                    className="profile-btn-mobile flex-center pointer"
+                    onClick={() => {
+                      getMessagesByIdHandler(jobAdDetails);
+
+                      setShowBtns(false);
+                    }}
+                  >
+                    <Mail width={28} height={28} color="#8C8C8C" />
+                    Chat tradesperson
+                  </button>
+
+                  <button
+                    type="button"
+                    className="profile-btn-mobile flex-center pointer"
+                    onClick={() => {
+                      setShowBtns(false);
+                      setOpenModal(true);
+                    }}
+                  >
+                    <FileText width={28} height={28} color="#8C8C8C" />
+                    See offer details
+                  </button>
+                </div>
+              ) : item === "complete" && jobAdDetails.ratingDesc ? (
+                <div className="profile-complete-rated">
+                  <div>
+                    <Star
+                      fill={jobAdDetails.rating < 1 ? "#ffffff" : "#1F1F23"}
+                    />
+                    <Star
+                      fill={jobAdDetails.rating < 2 ? "#ffffff" : "#1F1F23"}
+                    />
+                    <Star
+                      fill={jobAdDetails.rating < 3 ? "#ffffff" : "#1F1F23"}
+                    />
+                    <Star
+                      fill={jobAdDetails.rating < 4 ? "#ffffff" : "#1F1F23"}
+                    />
+                    <Star
+                      fill={jobAdDetails.rating < 5 ? "#ffffff" : "#1F1F23"}
+                    />
+                  </div>
+                  <span
+                    className="profile-rated-text pointer"
+                    onClick={() => {
+                      setShowBtns(false);
+                      setOpenModal(true);
+                    }}
+                  >
+                    See rating details
+                  </span>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  className="profile-btn-mobile flex-center pointer"
+                  onClick={() => {
+                    setShowBtns(false);
+                    setOpenModal(true);
+                  }}
+                >
+                  <Star width={28} height={28} color="#8C8C8C" />
+                  Rate the service
+                </button>
+              )}
+              <X
+                className="profile-item-btns-close pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowBtns(false);
+                }}
+              />
+            </div>
+          </div>
+        )}
         {openModal && (
           <div className="profile-modal scroll-lock">
             {item === "offer" ? (
@@ -982,7 +1069,7 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
                 />
               </div>
             )}
-            {loading ? (
+            {chatLoading ? (
               <div
                 className={
                   isMobile
@@ -1099,12 +1186,21 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
                       value={addMessage}
                       onChange={(e) => setAddMessage(e.target.value)}
                     />
-                    <SendHorizonal
-                      width={35.56}
-                      height={40}
-                      color="#1F1F23"
-                      className="inbox-message-send pointer"
-                    />
+                    {sendChatLoading ? (
+                      <TailSpin
+                        stroke="#1f1f23"
+                        speed={1}
+                        className="inbox-message-send"
+                      />
+                    ) : (
+                      <SendHorizonal
+                        width={35.56}
+                        height={40}
+                        color="#1F1F23"
+                        className="inbox-message-send pointer"
+                        onClick={addMessageHandler}
+                      />
+                    )}
                   </form>
                 </div>
               </div>
@@ -1417,7 +1513,7 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
           </div>
         ) : (
           <Link
-            to={`/tradie/profile/${id}/${item}/${res._id}`}
+            to={`/tradie/profile/${id}/job-ad/${res._id}`}
             className="link-none"
             key={res._id}
           >

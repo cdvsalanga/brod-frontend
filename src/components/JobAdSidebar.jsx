@@ -32,6 +32,7 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
 
   const [loading, setLoading] = useState(false);
+  const [chatLoading, setChatLoading] = useState(false);
   const [hireLoading, setHireLoading] = useState(false);
   const [showOffer, setShowOffer] = useState(false);
   const [showInbox, setShowInbox] = useState(false);
@@ -151,7 +152,7 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
   const addMessageHandler = async (e) => {
     e.preventDefault();
 
-    setLoading(true);
+    setChatLoading(true);
 
     const timeStamp = new Date().toISOString();
 
@@ -161,6 +162,7 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
       addMessage,
       timeStamp
     ).then((res) => {
+      setChatLoading(false);
       setAddMessage("");
       getMessagesByIdHandler();
     });
@@ -662,12 +664,21 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
                       value={addMessage}
                       onChange={(e) => setAddMessage(e.target.value)}
                     />
-                    <SendHorizonal
-                      width={35.56}
-                      height={40}
-                      color="#1F1F23"
-                      className="inbox-message-send pointer"
-                    />
+                    {chatLoading ? (
+                      <TailSpin
+                        stroke="#1f1f23"
+                        speed={1}
+                        className="inbox-message-send"
+                      />
+                    ) : (
+                      <SendHorizonal
+                        width={35.56}
+                        height={40}
+                        color="#1F1F23"
+                        className="inbox-message-send pointer"
+                        onClick={addMessageHandler}
+                      />
+                    )}
                   </form>
                 </div>
               </div>

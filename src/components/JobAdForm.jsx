@@ -30,12 +30,13 @@ const JobAdForm = () => {
   const [currency, setCurrency] = useState("AUD");
   const [thumbnailImage, setThumbnailImage] = useState("");
   const [projectGallery, setProjectGallery] = useState([]);
+  const [status, setStatus] = useState();
 
   let isActive;
 
   const navigate = useNavigate();
 
-  const { id, status, serviceId } = useParams();
+  const { id, serviceId } = useParams();
 
   const getJobAdDetailsByServiceIdData = async () => {
     await getJobAdDetailsByServiceId(serviceId, userInfo.token).then((res) => {
@@ -56,6 +57,7 @@ const JobAdForm = () => {
       setCurrency(res.currency);
       setThumbnailImage(res.thumbnailImage);
       setProjectGallery(res.projectGallery);
+      setStatus(res.isActive ? "publish" : "unpublish");
       setLoading(false);
     });
   };
@@ -138,7 +140,7 @@ const JobAdForm = () => {
         navigate("/login");
         return;
       }
-      navigate(`/profile/${userID}`);
+      window.location.reload();
     });
   };
 
@@ -151,7 +153,7 @@ const JobAdForm = () => {
         navigate("/login");
         return;
       }
-      navigate(`/profile/${userID}`);
+      window.location.reload();
     });
   };
 

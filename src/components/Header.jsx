@@ -36,6 +36,7 @@ const Header = ({ notHidden = true, headerText }) => {
   const [loading, setLoading] = useState(false);
   const [inboxLoading, setInboxLoading] = useState(false);
   const [messageLoading, setMessageLoading] = useState(false);
+  const [chatLoading, setChatLoading] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [showNotif, setShowNotif] = useState(false);
   const [showInbox, setShowInbox] = useState(false);
@@ -163,7 +164,7 @@ const Header = ({ notHidden = true, headerText }) => {
   const addMessageHandler = async (e) => {
     e.preventDefault();
 
-    setMessageLoading(true);
+    setChatLoading(true);
 
     const timeStamp = new Date().toISOString();
 
@@ -173,6 +174,7 @@ const Header = ({ notHidden = true, headerText }) => {
       addMessage,
       timeStamp
     ).then((res) => {
+      setChatLoading(false);
       setAddMessage("");
       getMessagesByIdHandler();
     });
@@ -674,7 +676,10 @@ const Header = ({ notHidden = true, headerText }) => {
                         messages.map((message) => (
                           <div
                             className={
-                              message.sentByClient
+                              userInfo.role === "Client" && message.sentByClient
+                                ? "inbox-message-user mb-16 gray-bg"
+                                : userInfo.role === "Tradie" &&
+                                  message.sentByTradie
                                 ? "inbox-message-user mb-16 gray-bg"
                                 : "mb-16 gray-bg"
                             }
@@ -702,12 +707,20 @@ const Header = ({ notHidden = true, headerText }) => {
                         value={addMessage}
                         onChange={(e) => setAddMessage(e.target.value)}
                       />
-                      <SendHorizonal
-                        width={35.56}
-                        height={40}
-                        color="#1F1F23"
-                        className="inbox-message-send pointer"
-                      />
+                      {chatLoading ? (
+                        <TailSpin
+                          stroke="#1f1f23"
+                          speed={1}
+                          className="inbox-message-send"
+                        />
+                      ) : (
+                        <SendHorizonal
+                          width={35.56}
+                          height={40}
+                          color="#1F1F23"
+                          className="inbox-message-send pointer"
+                        />
+                      )}
                     </form>
                   </div>
                 </div>

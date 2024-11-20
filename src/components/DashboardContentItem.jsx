@@ -142,6 +142,7 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
                 className="dashboard-item-menu-icon pointer"
                 onClick={(e) => {
                   e.stopPropagation();
+                  setJobModal(job);
                   setShowBtns(true);
                 }}
               />
@@ -198,64 +199,80 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
                 </button>
               </div>
             )}
-            {isMobile && showBtns && (
-              <div className="dashboard-item-btns-container scroll-lock">
-                <div className="dashboard-item-btns">
-                  {item === "job" ? (
-                    <div>
-                      <button
-                        className="dashboard-btn-mobile dashboard-btn-mobile-cancel flex-center pointer"
-                        onClick={(e) =>
-                          updateJobStatusHandler(job, (status = "Cancelled"), e)
-                        }
-                      >
-                        <CircleX width={28} height={28} />
-                        Cancel job
-                      </button>
-                      <button
-                        className="dashboard-btn-mobile flex-center pointer"
-                        onClick={(e) =>
-                          updateJobStatusHandler(job, (status = "Completed"), e)
-                        }
-                      >
-                        <Check width={28} height={28} color="#8C8C8C" />
-                        Mark as completed
-                      </button>
-                    </div>
-                  ) : (
-                    <div>
-                      <button
-                        className="dashboard-btn-mobile dashboard-btn-mobile-cancel flex-center pointer"
-                        onClick={(e) =>
-                          updateJobStatusHandler(job, (status = "Cancelled"), e)
-                        }
-                      >
-                        <CircleX width={28} height={28} />
-                        Decline
-                      </button>
-                      <button
-                        className="dashboard-btn-mobile flex-center pointer"
-                        onClick={(e) =>
-                          updateJobStatusHandler(job, (status = "Completed"), e)
-                        }
-                      >
-                        <Check width={28} height={28} color="#8C8C8C" />
-                        Accept offer
-                      </button>
-                    </div>
-                  )}
-                  <X
-                    className="profile-item-btns-close pointer"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setShowBtns(false);
-                    }}
-                  />
-                </div>
-              </div>
-            )}
           </div>
         ))}
+        {isMobile && showBtns && (
+          <div className="dashboard-item-btns-container scroll-lock">
+            <div className="dashboard-item-btns">
+              {item === "job" ? (
+                <div>
+                  <button
+                    className="dashboard-btn-mobile dashboard-btn-mobile-cancel flex-center pointer"
+                    onClick={(e) =>
+                      updateJobStatusHandler(
+                        jobModal,
+                        (status = "Cancelled"),
+                        e
+                      )
+                    }
+                  >
+                    <CircleX width={28} height={28} />
+                    Cancel job
+                  </button>
+                  <button
+                    className="dashboard-btn-mobile flex-center pointer"
+                    onClick={(e) =>
+                      updateJobStatusHandler(
+                        jobModal,
+                        (status = "Completed"),
+                        e
+                      )
+                    }
+                  >
+                    <Check width={28} height={28} color="#8C8C8C" />
+                    Mark as completed
+                  </button>
+                </div>
+              ) : (
+                <div>
+                  <button
+                    className="dashboard-btn-mobile dashboard-btn-mobile-cancel flex-center pointer"
+                    onClick={(e) =>
+                      updateJobStatusHandler(
+                        jobModal,
+                        (status = "Cancelled"),
+                        e
+                      )
+                    }
+                  >
+                    <CircleX width={28} height={28} />
+                    Decline
+                  </button>
+                  <button
+                    className="dashboard-btn-mobile flex-center pointer"
+                    onClick={(e) =>
+                      updateJobStatusHandler(
+                        jobModal,
+                        (status = "In Progress"),
+                        e
+                      )
+                    }
+                  >
+                    <Check width={28} height={28} color="#8C8C8C" />
+                    Accept offer
+                  </button>
+                </div>
+              )}
+              <X
+                className="profile-item-btns-close pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowBtns(false);
+                }}
+              />
+            </div>
+          </div>
+        )}
         {showModal && (
           <div className="dashboard-modal scroll-lock">
             <div className="dashboard-modal-contents">

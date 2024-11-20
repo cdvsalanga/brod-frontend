@@ -6,6 +6,8 @@ import { useMediaQuery } from "react-responsive";
 
 const JobAdDetails = ({ jobAdDetails, userDetails, userInfo, bookmarks }) => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
+
+  const [loading, setLoading] = useState(false);
   const [favorite, setFavorite] = useState(() => {
     if (jobAdDetails && bookmarks) {
       if (
@@ -22,6 +24,7 @@ const JobAdDetails = ({ jobAdDetails, userDetails, userInfo, bookmarks }) => {
   );
 
   const favoriteOnChangeHandler = async () => {
+    setLoading(true);
     if (favorite) {
       const bookmarkedJob = bookmarks.find(
         (bookmark) => bookmark.serviceID === jobAdDetails._id
@@ -35,6 +38,7 @@ const JobAdDetails = ({ jobAdDetails, userDetails, userInfo, bookmarks }) => {
           return;
         }
         setFavorite(false);
+        setLoading(false);
       });
     } else {
       const status = "Bookmarked";
@@ -66,6 +70,7 @@ const JobAdDetails = ({ jobAdDetails, userDetails, userInfo, bookmarks }) => {
           return;
         }
         setFavorite(true);
+        setLoading(false);
       });
     }
   };
@@ -77,7 +82,7 @@ const JobAdDetails = ({ jobAdDetails, userDetails, userInfo, bookmarks }) => {
           <div className={isMobile ? "mb-12" : "mb-24"}>
             <div className="flex-between mb-12">
               <div className="job-type">{jobAdDetails.jobCategory}</div>
-              {userInfo && (
+              {userInfo && !loading && (
                 <div className="flex-center">
                   <Heart
                     width={isMobile ? 28 : 32}

@@ -9,6 +9,10 @@
 
   .hero-h1 {
     margin: auto 23px 38px 23px;
+    font-size: 28px;
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 34.16px;
   }
 
   .hero-img {
@@ -41,6 +45,7 @@
     padding: 9.5px 9px 17.5px 9px;
     background-color: #fafafa;
     cursor: pointer;
+    white-space: nowrap;
   }
 
   .active {

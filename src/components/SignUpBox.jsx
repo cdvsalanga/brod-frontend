@@ -8,6 +8,7 @@ import {
   emailVerifyOtp,
   getUserDetails,
   googleLoginClient,
+  googleLoginCommon,
   googleLoginTradie,
   signup,
   smsOtp,
@@ -232,31 +233,59 @@ const SignUpBox = ({ chosen }) => {
     setLoading(true);
 
     if (chosen === "client") {
-      await googleLoginClient(
+      await googleLoginCommon(
         res.email,
         res.verified_email.toString(),
         res.name,
         res.picture,
         res.given_name,
         res.family_name
-      ).then((data) => {
-        setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
-        setLoading(false);
+      ).then(async (data) => {
+        if (data === "Please sign up as a new user") {
+          await googleLoginClient(
+            res.email,
+            res.verified_email.toString(),
+            res.name,
+            res.picture,
+            res.given_name,
+            res.family_name
+          ).then((data) => {
+            setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
+          });
+        } else {
+          alert("User already exists");
+          window.location.reload();
+          return;
+        }
       });
     } else {
-      await googleLoginTradie(
+      await googleLoginCommon(
         res.email,
         res.verified_email.toString(),
         res.name,
         res.picture,
         res.given_name,
         res.family_name
-      ).then((data) => {
-        data.role = "Tradie";
-        data.status = "New";
-        localStorage.setItem("userInfo", JSON.stringify(data));
-        navigate(`/signup/${data.userId}`);
-        setLoading(false);
+      ).then(async (data) => {
+        if (data === "Please sign up as a new user") {
+          await googleLoginTradie(
+            res.email,
+            res.verified_email.toString(),
+            res.name,
+            res.picture,
+            res.given_name,
+            res.family_name
+          ).then((data) => {
+            data.role = "Tradie";
+            data.status = "New";
+            localStorage.setItem("userInfo", JSON.stringify(data));
+            navigate(`/signup/${data.userId}`);
+          });
+        } else {
+          alert("User already exists");
+          window.location.reload();
+          return;
+        }
       });
     }
   };

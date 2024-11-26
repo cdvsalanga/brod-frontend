@@ -121,6 +121,7 @@ export const googleLoginClient = async (
     console.error(error);
   }
 };
+
 export const googleLoginTradie = async (
   email,
   email_verified,
@@ -136,6 +137,26 @@ export const googleLoginTradie = async (
     );
 
     localStorage.setItem("userInfo", JSON.stringify(data));
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const googleLoginCommon = async (
+  email,
+  email_verified,
+  name,
+  picture,
+  given_name,
+  family_name
+) => {
+  try {
+    const { data } = await axios.post(
+      `https://localhost:7127/api/Auth/google-login-common`,
+      { email, email_verified, name, picture, given_name, family_name }
+    );
+
     return data;
   } catch (error) {
     console.error(error);

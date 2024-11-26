@@ -5,6 +5,7 @@ import { Eye, EyeOff } from "lucide-react";
 import {
   getUserDetails,
   googleLoginClient,
+  googleLoginCommon,
   login,
 } from "../action/userActions";
 import { useNavigate } from "react-router-dom";
@@ -89,15 +90,30 @@ const LoginBox = () => {
   const googleLoginHandler = async (res) => {
     setLoading(true);
 
-    await googleLoginClient(
+    await googleLoginCommon(
       res.email,
       res.verified_email.toString(),
       res.name,
       res.picture,
       res.given_name,
       res.family_name
-    ).then((res) => {
-      setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
+    ).then(async (data) => {
+      if (data === "Please sign up as a new user") {
+        alert(data);
+        window.location.reload();
+        return;
+      } else {
+        await googleLoginClient(
+          res.email,
+          res.verified_email.toString(),
+          res.name,
+          res.picture,
+          res.given_name,
+          res.family_name
+        ).then((res) => {
+          setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
+        });
+      }
     });
   };
 

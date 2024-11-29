@@ -711,25 +711,85 @@ const DashboardAdminPage = () => {
                           navigate(`/admin/application-details/${tradie._id}`)
                         }
                       >
-                        <td className="admin-table-cell">{tradie._id}</td>
-                        <td className="admin-table-cell">
+                        <td
+                          className={
+                            tradie.status === "New"
+                              ? "admin-table-new admin-table-cell"
+                              : "admin-table-cell"
+                          }
+                        >
+                          {tradie._id}
+                        </td>
+                        <td
+                          className={
+                            tradie.status === "New"
+                              ? "admin-table-new admin-table-cell"
+                              : "admin-table-cell"
+                          }
+                        >
                           {tradie.businessPostCode}
                         </td>
-                        <td className="admin-table-cell">
+                        <td
+                          className={
+                            tradie.status === "New"
+                              ? "admin-table-new admin-table-cell"
+                              : "admin-table-cell"
+                          }
+                        >
                           {tradie.typeofWork}
                         </td>
-                        <td className="admin-table-cell">{tradie.firstName}</td>
-                        <td className="admin-table-cell">{tradie.lastName}</td>
-                        <td className="admin-table-cell">
+                        <td
+                          className={
+                            tradie.status === "New"
+                              ? "admin-table-new admin-table-cell"
+                              : "admin-table-cell"
+                          }
+                        >
+                          {tradie.firstName}
+                        </td>
+                        <td
+                          className={
+                            tradie.status === "New"
+                              ? "admin-table-new admin-table-cell"
+                              : "admin-table-cell"
+                          }
+                        >
+                          {tradie.lastName}
+                        </td>
+                        <td
+                          className={
+                            tradie.status === "New"
+                              ? "admin-table-new admin-table-cell"
+                              : "admin-table-cell"
+                          }
+                        >
                           {tradie.australianBusinessNumber}
                         </td>
-                        <td className="admin-table-cell">
+                        <td
+                          className={
+                            tradie.status === "New"
+                              ? "admin-table-new admin-table-cell"
+                              : "admin-table-cell"
+                          }
+                        >
                           {tradie.registeredBusinessName}
                         </td>
-                        <td className="admin-table-cell">
+                        <td
+                          className={
+                            tradie.status === "New"
+                              ? "admin-table-new admin-table-cell"
+                              : "admin-table-cell"
+                          }
+                        >
                           {dateFormat(tradie.timeStamp, "dd/mm/yyyy")}
                         </td>
-                        <td className="admin-table-cell">
+                        <td
+                          className={
+                            tradie.status === "New"
+                              ? "admin-table-new admin-table-cell"
+                              : "admin-table-cell"
+                          }
+                        >
                           <span
                             className={
                               tradie.status === "New"

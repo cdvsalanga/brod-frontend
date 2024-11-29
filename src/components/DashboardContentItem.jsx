@@ -14,7 +14,7 @@ import { updateJobStatusTradie } from "../action/tradieActions";
 import { useMediaQuery } from "react-responsive";
 import dateFormat, { masks } from "dateformat";
 import { TailSpin } from "react-loading-icons";
-import { addNotification } from "../action/userActions";
+import { addNotification, tradieAddMessage } from "../action/userActions";
 
 const DashboardContentItem = ({ item, data, userInfo }) => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
@@ -61,8 +61,25 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
         content,
         userInfo.profilePicture,
         timeStamp
-      ).then((res) => {
-        window.location.reload();
+      ).then(async (res) => {
+        let message = "";
+        if (status === "Cancelled" && job.status === "Pending") {
+          message = `I declined your offer for job service ${job.jobPostAdTitle}.`;
+        } else if (status === "Cancelled" && job.status !== "Pending") {
+          message = `I cancelled the job service ${job.jobPostAdTitle}.`;
+        } else if (status === "In Progress") {
+          message = `I accepted your offer for job service ${job.jobPostAdTitle}.`;
+        } else if (status === "Completed") {
+          message = `I completed the job service ${job.jobPostAdTitle}.`;
+        }
+        await tradieAddMessage(
+          job.clientID,
+          userInfo.userId,
+          message,
+          timeStamp
+        ).then(() => {
+          window.location.reload();
+        });
       });
     });
   };

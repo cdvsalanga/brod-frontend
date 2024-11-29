@@ -7,6 +7,7 @@ import {
   googleLoginClient,
   googleLoginCommon,
   login,
+  reactivate,
 } from "../action/userActions";
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
@@ -14,6 +15,8 @@ import { jwtDecode } from "jwt-decode";
 import { TailSpin } from "react-loading-icons";
 import axios from "axios";
 import GoogleIcon from "../assets/icons/google.svg";
+import dateFormat, { masks } from "dateformat";
+import moment from "moment";
 
 const LoginBox = () => {
   const [showPass, setShowPass] = useState(false);
@@ -31,7 +34,7 @@ const LoginBox = () => {
     if (userInfo) {
       setLoading(true);
       const userDetails = getUserDetails(userInfo.userId);
-      userDetails.then((res) => {
+      userDetails.then(async (res) => {
         setUserInfo(
           (userInfo.role = res.role),
           (userInfo.name = res.firstName + " " + res.lastName),
@@ -43,22 +46,31 @@ const LoginBox = () => {
         );
         localStorage.setItem("userInfo", JSON.stringify(userInfo));
         setLoading(false);
-        if (res.isSuspended) {
-          alert(
-            `You are suspended for ${res.weeksSuspended} ${
-              res.weeksSuspended === 1 ? "week" : "weeks"
-            }. Please contact us if you have concerns.`
-          );
-          localStorage.removeItem("userInfo");
-          navigate("/");
-          return;
-        } else if (res.status === "Declined") {
+        if (res.status === "Declined") {
           alert(
             `You are declined by the admin. Please contact us if you have concerns.`
           );
           localStorage.removeItem("userInfo");
-          navigate("/");
+          window.location.reload();
           return;
+        }
+        if (res.isSuspended) {
+          const dateResult = moment(res.suspensionStartDate).add(
+            res.weeksSuspended,
+            "weeks"
+          );
+          const dateSuspended = dateFormat(dateResult, "dd/mm/yyyy");
+          const dateNow = dateFormat(new Date(), "dd/mm/yyyy");
+          if (dateSuspended === dateNow) {
+            await reactivate(res._id);
+          } else {
+            alert(
+              `You are suspended until ${dateSuspended}. Please contact us if you have concerns.`
+            );
+            localStorage.removeItem("userInfo");
+            window.location.reload();
+            return;
+          }
         }
         if (res.role === "Admin") {
           navigate("/admin");
@@ -179,7 +191,11 @@ const LoginBox = () => {
           disabled={loading ? true : false}
         >
           {loading ? (
-            <TailSpin stroke="#ffffff" speed={1} className="icon-bg-black" />
+            <TailSpin
+              stroke="#ffffff"
+              speed={1}
+              className="icon-bg-black loading-btn"
+            />
           ) : (
             "Log in"
           )}

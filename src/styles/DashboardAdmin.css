@@ -53,21 +53,6 @@
     border-radius: 99px;
   }
 
-  .admin-data-status-new {
-    background-color: #fff4ec;
-    color: #ce9615;
-  }
-
-  .admin-data-status-approved {
-    background-color: #ebffee;
-    color: #2e8760;
-  }
-
-  .admin-data-status-declined {
-    background-color: #f8d7e8b2;
-    color: #a53167;
-  }
-
   .admin-filter {
     width: 100vw;
     height: 100vh;
@@ -131,8 +116,6 @@
   }
 
   .admin-table-btn {
-    background-color: #820014;
-    border: 1px solid #820014;
     border-radius: 4px;
     padding: 5px 10px;
     color: #ffffff;
@@ -198,8 +181,6 @@
   }
 
   .admin-table-btn {
-    background-color: #820014;
-    border: 1px solid #820014;
     border-radius: 4px;
     padding: 8px 16px;
     color: #ffffff;
@@ -228,6 +209,14 @@
     border: 1px solid #1f1f23;
     border-radius: 4px;
     padding: 10px 20px;
+  }
+
+  .admin-data-status {
+    padding: 6px 12px;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 14.52px;
+    border-radius: 99px;
   }
 }
 
@@ -362,4 +351,29 @@
   background-position: 126.4px;
   border: 1px solid #d9d9d9;
   border-radius: 4px;
+}
+
+.admin-data-status-new {
+  background-color: #fff4ec;
+  color: #ce9615;
+}
+
+.admin-data-status-approved {
+  background-color: #ebffee;
+  color: #2e8760;
+}
+
+.admin-data-status-declined {
+  background-color: #f8d7e8b2;
+  color: #a53167;
+}
+
+.admin-table-btn-red {
+  background-color: #820014;
+  border: 1px solid #820014;
+}
+
+.admin-table-btn-black {
+  background-color: #1f1f23;
+  border: 1px solid #1f1f23;
 }

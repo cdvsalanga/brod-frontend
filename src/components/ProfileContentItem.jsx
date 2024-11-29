@@ -91,9 +91,17 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
           content,
           userInfo.profilePicture,
           timeStamp
-        ).then((res) => {
-          window.location.reload();
-          setLoading(false);
+        ).then(async (res) => {
+          const message = `I cancelled the job service ${job.jobPostAdTitle}.`;
+          await clientAddMessage(
+            userInfo.userId,
+            job.tradieID,
+            message,
+            timeStamp
+          ).then(() => {
+            window.location.reload();
+            setLoading(false);
+          });
         });
       }
       window.location.reload();
@@ -130,7 +138,6 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
   useEffect(() => {
     if (data) {
       setItemData(data);
-      console.log(data);
     }
   }, [data]);
 

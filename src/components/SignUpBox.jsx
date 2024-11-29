@@ -24,6 +24,7 @@ import axios from "axios";
 
 const SignUpBox = ({ chosen }) => {
   const [loading, setLoading] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);
   const [page, setPage] = useState("signup");
   const [showPass, setShowPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
@@ -117,6 +118,8 @@ const SignUpBox = ({ chosen }) => {
   const verifyOtpHandler = async (e) => {
     e.preventDefault();
 
+    setLoading(true);
+
     const services = [typeofWork];
 
     const timeStamp = new Date().toISOString();
@@ -151,6 +154,7 @@ const SignUpBox = ({ chosen }) => {
             setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
           });
         }
+        setLoading(false);
       });
     } else {
       await emailVerifyOtp(email, otp).then(async (res) => {
@@ -182,6 +186,7 @@ const SignUpBox = ({ chosen }) => {
             setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
           });
         }
+        setLoading(false);
       });
     }
   };
@@ -316,14 +321,14 @@ const SignUpBox = ({ chosen }) => {
   };
 
   const resendHandler = async () => {
-    setLoading(true);
+    setResendLoading(true);
     if (chosenOTP === "email") {
       await emailOtp(email).then(() => {
-        setLoading(false);
+        setResendLoading(false);
       });
     } else {
       await smsOtp(contactNumber).then(() => {
-        setLoading(false);
+        setResendLoading(false);
       });
     }
   };
@@ -414,7 +419,7 @@ const SignUpBox = ({ chosen }) => {
     return (
       <div className="signup-info-box">
         <h1 className="signup-info-h1">Client Information</h1>
-        <form className="signup-info-form">
+        <form onSubmit={detailsHandler} className="signup-info-form">
           <div className="signup-info-halfw">
             <label className="signup-info-label">First Name</label>
             <input
@@ -471,11 +476,7 @@ const SignUpBox = ({ chosen }) => {
               required
             />
           </div>
-          <button
-            type="submit"
-            className="signup-info-btn pointer"
-            onClick={detailsHandler}
-          >
+          <button type="submit" className="signup-info-btn pointer">
             Submit
           </button>
         </form>
@@ -491,7 +492,7 @@ const SignUpBox = ({ chosen }) => {
             will contact you if we need further clarification.
           </div>
         </div>
-        <form className="signup-info-form">
+        <form onSubmit={detailsHandler} className="signup-info-form">
           <div className="signup-info-halfw">
             <label className="signup-info-label">Business Postcode</label>
             <input
@@ -763,11 +764,7 @@ const SignUpBox = ({ chosen }) => {
             </div>
           </div>
 
-          <button
-            type="submit"
-            className="signup-info-btn pointer"
-            onClick={detailsHandler}
-          >
+          <button type="submit" className="signup-info-btn pointer">
             Submit
           </button>
         </form>
@@ -835,12 +832,22 @@ const SignUpBox = ({ chosen }) => {
               )}
             </div>
           </div>
-          {chosenOTP === "email" ? (
+          {loading ? (
+            <button className="signup-otp-btn link-disabled">
+              <TailSpin
+                stroke="#ffffff"
+                speed={1}
+                className="icon-bg-black loading-btn"
+              />
+            </button>
+          ) : chosenOTP === "email" ? (
             <button
               type="button"
               className="signup-otp-btn pointer"
               onClick={async () => {
+                setLoading(true);
                 await emailOtp(email).then((res) => {
+                  setLoading(false);
                   setPage("otp");
                 });
               }}
@@ -852,7 +859,9 @@ const SignUpBox = ({ chosen }) => {
               type="button"
               className="signup-otp-btn pointer"
               onClick={async () => {
+                setLoading(true);
                 await smsOtp(contactNumber).then((res) => {
+                  setLoading(false);
                   setPage("otp");
                 });
               }}
@@ -895,21 +904,31 @@ const SignUpBox = ({ chosen }) => {
         />
         <div className="mb-12">
           Didn't receive OTP code?{" "}
-          {loading ? (
-            <TailSpin stroke="#1f1f23" speed={1} />
+          {resendLoading ? (
+            <TailSpin stroke="#1f1f23" speed={1} className="loading-btn" />
           ) : (
             <span className="signup-otp-resend pointer" onClick={resendHandler}>
               Resend Code
             </span>
           )}
         </div>
-        <button
-          type="submit"
-          className="signup-otp-btn pointer"
-          onClick={verifyOtpHandler}
-        >
-          Verify
-        </button>
+        {loading ? (
+          <button type="button" className="signup-otp-btn link-disabled">
+            <TailSpin
+              stroke="#ffffff"
+              speed={1}
+              className="icon-bg-black loading-btn"
+            />
+          </button>
+        ) : (
+          <button
+            type="submit"
+            className="signup-otp-btn pointer"
+            onClick={verifyOtpHandler}
+          >
+            Verify
+          </button>
+        )}
       </form>
     );
   }

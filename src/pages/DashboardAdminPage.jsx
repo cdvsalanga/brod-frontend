@@ -24,12 +24,14 @@ import {
 import { useMediaQuery } from "react-responsive";
 import { TailSpin } from "react-loading-icons";
 import dateFormat, { masks } from "dateformat";
+import { reactivate } from "../action/userActions";
 
 const DashboardAdminPage = () => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
 
   const [userInfo] = useState(JSON.parse(localStorage.getItem("userInfo")));
   const [loading, setLoading] = useState(false);
+  const [suspendLoading, setSuspendLoading] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [showStatusFilter, setShowStatusFilter] = useState(false);
   const [showWorkFilter, setShowWorkFilter] = useState(false);
@@ -176,13 +178,29 @@ const DashboardAdminPage = () => {
   };
 
   const suspendUserHandler = async () => {
-    await suspendUser(suspendingUser._id, weeks, userInfo.token).then((res) => {
+    setLoading(true);
+    setShowModal(false);
+    const timeStamp = new Date().toISOString();
+    await suspendUser(
+      suspendingUser._id,
+      weeks,
+      timeStamp,
+      userInfo.token
+    ).then((res) => {
       if (res && res.status === 401) {
         alert("Your session expired, please login again.");
         localStorage.removeItem("userInfo");
         navigate("/login");
         return;
       }
+      window.location.reload();
+    });
+  };
+
+  const reactivateHandler = async (userId) => {
+    setLoading(true);
+
+    await reactivate(userId).then(() => {
       window.location.reload();
     });
   };
@@ -554,11 +572,17 @@ const DashboardAdminPage = () => {
                         }
                       >
                         {user.isSuspended ? (
-                          "Suspended"
+                          <button
+                            type="button"
+                            className="admin-table-btn admin-table-btn-black pointer"
+                            onClick={() => reactivateHandler(user._id)}
+                          >
+                            Reactivate
+                          </button>
                         ) : (
                           <button
                             type="button"
-                            className="admin-table-btn pointer"
+                            className="admin-table-btn admin-table-btn-red pointer"
                             onClick={() => {
                               setSuspendingUser(user);
                               setShowModal(true);
@@ -705,7 +729,19 @@ const DashboardAdminPage = () => {
                         <td className="admin-table-cell">
                           {dateFormat(tradie.timeStamp, "dd/mm/yyyy")}
                         </td>
-                        <td className="admin-table-cell">{tradie.status}</td>
+                        <td className="admin-table-cell">
+                          <span
+                            className={
+                              tradie.status === "New"
+                                ? "admin-data-status admin-data-status-new"
+                                : tradie.status === "Approved"
+                                ? "admin-data-status admin-data-status-approved"
+                                : "admin-data-status admin-data-status-declined"
+                            }
+                          >
+                            {tradie.status}
+                          </span>
+                        </td>
                       </tr>
                     </tbody>
                   ))}
@@ -757,11 +793,17 @@ const DashboardAdminPage = () => {
                         <td className="admin-table-cell">{user.role}</td>
                         <td className="admin-table-cell">
                           {user.isSuspended ? (
-                            "Suspended"
+                            <button
+                              type="button"
+                              className="admin-table-btn admin-table-btn-black pointer"
+                              onClick={() => reactivateHandler(user._id)}
+                            >
+                              Reactivate
+                            </button>
                           ) : (
                             <button
                               type="button"
-                              className="admin-table-btn pointer"
+                              className="admin-table-btn admin-table-btn-red pointer"
                               onClick={() => {
                                 setSuspendingUser(user);
                                 setShowModal(true);
@@ -828,15 +870,15 @@ const DashboardAdminPage = () => {
             >
               <option value={1}>1 week</option>
               <option value={2}>2 weeks</option>
-              <option value={3}>3 weeks</option>
-              <option value={4}>4 weeks</option>
+              <option value={4}>1 month</option>
+              <option value={9999999}>Permanent</option>
             </select>
             <div className="flex-between">
               <button
                 type="button"
                 className="admin-modal-btn pointer"
                 onClick={() => {
-                  setWeeks("");
+                  setWeeks(1);
                   setShowModal(false);
                 }}
               >

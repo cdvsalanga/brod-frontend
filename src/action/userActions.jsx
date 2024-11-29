@@ -68,6 +68,7 @@ export const signup = async (
       publishedAds: 0,
       isSuspended: false,
       weeksSuspended: 0,
+      suspensionStartDate: "",
       timeStamp,
     });
 
@@ -85,7 +86,7 @@ export const getUserDetails = async (userId) => {
 
     return data;
   } catch (error) {
-    console.error(error);
+    return error;
   }
 };
 
@@ -97,7 +98,7 @@ export const getAllServices = async () => {
 
     return data;
   } catch (error) {
-    console.error(error);
+    return error;
   }
 };
 
@@ -118,7 +119,7 @@ export const googleLoginClient = async (
     localStorage.setItem("userInfo", JSON.stringify(data));
     return data;
   } catch (error) {
-    console.error(error);
+    return error;
   }
 };
 
@@ -139,7 +140,7 @@ export const googleLoginTradie = async (
     localStorage.setItem("userInfo", JSON.stringify(data));
     return data;
   } catch (error) {
-    console.error(error);
+    return error;
   }
 };
 
@@ -159,7 +160,7 @@ export const googleLoginCommon = async (
 
     return data;
   } catch (error) {
-    console.error(error);
+    return error;
   }
 };
 
@@ -198,7 +199,7 @@ export const smsOtp = async (phoneNumber) => {
       ""
     );
   } catch (error) {
-    console.error(error);
+    return error;
   }
 };
 
@@ -209,7 +210,7 @@ export const emailOtp = async (email) => {
       ""
     );
   } catch (error) {
-    console.error(error);
+    return error;
   }
 };
 
@@ -220,7 +221,7 @@ export const smsVerifyOtp = async (phoneNumber, userEnteredOtp) => {
       ""
     );
   } catch (error) {
-    console.error(error);
+    return error;
   }
 };
 
@@ -231,7 +232,7 @@ export const emailVerifyOtp = async (email, userEnteredOtp) => {
       ""
     );
   } catch (error) {
-    console.error(error);
+    return error;
   }
 };
 
@@ -244,7 +245,7 @@ export const getNotifications = async (userId) => {
 
     return data;
   } catch (error) {
-    console.error(error);
+    return error;
   }
 };
 
@@ -257,7 +258,7 @@ export const getNotificationsNoUpdate = async (userId) => {
 
     return data;
   } catch (error) {
-    console.error(error);
+    return error;
   }
 };
 
@@ -277,7 +278,7 @@ export const addNotification = async (
       isRead: false,
     });
   } catch (error) {
-    console.error(error);
+    return error;
   }
 };
 
@@ -300,11 +301,16 @@ export const clientAddMessage = async (
       sentByClient: true,
     });
   } catch (error) {
-    console.error(error);
+    return error;
   }
 };
 
-export const tradieAddMessage = async (clientId, tradieId, message) => {
+export const tradieAddMessage = async (
+  clientId,
+  tradieId,
+  message,
+  timeStamp
+) => {
   try {
     await axios.post(`https://localhost:7127/api/Auth/Tradie-AddMessage`, {
       _id: "",
@@ -314,11 +320,11 @@ export const tradieAddMessage = async (clientId, tradieId, message) => {
       clientlocation: "",
       picture: "",
       message,
-      timeStamp: "",
+      timeStamp,
       sentByTradie: true,
     });
   } catch (error) {
-    console.error(error);
+    return error;
   }
 };
 
@@ -334,7 +340,7 @@ export const clientGetAllMessages = async (clientId) => {
 
     return data;
   } catch (error) {
-    console.error(error);
+    return error;
   }
 };
 
@@ -350,7 +356,7 @@ export const tradieGetAllMessages = async (tradieId) => {
 
     return data;
   } catch (error) {
-    console.error(error);
+    return error;
   }
 };
 
@@ -366,6 +372,16 @@ export const getMessagesById = async (clientId, tradieId) => {
 
     return data;
   } catch (error) {
-    console.error(error);
+    return error;
+  }
+};
+
+export const reactivate = async (userId) => {
+  try {
+    await axios.put(
+      `https://localhost:7127/api/Auth/Reactivate?userId=${userId}`
+    );
+  } catch (error) {
+    return error;
   }
 };

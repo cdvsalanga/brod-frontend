@@ -102,11 +102,16 @@ export const getFilteredUsers = async (
   }
 };
 
-export const suspendUser = async (userID, weeksSuspended, token) => {
+export const suspendUser = async (
+  userID,
+  weeksSuspended,
+  suspensionStartDate,
+  token
+) => {
   try {
     await axios.put(
       "https://localhost:7127/api/Admin/suspendUser",
-      { userID, weeksSuspended, isSuspended: true },
+      { userID, weeksSuspended, suspensionStartDate, isSuspended: true },
       {
         headers: {
           "Content-Type": "application/json",

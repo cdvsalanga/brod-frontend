@@ -24,6 +24,7 @@ import {
   getMessagesById,
   getNotifications,
   getNotificationsNoUpdate,
+  tradieAddMessage,
   tradieGetAllMessages,
 } from "../action/userActions";
 import { TailSpin } from "react-loading-icons";
@@ -168,16 +169,29 @@ const Header = ({ notHidden = true, headerText }) => {
 
     const timeStamp = new Date().toISOString();
 
-    await clientAddMessage(
-      onMessage.clientId,
-      onMessage.tradieId,
-      addMessage,
-      timeStamp
-    ).then((res) => {
-      setChatLoading(false);
-      setAddMessage("");
-      getMessagesByIdHandler();
-    });
+    if (userInfo.role === "Client") {
+      await clientAddMessage(
+        onMessage.clientId,
+        onMessage.tradieId,
+        addMessage,
+        timeStamp
+      ).then((res) => {
+        setChatLoading(false);
+        setAddMessage("");
+        getMessagesByIdHandler();
+      });
+    } else {
+      await tradieAddMessage(
+        onMessage.clientId,
+        onMessage.tradieId,
+        addMessage,
+        timeStamp
+      ).then((res) => {
+        setChatLoading(false);
+        setAddMessage("");
+        getMessagesByIdHandler();
+      });
+    }
   };
 
   useEffect(() => {

@@ -383,7 +383,7 @@ const ProfileEditPage = () => {
                   <TailSpin
                     stroke="#ffffff"
                     speed={1}
-                    className="icon-bg-black"
+                    className="icon-bg-black loading-btn"
                   />
                 ) : (
                   "Save"
@@ -819,7 +819,7 @@ const ProfileEditPage = () => {
                   <TailSpin
                     stroke="#ffffff"
                     speed={1}
-                    className="icon-bg-black"
+                    className="icon-bg-black loading-btn"
                   />
                 ) : (
                   "Save"

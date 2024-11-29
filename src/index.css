@@ -232,6 +232,11 @@ body:has(.scroll-lock) {
   text-align: center;
 }
 
+.loading-btn {
+  width: 20px;
+  height: 20px;
+}
+
 .link-disabled {
   pointer-events: none;
 }

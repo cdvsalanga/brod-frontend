@@ -104,9 +104,17 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
         content,
         userInfo.profilePicture,
         timeStamp
-      ).then((res) => {
-        setComplete(true);
-        setHireLoading(false);
+      ).then(async (res) => {
+        const message = `I send an offer for the job service ${jobAdTitle}.`;
+        await clientAddMessage(
+          userInfo.userId,
+          tradieID,
+          message,
+          timeStamp
+        ).then(() => {
+          setComplete(true);
+          setHireLoading(false);
+        });
       });
     });
   };

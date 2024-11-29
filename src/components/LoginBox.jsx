@@ -16,7 +16,6 @@ import { TailSpin } from "react-loading-icons";
 import axios from "axios";
 import GoogleIcon from "../assets/icons/google.svg";
 import dateFormat, { masks } from "dateformat";
-import moment from "moment";
 
 const LoginBox = () => {
   const [showPass, setShowPass] = useState(false);
@@ -55,12 +54,13 @@ const LoginBox = () => {
           return;
         }
         if (res.isSuspended) {
-          const dateResult = moment(res.suspensionStartDate).add(
-            res.weeksSuspended,
-            "weeks"
+          const suspensionDate = new Date(res.suspensionStartDate);
+          suspensionDate.setDate(
+            suspensionDate.getDate() + res.weeksSuspended * 7
           );
-          const dateSuspended = dateFormat(dateResult, "dd/mm/yyyy");
+          const dateSuspended = dateFormat(suspensionDate, "dd/mm/yyyy");
           const dateNow = dateFormat(new Date(), "dd/mm/yyyy");
+
           if (dateSuspended === dateNow) {
             await reactivate(res._id);
           } else {

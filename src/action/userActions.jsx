@@ -70,6 +70,8 @@ export const signup = async (
       weeksSuspended: 0,
       suspensionStartDate: "",
       timeStamp,
+      lastActivityTimeStamp: "",
+      lastActivity: "",
     });
 
     await login(email, password);

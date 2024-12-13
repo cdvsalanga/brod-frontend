@@ -125,6 +125,10 @@ body:has(.scroll-lock) {
   background-color: #1f1f23;
 }
 
+.icon-bg-gray {
+  background-color: #b3b2b5;
+}
+
 .pointer {
   cursor: pointer;
 }
@@ -256,4 +260,22 @@ body:has(.scroll-lock) {
   line-height: 19.36px;
   color: #242424;
   cursor: pointer;
+}
+
+input[type="date"] {
+  -moz-appearance: none; /* Firefox */
+  -webkit-appearance: none; /* Safari and Chrome */
+  appearance: none;
+  color: #242424;
+}
+
+.pos-relative {
+  position: relative;
+}
+
+.brod-notif-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 50%;
 }

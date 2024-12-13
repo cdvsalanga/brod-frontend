@@ -16,6 +16,7 @@ import {
   X,
 } from "lucide-react";
 import DefaultProfilePicture from "../assets/images/default-profile-picture.png";
+import BrodNotifLogo from "../assets/logos/brod-notif-logo.svg";
 import BrodLogo from "../assets/logos/header.png";
 import { useMediaQuery } from "react-responsive";
 import {
@@ -68,6 +69,7 @@ const Header = ({ notHidden = true, headerText }) => {
 
   const getNotificationsNoUpdateData = async () => {
     await getNotificationsNoUpdate(userInfo.userId).then((res) => {
+      console.log(res);
       setNotificationsNoUpdate(res);
     });
   };
@@ -94,11 +96,13 @@ const Header = ({ notHidden = true, headerText }) => {
     setShowInbox(true);
     if (userInfo.role === "Client") {
       await clientGetAllMessages(userInfo.userId).then((res) => {
+        console.log(res);
         setAllMessages(res);
         setInboxLoading(false);
       });
     } else {
       await tradieGetAllMessages(userInfo.userId).then((res) => {
+        console.log(res);
         setAllMessages(res);
         setInboxLoading(false);
       });
@@ -175,10 +179,32 @@ const Header = ({ notHidden = true, headerText }) => {
         onMessage.tradieId,
         addMessage,
         timeStamp
-      ).then((res) => {
+      ).then(async (res) => {
+        await getMessagesById(onMessage.clientId, onMessage.tradieId).then(
+          (res) => {
+            const sortMessages = [];
+            res.clientMessages.forEach((message) => {
+              sortMessages.push(message);
+            });
+            res.tradieMessages.forEach((message) => {
+              sortMessages.push(message);
+            });
+            sortMessages.sort((a, b) => {
+              return a.timeStamp > b.timeStamp ? 1 : -1;
+            });
+
+            setMessages(sortMessages);
+            setMessageLoading(false);
+
+            const timeout = setTimeout(() => {
+              scrollToBottom();
+            }, 1);
+
+            return () => clearTimeout(timeout);
+          }
+        );
         setChatLoading(false);
         setAddMessage("");
-        getMessagesByIdHandler();
       });
     } else {
       await tradieAddMessage(
@@ -186,10 +212,32 @@ const Header = ({ notHidden = true, headerText }) => {
         onMessage.tradieId,
         addMessage,
         timeStamp
-      ).then((res) => {
+      ).then(async (res) => {
+        await getMessagesById(onMessage.clientId, onMessage.tradieId).then(
+          (res) => {
+            const sortMessages = [];
+            res.clientMessages.forEach((message) => {
+              sortMessages.push(message);
+            });
+            res.tradieMessages.forEach((message) => {
+              sortMessages.push(message);
+            });
+            sortMessages.sort((a, b) => {
+              return a.timeStamp > b.timeStamp ? 1 : -1;
+            });
+
+            setMessages(sortMessages);
+            setMessageLoading(false);
+
+            const timeout = setTimeout(() => {
+              scrollToBottom();
+            }, 1);
+
+            return () => clearTimeout(timeout);
+          }
+        );
         setChatLoading(false);
         setAddMessage("");
-        getMessagesByIdHandler();
       });
     }
   };
@@ -353,6 +401,12 @@ const Header = ({ notHidden = true, headerText }) => {
                       >
                         My Account
                       </Link>
+                      <Link
+                        to={`/change-password/${userInfo.userId}`}
+                        className="link-none block mb-16"
+                      >
+                        Change Password
+                      </Link>
                       <div className="pointer" onClick={logOutHandler}>
                         Log out
                       </div>
@@ -413,8 +467,13 @@ const Header = ({ notHidden = true, headerText }) => {
                 >
                   <img
                     src={
-                      notification.profilePicture
+                      notification.profilePicture &&
+                      notification.profilePicture !== "Brod Notification Logo"
                         ? notification.profilePicture
+                        : notification.profilePicture &&
+                          notification.profilePicture ===
+                            "Brod Notification Logo"
+                        ? BrodNotifLogo
                         : DefaultProfilePicture
                     }
                     width={48}
@@ -733,6 +792,7 @@ const Header = ({ notHidden = true, headerText }) => {
                           height={40}
                           color="#1F1F23"
                           className="inbox-message-send pointer"
+                          onClick={addMessageHandler}
                         />
                       )}
                     </form>
@@ -982,6 +1042,12 @@ const Header = ({ notHidden = true, headerText }) => {
               </div>
             )}
             <div className="header-line mb-24"></div>
+            <Link
+              to={`/change-password/${userInfo.userId}`}
+              className="link-none block mb-16"
+            >
+              Change Password
+            </Link>
             <div className="pointer" onClick={logOutHandler}>
               Log out
             </div>

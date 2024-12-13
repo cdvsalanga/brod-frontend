@@ -4,15 +4,16 @@ import "../styles/SignUp.css";
 import "../styles/SignUpInfo.css";
 import { Link, useNavigate } from "react-router-dom";
 import {
+  checkEmail,
   emailOtp,
   emailVerifyOtp,
   getUserDetails,
-  googleLoginClient,
-  googleLoginCommon,
-  googleLoginTradie,
   signup,
   smsOtp,
   smsVerifyOtp,
+  ssoClient,
+  ssoLoginCommon,
+  ssoTradie,
 } from "../action/userActions";
 import ActiveRadio from "../assets/icons/active-radio.svg";
 import OTPInput from "react-otp-input";
@@ -21,15 +22,18 @@ import { jwtDecode } from "jwt-decode";
 import { TailSpin } from "react-loading-icons";
 import GoogleIcon from "../assets/icons/google.svg";
 import axios from "axios";
+import ReactPasswordChecklist from "react-password-checklist";
 
 const SignUpBox = ({ chosen }) => {
   const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
+  const [signupLoading, setSignupLoading] = useState(false);
   const [page, setPage] = useState("signup");
   const [showPass, setShowPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
   const [showError, setShowError] = useState(false);
   const [showOtpError, setShowOtpError] = useState(false);
+  const [disableBtn, setDisableBtn] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -37,6 +41,7 @@ const SignUpBox = ({ chosen }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [contactNumber, setContactNumber] = useState("");
+  const [contactNums, setContactNums] = useState("");
   const [registeredBusinessName, setRegisteredBusinessName] = useState("");
   const [australianBusinessNumber, setAustralianBusinessNumber] = useState("");
   const [typeofWork, setTypeofWork] = useState("");
@@ -194,6 +199,8 @@ const SignUpBox = ({ chosen }) => {
   const signupHandler = async (e) => {
     e.preventDefault();
 
+    setSignupLoading(true);
+
     // const services = [typeofWork];
 
     // const timeStamp = new Date().toISOString();
@@ -223,22 +230,37 @@ const SignUpBox = ({ chosen }) => {
     //   setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
     // });
 
-    if (password === confirmPassword) {
-      if (chosen === "client") {
-        setPage("clientDetails");
-      } else {
-        setPage("tradieDetails");
+    await checkEmail(email).then((res) => {
+      console.log(res);
+
+      if (res.status === 400 && res.response.data === "Email already used!") {
+        setShowError(true);
+        setSignupLoading(false);
+      } else if (res === "Email not used.") {
+        if (chosen === "client") {
+          setPage("clientDetails");
+        } else {
+          setPage("tradieDetails");
+        }
       }
-    } else {
-      setShowError(true);
-    }
+    });
+
+    // if (password === confirmPassword) {
+    //   if (chosen === "client") {
+    //     setPage("clientDetails");
+    //   } else {
+    //     setPage("tradieDetails");
+    //   }
+    // } else {
+    //   setShowError(true);
+    // }
   };
 
   const googleLoginHandler = async (res) => {
     setLoading(true);
 
     if (chosen === "client") {
-      await googleLoginCommon(
+      await ssoLoginCommon(
         res.email,
         res.verified_email.toString(),
         res.name,
@@ -247,7 +269,7 @@ const SignUpBox = ({ chosen }) => {
         res.family_name
       ).then(async (data) => {
         if (data === "Please sign up as a new user") {
-          await googleLoginClient(
+          await ssoClient(
             res.email,
             res.verified_email.toString(),
             res.name,
@@ -264,7 +286,7 @@ const SignUpBox = ({ chosen }) => {
         }
       });
     } else {
-      await googleLoginCommon(
+      await ssoLoginCommon(
         res.email,
         res.verified_email.toString(),
         res.name,
@@ -273,7 +295,7 @@ const SignUpBox = ({ chosen }) => {
         res.family_name
       ).then(async (data) => {
         if (data === "Please sign up as a new user") {
-          await googleLoginTradie(
+          await ssoTradie(
             res.email,
             res.verified_email.toString(),
             res.name,
@@ -317,6 +339,7 @@ const SignUpBox = ({ chosen }) => {
   const detailsHandler = (e) => {
     e.preventDefault();
 
+    setContactNumber("+61" + contactNums);
     setPage("otpChoose");
   };
 
@@ -342,9 +365,7 @@ const SignUpBox = ({ chosen }) => {
           <h1 className="signup-box-h1">Sign up as tradesperson</h1>
         )}
         {showError && (
-          <div className="show-error mb-20">
-            Password and confirm password should match.
-          </div>
+          <div className="show-error mb-20">User already exists.</div>
         )}
         <form onSubmit={signupHandler}>
           <label className="signup-label">Email address</label>
@@ -390,8 +411,38 @@ const SignUpBox = ({ chosen }) => {
               />
             )}
           </div>
-          <button type="submit" className="signup-box-btn pointer">
-            Sign up
+          <ReactPasswordChecklist
+            rules={["minLength", "specialChar", "number", "capital", "match"]}
+            minLength={6}
+            value={password}
+            valueAgain={confirmPassword}
+            onChange={(isValid) => {
+              console.log(isValid, disableBtn);
+              if (isValid) {
+                setDisableBtn(false);
+              } else {
+                setDisableBtn(true);
+              }
+            }}
+          />
+          <button
+            type="submit"
+            className={
+              signupLoading || disableBtn
+                ? "signup-box-btn signup-box-btn-disable link-disabled"
+                : "signup-box-btn pointer"
+            }
+            disabled={signupLoading || disableBtn ? true : false}
+          >
+            {signupLoading ? (
+              <TailSpin
+                stroke="#ffffff"
+                speed={1}
+                className="icon-bg-gray loading-btn"
+              />
+            ) : (
+              "Sign up"
+            )}
           </button>
         </form>
         <div className="to-login">
@@ -418,7 +469,7 @@ const SignUpBox = ({ chosen }) => {
   } else if (page === "clientDetails") {
     return (
       <div className="signup-info-box">
-        <h1 className="signup-info-h1">Client Information</h1>
+        <h1 className="signup-info-h1-client">Client Information</h1>
         <form onSubmit={detailsHandler} className="signup-info-form">
           <div className="signup-info-halfw">
             <label className="signup-info-label">First Name</label>
@@ -440,13 +491,22 @@ const SignUpBox = ({ chosen }) => {
           </div>
           <div className="signup-info-halfw">
             <label className="signup-info-label">Contact Number</label>
-            <input
-              type="text"
-              className="signup-info-input"
-              placeholder="+61 000 000 000"
-              onChange={(e) => setContactNumber(e.target.value)}
-              required
-            />
+            <div className="flex-center gap-8">
+              <input
+                type="text"
+                value={"+61"}
+                disabled
+                className="signup-info-input-contact"
+              />
+              <input
+                type="tel"
+                pattern="[0-9]{9}"
+                className="signup-info-input-contact signup-info-input-contact-num"
+                placeholder="000000000"
+                onChange={(e) => setContactNums(e.target.value)}
+                required
+              />
+            </div>
           </div>
           <div className="signup-info-halfw">
             <label className="signup-info-label">City</label>
@@ -676,13 +736,22 @@ const SignUpBox = ({ chosen }) => {
           </div>
           <div className="signup-info-halfw">
             <label className="signup-info-label">Contact Number</label>
-            <input
-              type="text"
-              className="signup-info-input"
-              placeholder="+61 000 000 000"
-              onChange={(e) => setContactNumber(e.target.value)}
-              required
-            />
+            <div className="flex-center gap-8">
+              <input
+                type="text"
+                value={"+61"}
+                disabled
+                className="signup-info-input-contact"
+              />
+              <input
+                type="tel"
+                pattern="[0-9]{9}"
+                className="signup-info-input-contact signup-info-input-contact-num"
+                placeholder="000000000"
+                onChange={(e) => setContactNums(e.target.value)}
+                required
+              />
+            </div>
           </div>
           <div className="signup-info-halfw">
             <label className="signup-info-label">

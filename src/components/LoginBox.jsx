@@ -3,11 +3,12 @@ import { Link } from "react-router-dom";
 import "../styles/LogIn.css";
 import { Eye, EyeOff } from "lucide-react";
 import {
+  addNotification,
   getUserDetails,
-  googleLoginClient,
-  googleLoginCommon,
   login,
   reactivate,
+  ssoClient,
+  ssoLoginCommon,
 } from "../action/userActions";
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
@@ -16,6 +17,8 @@ import { TailSpin } from "react-loading-icons";
 import axios from "axios";
 import GoogleIcon from "../assets/icons/google.svg";
 import dateFormat, { masks } from "dateformat";
+import { getJobsByStatusClient } from "../action/clientActions";
+import { getJobsByStatusTradie } from "../action/tradieActions";
 
 const LoginBox = () => {
   const [showPass, setShowPass] = useState(false);
@@ -28,6 +31,74 @@ const LoginBox = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+
+  const getClientInProgressJobsData = async () => {
+    const status = "In Progress";
+
+    await getJobsByStatusClient(userInfo.userId, status, userInfo.token).then(
+      async (res) => {
+        console.log(res);
+
+        for (const job of res) {
+          const isTomJob = new Date(job.startDate);
+          isTomJob.setDate(isTomJob.getDate() - 1);
+          if (
+            dateFormat(isTomJob, "dd/mm/yyyy") ===
+            dateFormat(new Date(), "dd/mm/yyyy")
+          ) {
+            const content = `Your service with ${job.tradieName} will start tomorrow.`;
+            const picture = "Brod Notification Logo";
+            const timeStamp = new Date().toISOString();
+            await addNotification(userInfo.userId, content, picture, timeStamp);
+          }
+        }
+
+        navigate("/services");
+      }
+    );
+  };
+
+  const getTradieInProgressJobsData = async () => {
+    const status = "In Progress";
+
+    await getJobsByStatusTradie(userInfo.userId, status, userInfo.token).then(
+      async (res) => {
+        console.log(res);
+
+        for (const job of res) {
+          const isTomJob = new Date(job.startDate);
+          isTomJob.setDate(isTomJob.getDate() - 1);
+          if (
+            dateFormat(isTomJob, "dd/mm/yyyy") ===
+            dateFormat(new Date(), "dd/mm/yyyy")
+          ) {
+            const content = `You have an upcoming job tomorrow at ${
+              job.clientCity && job.clientCity + ","
+            } ${job.clientState} ${job.clientPostalCode}.`;
+            const picture = "Brod Notification Logo";
+            const timeStamp = new Date().toISOString();
+            await addNotification(userInfo.userId, content, picture, timeStamp);
+          }
+        }
+
+        navigate(`/tradesperson/dashboard/${userInfo.userId}`);
+      }
+    );
+  };
+
+  const addNotifProfileCompletion = async () => {
+    const content = `Your profile is incomplete. Please update your details to start receiving more jobs.`;
+    const picture = "Brod Notification Logo";
+    const timeStamp = new Date().toISOString();
+    await addNotification(userInfo.userId, content, picture, timeStamp);
+  };
+
+  const addNotifCreateJobs = async () => {
+    const content = `Start creating your job ads and start earning.`;
+    const picture = "Brod Notification Logo";
+    const timeStamp = new Date().toISOString();
+    await addNotification(userInfo.userId, content, picture, timeStamp);
+  };
 
   useEffect(() => {
     if (userInfo) {
@@ -76,12 +147,31 @@ const LoginBox = () => {
           navigate("/admin");
         } else if (res.role === "Tradie") {
           if (res.status === "Approved") {
-            navigate(`/tradesperson/dashboard/${userInfo.userId}`);
+            if (
+              res.firstName === "" ||
+              res.lastName === "" ||
+              res.businessPostCode === "" ||
+              res.proximityToWork === "" ||
+              res.aboutMeDescription === "" ||
+              res.services.length === 0 ||
+              res.contactNumber === "" ||
+              res.email === "" ||
+              res.city === "" ||
+              res.state === "" ||
+              res.postalCode === "" ||
+              res.certificationFilesUploaded.length === 0
+            ) {
+              addNotifProfileCompletion();
+            }
+            if (res.publishedAds === 0) {
+              addNotifCreateJobs();
+            }
+            getTradieInProgressJobsData();
           } else {
             navigate("/login/application-under-review");
           }
-        } else {
-          navigate("/services");
+        } else if (res.role === "Client") {
+          getClientInProgressJobsData();
         }
       });
     }
@@ -102,7 +192,7 @@ const LoginBox = () => {
   const googleLoginHandler = async (res) => {
     setLoading(true);
 
-    await googleLoginCommon(
+    await ssoLoginCommon(
       res.email,
       res.verified_email.toString(),
       res.name,
@@ -115,7 +205,7 @@ const LoginBox = () => {
         window.location.reload();
         return;
       } else {
-        await googleLoginClient(
+        await ssoClient(
           res.email,
           res.verified_email.toString(),
           res.name,

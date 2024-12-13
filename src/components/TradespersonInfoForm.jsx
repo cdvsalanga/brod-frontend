@@ -15,7 +15,7 @@ const TradespersonInfoForm = ({ page }) => {
   const [businessPostCode, setBusinessPostCode] = useState();
   const [firstName, setFirstName] = useState();
   const [lastName, setLastName] = useState();
-  const [contactNumber, setContactNumber] = useState();
+  const [contactNumber, setContactNumber] = useState("");
   const [registeredBusinessName, setRegisteredBusinessName] = useState();
   const [australianBusinessNumber, setAustralianBusinessNumber] = useState();
   const [city, setCity] = useState();
@@ -83,7 +83,7 @@ const TradespersonInfoForm = ({ page }) => {
     userDetails.firstName = firstName;
     userDetails.lastName = lastName;
     userDetails.businessPostCode = businessPostCode;
-    userDetails.contactNumber = contactNumber;
+    userDetails.contactNumber = "+61" + contactNumber;
     userDetails.registeredBusinessName = registeredBusinessName;
     userDetails.australianBusinessNumber = australianBusinessNumber;
     userDetails.city = city;
@@ -424,15 +424,24 @@ const TradespersonInfoForm = ({ page }) => {
           </div>
           <div className="signup-info-halfw">
             <label className="signup-info-label">Contact Number</label>
-            <input
-              type="text"
-              className="signup-info-input"
-              placeholder="+61 000 000 000"
-              defaultValue={contactNumber}
-              onChange={(e) => setContactNumber(e.target.value)}
-              required
-              disabled={page === "signup" ? false : true}
-            />
+            <div className="flex-center gap-8">
+              <input
+                type="text"
+                value={"+61"}
+                disabled
+                className="signup-info-input-contact"
+              />
+              <input
+                type="tel"
+                pattern="[0-9]{9}"
+                className="signup-info-input-contact signup-info-input-contact-num"
+                defaultValue={contactNumber.split("+61")[1]}
+                placeholder="000000000"
+                onChange={(e) => setContactNumber(e.target.value)}
+                required
+                disabled={page === "signup" ? false : true}
+              />
+            </div>
           </div>
           <div className="signup-info-halfw">
             <label className="signup-info-label">

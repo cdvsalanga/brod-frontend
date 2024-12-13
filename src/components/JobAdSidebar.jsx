@@ -45,7 +45,7 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
   const [status] = useState("Pending");
   const [descriptionServiceNeeded, setDescriptionServiceNeeded] = useState("");
   const [clientContactNumber, setClientContactNumber] = useState(
-    userInfo && userInfo.contactNumber
+    userInfo && userInfo.contactNumber.split("+61")[1]
   );
   const [clientPostCode, setClientPostCode] = useState(
     userInfo && userInfo.postalCode
@@ -73,6 +73,7 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
     e.preventDefault();
     setHireLoading(true);
 
+    const contactNumber = "+61" + clientContactNumber;
     const content = `You have a new job service request from ${userInfo.name}.`;
     const timeStamp = new Date().toISOString();
 
@@ -83,7 +84,7 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
       serviceID,
       status,
       descriptionServiceNeeded,
-      clientContactNumber,
+      contactNumber,
       clientPostCode,
       startDate,
       completionDate,
@@ -105,7 +106,7 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
         userInfo.profilePicture,
         timeStamp
       ).then(async (res) => {
-        const message = `I send an offer for the job service ${jobAdTitle}.`;
+        const message = `I sent an offer for the job service ${jobAdTitle}.`;
         await clientAddMessage(
           userInfo.userId,
           tradieID,
@@ -169,10 +170,30 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
       userDetails._id,
       addMessage,
       timeStamp
-    ).then((res) => {
+    ).then(async (res) => {
+      await getMessagesById(userInfo.userId, userDetails._id).then((res) => {
+        const sortMessages = [];
+        res.clientMessages.forEach((message) => {
+          sortMessages.push(message);
+        });
+        res.tradieMessages.forEach((message) => {
+          sortMessages.push(message);
+        });
+        sortMessages.sort((a, b) => {
+          return a.timeStamp > b.timeStamp ? 1 : -1;
+        });
+
+        setMessages(sortMessages);
+        setLoading(false);
+
+        const timeout = setTimeout(() => {
+          scrollToBottom();
+        }, 1);
+
+        return () => clearTimeout(timeout);
+      });
       setChatLoading(false);
       setAddMessage("");
-      getMessagesByIdHandler();
     });
   };
 
@@ -424,15 +445,25 @@ const JobAdSidebar = ({ userDetails, jobAdDetails, userInfo }) => {
                             Contact Number{" "}
                             <span className="offer-required">(required)</span>
                           </label>
-                          <input
-                            type="text"
-                            className="offer-input offer-input-half"
-                            defaultValue={clientContactNumber}
-                            onChange={(e) =>
-                              setClientContactNumber(e.target.value)
-                            }
-                            required
-                          />
+                          <div className="flex-center gap-8">
+                            <input
+                              type="text"
+                              value={"+61"}
+                              disabled
+                              className="offer-info-input-contact"
+                            />
+                            <input
+                              type="tel"
+                              pattern="[0-9]{9}"
+                              className="offer-info-input-contact offer-info-input-contact-num"
+                              defaultValue={clientContactNumber}
+                              placeholder="000000000"
+                              onChange={(e) =>
+                                setClientContactNumber(e.target.value)
+                              }
+                              required
+                            />
+                          </div>
                         </div>
                       </div>
                       <div

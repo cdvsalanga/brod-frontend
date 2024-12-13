@@ -54,7 +54,7 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
       } else if (status === "In Progress") {
         content = `${userInfo.name} accepted your offer for job service ${job.jobPostAdTitle}.`;
       } else if (status === "Completed") {
-        content = `${userInfo.name} completed the job service ${job.jobPostAdTitle}.`;
+        content = `${userInfo.name} completed the job service ${job.jobPostAdTitle}. Please rate our service, your feedback helps us improve.`;
       }
       await addNotification(
         job.clientID,
@@ -85,6 +85,7 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
   };
 
   if (data) {
+    console.log(data);
     return loading ? (
       <div
         className={
@@ -319,7 +320,9 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
                         ? "Target completed on"
                         : "Target start date"}{" "}
                       <span className="dashboard-item-date">
-                        {jobModal.startDate}
+                        {item === "job"
+                          ? dateFormat(jobModal.completionDate, "mmmm d, yyyy")
+                          : dateFormat(jobModal.startDate, "mmmm d, yyyy")}
                       </span>
                     </div>
                   </div>

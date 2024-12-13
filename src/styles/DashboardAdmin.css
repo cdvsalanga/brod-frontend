@@ -108,6 +108,7 @@
     background-image: url("/src/assets/icons/dropdown.svg");
     background-repeat: no-repeat;
     background-position: 221.4px;
+    color: #242424;
   }
 
   .admin-form-date {
@@ -249,6 +250,7 @@
   background-image: url("../assets/icons/dropdown.svg");
   background-repeat: no-repeat;
   background-position: 122px;
+  color: #242424;
 }
 
 .admin-form-filter-box {
@@ -351,6 +353,7 @@
   background-position: 126.4px;
   border: 1px solid #d9d9d9;
   border-radius: 4px;
+  color: #242424;
 }
 
 .admin-data-status-new {

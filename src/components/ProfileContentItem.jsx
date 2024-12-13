@@ -124,14 +124,26 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
       clientLocation,
       ratingDesc,
       userInfo.token
-    ).then((res) => {
+    ).then(async (res) => {
       if (res && res.status === 401) {
         alert("Your session expired, please login again.");
         localStorage.removeItem("userInfo");
         navigate("/login");
         return;
       }
-      window.location.reload();
+
+      const content = `Client ${jobAdDetails.clientName} has left a review for job ${jobAdDetails.jobPostAdTitle}.`;
+      const picture = "Brod Notification Logo";
+      const timeStamp = new Date().toISOString();
+
+      await addNotification(
+        jobAdDetails.tradieID,
+        content,
+        picture,
+        timeStamp
+      ).then(() => {
+        window.location.reload();
+      });
     });
   };
 
@@ -208,10 +220,30 @@ const ProfileContentItem = ({ item, role, data, profile }) => {
       tradieDetails._id,
       addMessage,
       timeStamp
-    ).then((res) => {
+    ).then(async (res) => {
+      await getMessagesById(userInfo.userId, tradieDetails._id).then((res) => {
+        const sortMessages = [];
+        res.clientMessages.forEach((message) => {
+          sortMessages.push(message);
+        });
+        res.tradieMessages.forEach((message) => {
+          sortMessages.push(message);
+        });
+        sortMessages.sort((a, b) => {
+          return a.timeStamp > b.timeStamp ? 1 : -1;
+        });
+
+        setMessages(sortMessages);
+        setChatLoading(false);
+
+        const timeout = setTimeout(() => {
+          scrollToBottom();
+        }, 1);
+
+        return () => clearTimeout(timeout);
+      });
       setAddMessage("");
       setSendChatLoading(false);
-      getMessagesByIdHandler();
     });
   };
 

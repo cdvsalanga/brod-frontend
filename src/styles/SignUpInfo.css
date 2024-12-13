@@ -16,6 +16,13 @@
     margin-bottom: 24px;
   }
 
+  .signup-info-h1-client {
+    font-size: 24px;
+    line-height: 33.6px;
+    color: #000000;
+    margin-bottom: 24px;
+  }
+
   .signup-info-label {
     display: block;
     margin-bottom: 12px;
@@ -51,6 +58,7 @@
     background-repeat: no-repeat;
     background-position: 327px;
     margin-bottom: 0;
+    color: #242424;
   }
 
   .signup-info-choose {
@@ -126,6 +134,17 @@
     color: #1f1f23;
     font-size: 16px;
   }
+
+  .signup-info-input-contact {
+    border: 1px solid #d9d9d9;
+    padding: 16px;
+    width: 26.4px;
+    margin-bottom: 24px;
+  }
+
+  .signup-info-input-contact-num {
+    width: 259.4px;
+  }
 }
 
 /* Desktop View */
@@ -141,12 +160,19 @@
     line-height: 44.8px;
   }
 
+  .signup-info-h1-client {
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 44.8px;
+    margin-bottom: 32px;
+  }
+
   .signup-info-text {
     font-weight: 500;
     font-size: 16px;
     line-height: 24px;
     color: #242424;
-    margin: 32px 0 32px 0;
+    margin: 12px 0 32px 0;
   }
 
   .signup-info-form {
@@ -192,6 +218,7 @@
     background-image: url("../assets/icons/dropdown.svg");
     background-repeat: no-repeat;
     background-position: 270px;
+    color: #242424;
   }
 
   .signup-info-choose {
@@ -279,6 +306,16 @@
     width: 302px;
     color: #1f1f23;
     font-size: 16px;
+  }
+
+  .signup-info-input-contact {
+    border: 1px solid #d9d9d9;
+    padding: 16px;
+    width: 26px;
+  }
+
+  .signup-info-input-contact-num {
+    width: 196px;
   }
 }
 

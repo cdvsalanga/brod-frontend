@@ -242,6 +242,16 @@
     font-weight: 600;
     font-size: 18px;
   }
+
+  .offer-info-input-contact {
+    border: 1px solid #d9d9d9;
+    padding: 16px;
+    width: 26.4px;
+  }
+
+  .offer-info-input-contact-num {
+    width: 259.4px;
+  }
 }
 
 /* Desktop View */
@@ -361,6 +371,7 @@
     border: 1px solid #d9d9d9;
     border-radius: 8px;
     padding: 24px 32px;
+    margin-bottom: 24px;
   }
 
   .job-review-type {
@@ -460,6 +471,16 @@
   .offer-complete-h1 {
     font-weight: 600;
     font-size: 24px;
+  }
+
+  .offer-info-input-contact {
+    border: 1px solid #d9d9d9;
+    padding: 16px;
+    width: 26px;
+  }
+
+  .offer-info-input-contact-num {
+    width: 196px;
   }
 }
 
@@ -587,6 +608,7 @@
   background-image: url("../assets/icons/dropdown.svg");
   background-repeat: no-repeat;
   background-position: 66px;
+  color: #242424;
 }
 
 .offer-next-list {

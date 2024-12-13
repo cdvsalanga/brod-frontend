@@ -78,6 +78,25 @@ export const signup = async (
   }
 };
 
+export const checkEmail = async (email) => {
+  try {
+    console.log(email);
+    const { data } = await axios.post(
+      `https://localhost:7127/api/Auth/check-email`,
+      `"${email}"`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const getUserDetails = async (userId) => {
   try {
     const { data } = await axios.get(
@@ -102,7 +121,7 @@ export const getAllServices = async () => {
   }
 };
 
-export const googleLoginClient = async (
+export const ssoClient = async (
   email,
   email_verified,
   name,
@@ -112,7 +131,7 @@ export const googleLoginClient = async (
 ) => {
   try {
     const { data } = await axios.post(
-      `https://localhost:7127/api/Auth/google-login-client`,
+      `https://localhost:7127/api/Auth/sso-client`,
       { email, email_verified, name, picture, given_name, family_name }
     );
 
@@ -123,7 +142,7 @@ export const googleLoginClient = async (
   }
 };
 
-export const googleLoginTradie = async (
+export const ssoTradie = async (
   email,
   email_verified,
   name,
@@ -133,7 +152,7 @@ export const googleLoginTradie = async (
 ) => {
   try {
     const { data } = await axios.post(
-      `https://localhost:7127/api/Auth/google-login-tradie`,
+      `https://localhost:7127/api/Auth/sso-tradie`,
       { email, email_verified, name, picture, given_name, family_name }
     );
 
@@ -144,7 +163,7 @@ export const googleLoginTradie = async (
   }
 };
 
-export const googleLoginCommon = async (
+export const ssoLoginCommon = async (
   email,
   email_verified,
   name,
@@ -154,7 +173,7 @@ export const googleLoginCommon = async (
 ) => {
   try {
     const { data } = await axios.post(
-      `https://localhost:7127/api/Auth/google-login-common`,
+      `https://localhost:7127/api/Auth/sso-login-common`,
       { email, email_verified, name, picture, given_name, family_name }
     );
 
@@ -381,6 +400,19 @@ export const reactivate = async (userId) => {
     await axios.put(
       `https://localhost:7127/api/Auth/Reactivate?userId=${userId}`
     );
+  } catch (error) {
+    return error;
+  }
+};
+
+export const changePassword = async (email, oldPassword, newPassword) => {
+  try {
+    console.log({ email, oldPassword, newPassword });
+    await axios.put(`https://localhost:7127/api/Auth/ChangePassword`, {
+      email,
+      oldPassword,
+      newPassword,
+    });
   } catch (error) {
     return error;
   }

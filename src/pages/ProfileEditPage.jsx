@@ -3,7 +3,7 @@ import Header from "../components/Header";
 import "../styles/ProfileEdit.css";
 import DefaultProfilePicture from "../assets/images/default-profile-picture.png";
 import { useNavigate, useParams } from "react-router-dom";
-import { getUserDetails } from "../action/userActions";
+import { addNotification, getUserDetails } from "../action/userActions";
 import { updateClientProfile } from "../action/clientActions";
 import { ArrowLeft, Upload, X } from "lucide-react";
 import { updateTradieProfile } from "../action/tradieActions";
@@ -22,7 +22,7 @@ const ProfileEditPage = () => {
   const [profilePicture, setProfilePicture] = useState();
   const [firstName, setFirstName] = useState();
   const [lastName, setLastName] = useState();
-  const [contactNumber, setContactNumber] = useState();
+  const [contactNumber, setContactNumber] = useState("");
   const [email, setEmail] = useState();
   const [city, setCity] = useState();
   const [state, setState] = useState();
@@ -45,11 +45,12 @@ const ProfileEditPage = () => {
   const getProfileDetails = async () => {
     setLoading(true);
     const userDetails = await getUserDetails(id);
+    console.log(userDetails);
     setProfileDetails(userDetails);
     setProfilePicture(userDetails.profilePicture);
     setFirstName(userDetails.firstName);
     setLastName(userDetails.lastName);
-    setContactNumber(userDetails.contactNumber);
+    setContactNumber(userDetails.contactNumber.split("+61")[1]);
     setEmail(userDetails.email);
     setCity(userDetails.city);
     setState(userDetails.state);
@@ -86,7 +87,7 @@ const ProfileEditPage = () => {
     profileDetails.profilePicture = profilePicture;
     profileDetails.firstName = firstName;
     profileDetails.lastName = lastName;
-    profileDetails.contactNumber = contactNumber;
+    profileDetails.contactNumber = "+61" + contactNumber;
     profileDetails.email = email;
     profileDetails.city = city;
     profileDetails.state = state;
@@ -94,7 +95,7 @@ const ProfileEditPage = () => {
     profileDetails.callOutRate = "";
     profileDetails.businessAddress = "";
 
-    await updateClientProfile(profileDetails, token).then((res) => {
+    await updateClientProfile(profileDetails, token).then(async (res) => {
       if (res && res.status === 401) {
         alert("Your session expired, please login again.");
         localStorage.removeItem("userInfo");
@@ -112,7 +113,15 @@ const ProfileEditPage = () => {
 
       localStorage.setItem("userInfo", JSON.stringify(userInfo));
 
-      window.location.reload();
+      const content = `Your account has been updated successfully.`;
+      const picture = "Brod Notification Logo";
+      const timeStamp = new Date().toISOString();
+
+      await addNotification(userInfo.userId, content, picture, timeStamp).then(
+        () => {
+          // window.location.reload();
+        }
+      );
     });
   };
 
@@ -132,7 +141,7 @@ const ProfileEditPage = () => {
     profileDetails.businessAddress = businessAddress;
     profileDetails.aboutMeDescription = aboutMeDescription;
     profileDetails.services = services;
-    profileDetails.contactNumber = contactNumber;
+    profileDetails.contactNumber = "+61" + contactNumber;
     profileDetails.email = email;
     profileDetails.website = website;
     profileDetails.facebookAccount = facebookAccount;
@@ -141,8 +150,10 @@ const ProfileEditPage = () => {
     profileDetails.state = state;
     profileDetails.postalCode = postalCode;
     profileDetails.certificationFilesUploaded = certificationFilesUploaded;
+    profileDetails.lastActivity = "Edit Profile";
+    profileDetails.lastActivityTimeStamp = new Date().toISOString();
 
-    await updateTradieProfile(profileDetails, token).then((res) => {
+    await updateTradieProfile(profileDetails, token).then(async (res) => {
       if (res && res.status === 401) {
         alert("Your session expired, please login again.");
         localStorage.removeItem("userInfo");
@@ -164,7 +175,15 @@ const ProfileEditPage = () => {
 
       localStorage.setItem("userInfo", JSON.stringify(userInfo));
 
-      window.location.reload();
+      const content = `Your account has been updated successfully.`;
+      const picture = "Brod Notification Logo";
+      const timeStamp = new Date().toISOString();
+
+      await addNotification(userInfo.userId, content, picture, timeStamp).then(
+        () => {
+          // window.location.reload();
+        }
+      );
     });
   };
 
@@ -315,14 +334,23 @@ const ProfileEditPage = () => {
               <div className={!isMobile && "flex-between mb-32"}>
                 <div className="profile-edit-half">
                   <label className="block mb-12">Contact Number</label>
-                  <input
-                    type="text"
-                    className="profile-edit-half-input profile-edit-input"
-                    placeholder="+61 000 000 000"
-                    defaultValue={contactNumber}
-                    onChange={(e) => setContactNumber(e.target.value)}
-                    disabled={updateLoading}
-                  />
+                  <div className="flex-center gap-8">
+                    <input
+                      type="text"
+                      value={"+61"}
+                      disabled
+                      className="profile-edit-input-contact"
+                    />
+                    <input
+                      type="tel"
+                      pattern="[0-9]{9}"
+                      className="profile-edit-input-contact profile-edit-input-contact-num"
+                      placeholder="000000000"
+                      defaultValue={contactNumber}
+                      onChange={(e) => setContactNumber(e.target.value)}
+                      disabled={updateLoading}
+                    />
+                  </div>
                 </div>
                 <div className="profile-edit-half">
                   <label className="block mb-12">
@@ -680,13 +708,23 @@ const ProfileEditPage = () => {
               <div className={!isMobile && "flex-between mb-32"}>
                 <div className="profile-edit-half">
                   <label className="block mb-12">Contact Number</label>
-                  <input
-                    type="text"
-                    className="profile-edit-half-input profile-edit-input"
-                    defaultValue={contactNumber}
-                    onChange={(e) => setContactNumber(e.target.value)}
-                    disabled={updateLoading}
-                  />
+                  <div className="flex-center gap-8">
+                    <input
+                      type="text"
+                      value={"+61"}
+                      disabled
+                      className="profile-edit-input-contact"
+                    />
+                    <input
+                      type="tel"
+                      pattern="[0-9]{9}"
+                      className="profile-edit-input-contact profile-edit-input-contact-num"
+                      placeholder="000000000"
+                      defaultValue={contactNumber}
+                      onChange={(e) => setContactNumber(e.target.value)}
+                      disabled={updateLoading}
+                    />
+                  </div>
                 </div>
                 <div className="profile-edit-half">
                   <label className="block mb-12">

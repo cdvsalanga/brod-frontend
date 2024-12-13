@@ -35,6 +35,16 @@
   .profile-edit-select-full {
     background-position: 333px;
   }
+
+  .profile-edit-input-contact {
+    border: 1px solid #d9d9d9;
+    padding: 16px;
+    width: 26.4px;
+  }
+
+  .profile-edit-input-contact-num {
+    width: 259.4px;
+  }
 }
 
 /* Desktop View */
@@ -73,6 +83,16 @@
   .profile-edit-select-full {
     background-position: 592px;
   }
+
+  .profile-edit-input-contact {
+    border: 1px solid #d9d9d9;
+    padding: 16px;
+    width: 26px;
+  }
+
+  .profile-edit-input-contact-num {
+    width: 196px;
+  }
 }
 
 .profile-edit-input {
@@ -99,6 +119,7 @@
   appearance: none;
   background-image: url("../assets/icons/dropdown.svg");
   background-repeat: no-repeat;
+  color: #242424;
 }
 
 .profile-edit-optional {

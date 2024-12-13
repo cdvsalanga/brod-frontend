@@ -30,6 +30,7 @@
     background-image: url("../assets/icons/dropdown.svg");
     background-repeat: no-repeat;
     background-position: 333px;
+    color: #242424;
   }
 
   .job-form-textarea {
@@ -88,6 +89,7 @@
     background-image: url("../assets/icons/dropdown.svg");
     background-repeat: no-repeat;
     background-position: 264px;
+    color: #242424;
   }
 
   .job-form-textarea {
@@ -129,6 +131,7 @@
   background-image: url("../assets/icons/dropdown.svg");
   background-repeat: no-repeat;
   background-position: 66px;
+  color: #242424;
 }
 
 .job-form-btn-black {

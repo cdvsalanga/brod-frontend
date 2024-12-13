@@ -3,7 +3,7 @@ import Header from "../components/Header";
 import "../styles/JobAd.css";
 import JobAdSidebar from "../components/JobAdSidebar";
 import JobAdDetails from "../components/JobAdDetails";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getJobPostDetails, getUserDetails } from "../action/userActions";
 import { useMediaQuery } from "react-responsive";
 import { MapPin, Star } from "lucide-react";
@@ -18,6 +18,8 @@ const JobAdPage = () => {
   const [jobAdDetails, setJobAdDetails] = useState();
   const [userDetails, setUserDetails] = useState();
   const [bookmarks, setBookmarks] = useState([]);
+
+  const navigate = useNavigate();
 
   const { id } = useParams();
 

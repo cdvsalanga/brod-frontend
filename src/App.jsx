@@ -22,6 +22,7 @@ import DashboardAdminPage from "./pages/DashboardAdminPage";
 import ApplicationDetailsPage from "./pages/ApplicationDetailsPage";
 import ProfileEditPage from "./pages/ProfileEditPage";
 import TradieJobAdsPage from "./pages/TradieJobAdsPage";
+import ChangePasswordPage from "./pages/ChangePasswordPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -55,6 +56,7 @@ const router = createBrowserRouter(
         element={<ApplicationDetailsPage />}
       />
       <Route path="/profile/:id/:jobAds" element={<TradieJobAdsPage />} />
+      <Route path="/change-password/:id" element={<ChangePasswordPage />} />
     </Route>
   )
 );

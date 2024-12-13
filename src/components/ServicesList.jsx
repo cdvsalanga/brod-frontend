@@ -87,7 +87,7 @@ const ServicesList = ({ content, services, bookmarks = [] }) => {
               {content === "near"
                 ? "Services Near You"
                 : content === "recommend"
-                ? "Recommend"
+                ? "Recommended"
                 : content === "search"
                 ? `Results for "${searchResult}"`
                 : content === "favorites"

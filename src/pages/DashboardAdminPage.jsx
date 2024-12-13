@@ -25,6 +25,7 @@ import { useMediaQuery } from "react-responsive";
 import { TailSpin } from "react-loading-icons";
 import dateFormat, { masks } from "dateformat";
 import { reactivate } from "../action/userActions";
+import BrodNotifLogo from "../assets/logos/brod-notif-logo.svg";
 
 const DashboardAdminPage = () => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
@@ -65,7 +66,7 @@ const DashboardAdminPage = () => {
         navigate("/login");
         return;
       }
-
+      console.log(res);
       // res.reverse();
       setAllTradies(res);
 
@@ -90,6 +91,7 @@ const DashboardAdminPage = () => {
         return;
       }
 
+      console.log(res);
       // res.reverse();
       const filteredUsers = res.filter((user) => user.role !== "Admin");
 
@@ -509,21 +511,60 @@ const DashboardAdminPage = () => {
               allTradies.map((tradie) => (
                 <Link
                   to={`/admin/application-details/${tradie._id}`}
-                  className="admin-data mb-8 pointer link-none"
+                  className={
+                    tradie.status === "New"
+                      ? "admin-data mb-8 pointer link-none admin-table-new"
+                      : "admin-data mb-8 pointer link-none"
+                  }
                   key={tradie._id}
                   // onClick={() =>
                   //   navigate(`/admin/application-details/${tradie._id}`)
                   // }
                 >
-                  <div className="admin-data-container">
-                    <div className="admin-data-title mb-6">
+                  <div
+                    className={
+                      tradie.status === "New"
+                        ? "admin-data-container admin-table-new"
+                        : "admin-data-container"
+                    }
+                  >
+                    <div
+                      className={
+                        tradie.status === "New"
+                          ? "admin-data-title mb-6 admin-table-new"
+                          : "admin-data-title mb-6"
+                      }
+                    >
                       {tradie.typeofWork}
                     </div>
-                    <div className="flex-center">
-                      <span>{tradie.firstName + " " + tradie.lastName}</span>
+                    <div
+                      className={
+                        tradie.status === "New"
+                          ? "flex-center admin-table-new"
+                          : "flex-center"
+                      }
+                    >
+                      <span
+                        className={tradie.status === "New" && "admin-table-new"}
+                      >
+                        {tradie.firstName + " " + tradie.lastName}
+                      </span>
                       <span className="admin-data-separator" />
-                      <div className="flex-center gap-8">
-                        <MapPin width={20} height={20} color="#8C8C8C" />
+                      <div
+                        className={
+                          tradie.status === "New"
+                            ? "flex-center gap-4 admin-table-new"
+                            : "flex-center gap-4"
+                        }
+                      >
+                        <MapPin
+                          width={20}
+                          height={20}
+                          color="#8C8C8C"
+                          className={
+                            tradie.status === "New" && "admin-table-new"
+                          }
+                        />
                         {tradie.businessPostCode}
                       </div>
                       <span className="admin-data-separator" />
@@ -532,7 +573,7 @@ const DashboardAdminPage = () => {
                           tradie.status === "New"
                             ? "admin-data-status admin-data-status-new"
                             : tradie.status === "Approved"
-                            ? "admin-data-status-approved"
+                            ? "admin-data-status admin-data-status-approved"
                             : "admin-data-status admin-data-status-declined"
                         }
                       >
@@ -559,18 +600,16 @@ const DashboardAdminPage = () => {
                   // }
                 >
                   <div className="admin-data-container">
-                    <div className="admin-data-title mb-6">{user.email}</div>
+                    <div className="admin-data-title mb-6">
+                      {user.email} (
+                      {dateFormat(user.lastActivityTimeStamp, "dd/mm/yyyy")})
+                    </div>
                     <div className="flex-center">
                       <span>{user.firstName + " " + user.lastName}</span>
                       <span className="admin-data-separator" />
                       <div className="flex-center gap-8">{user.role}</div>
                       <span className="admin-data-separator" />
-                      <span
-                        className={
-                          user.isSuspended &&
-                          "admin-data-status admin-data-status-declined"
-                        }
-                      >
+                      <span className={user.isSuspended && "admin-data-status"}>
                         {user.isSuspended ? (
                           <button
                             type="button"
@@ -600,6 +639,7 @@ const DashboardAdminPage = () => {
       ) : (
         <div className="admin-dashboard">
           <h1 className="admin-dashboard-h1 mb-42">Admin Dashboard</h1>
+          <img src={BrodNotifLogo} className="brod-notif-logo" />
           <div>
             <form onSubmit={filterHandler} className="flex-between mb-32">
               <div className="admin-form-input-boxes">
@@ -811,9 +851,6 @@ const DashboardAdminPage = () => {
                 <thead>
                   <tr>
                     <th className="admin-table-cell admin-table-head gray-bg">
-                      ID
-                    </th>
-                    <th className="admin-table-cell admin-table-head gray-bg">
                       Email
                     </th>
                     <th className="admin-table-cell admin-table-head gray-bg">
@@ -835,6 +872,12 @@ const DashboardAdminPage = () => {
                       Role
                     </th>
                     <th className="admin-table-cell admin-table-head gray-bg">
+                      Last Activity
+                    </th>
+                    <th className="admin-table-cell admin-table-head gray-bg">
+                      Date of Last Activity
+                    </th>
+                    <th className="admin-table-cell admin-table-head gray-bg">
                       Action
                     </th>
                   </tr>
@@ -843,7 +886,6 @@ const DashboardAdminPage = () => {
                   users.map((user) => (
                     <tbody key={user._id}>
                       <tr>
-                        <td className="admin-table-cell">{user._id}</td>
                         <td className="admin-table-cell">{user.email}</td>
                         <td className="admin-table-cell">{user.firstName}</td>
                         <td className="admin-table-cell">{user.lastName}</td>
@@ -851,6 +893,12 @@ const DashboardAdminPage = () => {
                         <td className="admin-table-cell">{user.state}</td>
                         <td className="admin-table-cell">{user.postalCode}</td>
                         <td className="admin-table-cell">{user.role}</td>
+                        <td className="admin-table-cell">
+                          {user.lastActivity}
+                        </td>
+                        <td className="admin-table-cell">
+                          {dateFormat(user.lastActivityTimeStamp, "dd/mm/yyyy")}
+                        </td>
                         <td className="admin-table-cell">
                           {user.isSuspended ? (
                             <button

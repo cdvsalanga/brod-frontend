@@ -431,3 +431,14 @@ export const deactivate = async (userId) => {
     return error;
   }
 };
+
+export const deleteUser = async (userId) => {
+  try {
+    console.log({ userId });
+    await axios.put(
+      `https://localhost:7127/api/Auth/user/delete?userId=${userId}`
+    );
+  } catch (error) {
+    return error;
+  }
+};

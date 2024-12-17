@@ -24,8 +24,7 @@ import {
 import { useMediaQuery } from "react-responsive";
 import { TailSpin } from "react-loading-icons";
 import dateFormat, { masks } from "dateformat";
-import { reactivate } from "../action/userActions";
-import BrodNotifLogo from "../assets/logos/brod-notif-logo.svg";
+import { deleteUser, reactivate } from "../action/userActions";
 
 const DashboardAdminPage = () => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
@@ -37,6 +36,7 @@ const DashboardAdminPage = () => {
   const [showStatusFilter, setShowStatusFilter] = useState(false);
   const [showWorkFilter, setShowWorkFilter] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showModalDelete, setShowModalDelete] = useState(false);
   const [allTradies, setAllTradies] = useState();
   const [tradies, setTradies] = useState();
   const [allUsers, setAllUsers] = useState();
@@ -54,6 +54,7 @@ const DashboardAdminPage = () => {
   const [isFiltering, setIsFiltering] = useState(false);
   const [weeks, setWeeks] = useState(1);
   const [suspendingUser, setSuspendingUser] = useState();
+  const [deletingUser, setDeletingUser] = useState();
 
   const navigate = useNavigate();
 
@@ -203,6 +204,14 @@ const DashboardAdminPage = () => {
     setLoading(true);
 
     await reactivate(userId).then(() => {
+      window.location.reload();
+    });
+  };
+
+  const deleteUserHandler = async () => {
+    setLoading(true);
+    setShowModalDelete(false);
+    await deleteUser(deletingUser._id).then(() => {
       window.location.reload();
     });
   };
@@ -609,7 +618,7 @@ const DashboardAdminPage = () => {
                       <span className="admin-data-separator" />
                       <div className="flex-center gap-8">{user.role}</div>
                       <span className="admin-data-separator" />
-                      <span className={user.isSuspended && "admin-data-status"}>
+                      <span>
                         {user.isSuspended ? (
                           <button
                             type="button"
@@ -631,6 +640,19 @@ const DashboardAdminPage = () => {
                           </button>
                         )}
                       </span>
+                      <span className="admin-data-separator" />
+                      <span>
+                        <button
+                          type="button"
+                          className="admin-table-btn admin-table-btn-red pointer"
+                          onClick={() => {
+                            setDeletingUser(user);
+                            setShowModalDelete(true);
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -639,7 +661,6 @@ const DashboardAdminPage = () => {
       ) : (
         <div className="admin-dashboard">
           <h1 className="admin-dashboard-h1 mb-42">Admin Dashboard</h1>
-          <img src={BrodNotifLogo} className="brod-notif-logo" />
           <div>
             <form onSubmit={filterHandler} className="flex-between mb-32">
               <div className="admin-form-input-boxes">
@@ -877,8 +898,11 @@ const DashboardAdminPage = () => {
                     <th className="admin-table-cell admin-table-head gray-bg">
                       Date of Last Activity
                     </th>
-                    <th className="admin-table-cell admin-table-head gray-bg">
-                      Action
+                    <th
+                      colSpan={2}
+                      className="admin-table-cell admin-table-head gray-bg"
+                    >
+                      Actions
                     </th>
                   </tr>
                 </thead>
@@ -921,6 +945,18 @@ const DashboardAdminPage = () => {
                             </button>
                           )}
                         </td>
+                        <td className="admin-table-cell">
+                          <button
+                            type="button"
+                            className="admin-table-btn admin-table-btn-red pointer"
+                            onClick={() => {
+                              setDeletingUser(user);
+                              setShowModalDelete(true);
+                            }}
+                          >
+                            Delete
+                          </button>
+                        </td>
                       </tr>
                     </tbody>
                   ))}
@@ -959,6 +995,35 @@ const DashboardAdminPage = () => {
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      )}
+      {showModalDelete && (
+        <div className="admin-modal">
+          <div className="admin-modal-box">
+            <h1 className="admin-dashboard-h1 mb-32">Delete User</h1>
+            <div className="admin-modal-text mb-20">
+              Are you sure you want to delete {deletingUser.firstName}{" "}
+              {deletingUser.lastName}?
+            </div>
+            <div className="flex-between">
+              <button
+                type="button"
+                className="admin-modal-btn pointer"
+                onClick={() => {
+                  setShowModalDelete(false);
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="admin-modal-btn admin-modal-btn-red pointer"
+                onClick={deleteUserHandler}
+              >
+                Delete
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -33,7 +33,10 @@ const SignUpBox = ({ chosen }) => {
   const [showConfirmPass, setShowConfirmPass] = useState(false);
   const [showError, setShowError] = useState(false);
   const [showOtpError, setShowOtpError] = useState(false);
-  const [disableBtn, setDisableBtn] = useState(true);
+  const [passCheck, setPassCheck] = useState(false);
+  const [termsChecked, setTermsChecked] = useState(false);
+  const [consentChecked, setConsentChecked] = useState(false);
+  const [updateChecked, setUpdateChecked] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -125,6 +128,12 @@ const SignUpBox = ({ chosen }) => {
 
     setLoading(true);
 
+    let status = "New";
+
+    if (chosen === "client") {
+      status = "Approved";
+    }
+
     const services = [typeofWork];
 
     const timeStamp = new Date().toISOString();
@@ -148,6 +157,7 @@ const SignUpBox = ({ chosen }) => {
             registeredBusinessName,
             australianBusinessNumber,
             typeofWork,
+            status,
             services,
             certificationFilesUploaded,
             timeStamp
@@ -180,6 +190,7 @@ const SignUpBox = ({ chosen }) => {
             registeredBusinessName,
             australianBusinessNumber,
             typeofWork,
+            status,
             services,
             certificationFilesUploaded,
             timeStamp
@@ -417,22 +428,114 @@ const SignUpBox = ({ chosen }) => {
             value={password}
             valueAgain={confirmPassword}
             onChange={(isValid) => {
-              console.log(isValid, disableBtn);
+              console.log(isValid, passCheck);
               if (isValid) {
-                setDisableBtn(false);
+                setPassCheck(true);
               } else {
-                setDisableBtn(true);
+                setPassCheck(false);
               }
             }}
           />
+          <div className="signup-checkbox-container signup-mt">
+            <input
+              type="checkbox"
+              defaultChecked={false}
+              onChange={(e) => {
+                if (e.target.checked) {
+                  setTermsChecked(true);
+                } else {
+                  setTermsChecked(false);
+                }
+              }}
+              className="checkbox"
+            />
+            {/* <div className="signup-checkbox-text">
+              I have read and agree to Brod&#39;s{" "}
+              <span
+                className="signup-blue-text"
+                onClick={() => {
+                  if (chosen === "client") {
+                    setShowTermsClient(true);
+                  } else {
+                    setShowTermsTradie(true);
+                  }
+                }}
+              >
+                Terms and Conditions
+              </span>{" "}
+              and{" "}
+              <span
+                className="signup-blue-text"
+                onClick={() => setShowPolicy(true)}
+              >
+                Privacy Policy
+              </span>{" "}
+              and understand how my personal information will be collected and
+              used.
+            </div> */}
+            <div className="signup-checkbox-text">
+              I have read and agree to Brod&#39;s{" "}
+              <Link
+                to={`/terms-and-conditions/${chosen}`}
+                className="signup-link-text"
+              >
+                Terms and Conditions
+              </Link>{" "}
+              and{" "}
+              <Link to={"/privacy-policy"} className="signup-link-text">
+                Privacy Policy
+              </Link>{" "}
+              and understand how my personal information will be collected and
+              used.
+            </div>
+          </div>
+          <div className="signup-checkbox-container">
+            <input
+              type="checkbox"
+              defaultChecked={false}
+              onChange={(e) => {
+                if (e.target.checked) {
+                  setConsentChecked(true);
+                } else {
+                  setConsentChecked(false);
+                }
+              }}
+              className="checkbox"
+            />
+            <div className="signup-checkbox-text">
+              I consent to receiving essential service notifications via email.
+            </div>
+          </div>
+          <div className="signup-checkbox-container">
+            <input
+              type="checkbox"
+              defaultChecked={false}
+              onChange={(e) => {
+                if (e.target.checked) {
+                  setUpdateChecked(true);
+                } else {
+                  setUpdateChecked(false);
+                }
+              }}
+              className="checkbox"
+            />
+            <div className="signup-checkbox-text">
+              I would like to receive updates about new features and platform
+              improvements. <span className="signup-optional">(optional)</span>
+            </div>
+          </div>
           <button
             type="submit"
             className={
-              signupLoading || disableBtn
-                ? "signup-box-btn signup-box-btn-disable link-disabled"
-                : "signup-box-btn pointer"
+              !signupLoading && passCheck && termsChecked && consentChecked
+                ? "signup-box-btn pointer"
+                : "signup-box-btn signup-box-btn-disable link-disabled"
             }
-            disabled={signupLoading || disableBtn ? true : false}
+            disabled={
+              !signupLoading && passCheck && termsChecked && consentChecked
+                ? false
+                : true
+            }
           >
             {signupLoading ? (
               <TailSpin

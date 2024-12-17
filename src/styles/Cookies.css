@@ -1,0 +1,30 @@
+.cookies {
+  width: 329px;
+  padding: 16px;
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  z-index: 100;
+  border-radius: 8px;
+  line-height: 21px;
+}
+
+.cookies-color {
+  background-color: #1f1f23;
+  color: #ffffff;
+}
+
+.cookies-btn {
+  width: 174.5px;
+  padding: 8px 24px 8px 16px;
+  border-radius: 4px;
+  border: 1px solid #1f1f23;
+  background-color: #ffffff;
+  color: #1f1f23;
+}
+
+.cookies-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}

@@ -6,8 +6,10 @@ import DashboardContents from "../components/DashboardContents";
 import { getUserDetails } from "../action/userActions";
 import { useNavigate, useParams } from "react-router-dom";
 import { TailSpin } from "react-loading-icons";
+import Cookies from "../components/Cookies";
 
 const DashboardTradiePage = () => {
+  const acceptedCookies = document.cookie.includes("Brod");
   const [userInfo] = useState(JSON.parse(localStorage.getItem("userInfo")));
   const [loading, setLoading] = useState(false);
   const [profileDetails, setProfileDetails] = useState();
@@ -45,6 +47,7 @@ const DashboardTradiePage = () => {
           <DashboardContents userInfo={userInfo} />
         </div>
       )}
+      {!acceptedCookies && <Cookies showCookies={true} />}
     </div>
   );
 };

@@ -3,8 +3,10 @@ import Header from "../components/Header";
 import SignUpChoose from "../components/SignUpChoose";
 import { useLocation } from "react-router-dom";
 import SignUpBox from "../components/SignUpBox";
+import Cookies from "../components/Cookies";
 
 const SignupPage = () => {
+  const acceptedCookies = document.cookie.includes("Brod");
   const { search } = useLocation();
   const [chosen, setChosen] = useState("");
 
@@ -21,6 +23,7 @@ const SignupPage = () => {
       ) : (
         <SignUpChoose />
       )}
+      {!acceptedCookies && <Cookies showCookies={true} />}
     </>
   );
 };

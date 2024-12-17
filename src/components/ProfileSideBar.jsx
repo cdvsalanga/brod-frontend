@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/Profile.css";
 import DefaultProfilePicture from "../assets/images/default-profile-picture.png";
 import Facebook from "../assets/icons/facebook.svg";
@@ -13,16 +13,32 @@ import {
   Star,
   UserRoundSearch,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
+import { deactivate } from "../action/userActions";
+import { TailSpin } from "react-loading-icons";
 
 const ProfileSideBar = ({ role, profile }) => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
 
+  const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (profile) {
+      console.log(profile);
     }
   }, []);
+
+  const deactivateHandler = async () => {
+    setLoading(true);
+    await deactivate(profile._id).then(() => {
+      localStorage.removeItem("userInfo");
+      navigate("/login");
+    });
+  };
 
   if (role === "Client" && profile) {
     return (
@@ -81,13 +97,19 @@ const ProfileSideBar = ({ role, profile }) => {
             </div>
           </div>
         </div>
-        <div className="mb-24">
+        <div>
           <Link to={`/profile/${profile._id}/edit`} className="link-none">
             <button className="mb-12 flex-center profile-btn profile-sidebar-edit pointer">
               <Pencil color="#8C8C8C" className="gray-bg" />
               Edit profile
             </button>
           </Link>
+          <button
+            className="profile-btn profile-deactivate pointer"
+            onClick={() => setShowModal(true)}
+          >
+            Deactivate Account
+          </button>
           {/* <button className="mb-12 flex-center profile-btn profile-trade">
             <Briefcase color="#FFFFFF" className="profile-trade" />
             Become a tradesperson
@@ -105,6 +127,42 @@ const ProfileSideBar = ({ role, profile }) => {
             </div>
           </div>
         </div> */}
+        {showModal && (
+          <div className="profile-sidebar-modal-container">
+            {loading ? (
+              <div className="loading loading-page profile-sidebar-modal">
+                <TailSpin
+                  stroke="#1f1f23"
+                  speed={1}
+                  className={isMobile && "gray-bg"}
+                />
+              </div>
+            ) : (
+              <div className="profile-sidebar-modal">
+                <h1 className="profile-modal-h1 mb-20">Deactivate Account</h1>
+                <div className="mb-24">
+                  Are you sure you want to deactivate your account?
+                </div>
+                <div className="flex-center gap-16">
+                  <button
+                    type="button"
+                    className="profile-modal-btn"
+                    onClick={() => setShowModal(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="profile-modal-btn profile-modal-btn-black"
+                    onClick={deactivateHandler}
+                  >
+                    Yes
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     );
   } else if (role === "Tradie" && profile) {
@@ -227,11 +285,53 @@ const ProfileSideBar = ({ role, profile }) => {
               Edit profile
             </button>
           </Link>
+          <button
+            className="profile-btn profile-deactivate pointer"
+            onClick={() => setShowModal(true)}
+          >
+            Deactivate Account
+          </button>
           {/* <button className="profile-btn profile-trade flex-center">
             <UserRoundSearch color="#FFFFFF" className="icon-bg-black" />
             Switch to hiring someone
           </button> */}
         </div>
+        {showModal && (
+          <div className="profile-sidebar-modal-container">
+            {loading ? (
+              <div className="loading loading-page profile-sidebar-modal">
+                <TailSpin
+                  stroke="#1f1f23"
+                  speed={1}
+                  className={isMobile && "gray-bg"}
+                />
+              </div>
+            ) : (
+              <div className="profile-sidebar-modal">
+                <h1 className="profile-modal-h1 mb-20">Deactivate Account</h1>
+                <div className="mb-24">
+                  Are you sure you want to deactivate your account?
+                </div>
+                <div className="flex-center gap-16">
+                  <button
+                    type="button"
+                    className="profile-modal-btn"
+                    onClick={() => setShowModal(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="profile-modal-btn profile-modal-btn-black"
+                    onClick={deactivateHandler}
+                  >
+                    Yes
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     );
   }

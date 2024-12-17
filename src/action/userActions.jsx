@@ -27,6 +27,7 @@ export const signup = async (
   registeredBusinessName,
   australianBusinessNumber,
   typeofWork,
+  status,
   services,
   certificationFilesUploaded,
   timeStamp
@@ -50,7 +51,7 @@ export const signup = async (
       businessAddress: "",
       australianBusinessNumber,
       typeofWork,
-      status: "New",
+      status,
       reasonforDeclinedApplication: "",
       aboutMeDescription: "",
       website: "",
@@ -415,6 +416,17 @@ export const changePassword = async (email, oldPassword, newPassword) => {
       oldPassword,
       newPassword,
     });
+  } catch (error) {
+    return error;
+  }
+};
+
+export const deactivate = async (userId) => {
+  try {
+    console.log({ userId });
+    await axios.put(
+      `https://localhost:7127/api/Auth/user/deactivate?userId=${userId}`
+    );
   } catch (error) {
     return error;
   }

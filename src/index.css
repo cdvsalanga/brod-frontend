@@ -220,6 +220,8 @@ body:has(.scroll-lock) {
   appearance: none;
   cursor: pointer;
   margin: 3px;
+  flex-grow: 0;
+  flex-shrink: 0;
 }
 
 .checkbox:checked {

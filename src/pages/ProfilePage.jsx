@@ -6,8 +6,10 @@ import { getUserDetails } from "../action/userActions";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import { TailSpin } from "react-loading-icons";
+import Cookies from "../components/Cookies";
 
 const ProfilePage = () => {
+  const acceptedCookies = document.cookie.includes("Brod");
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
 
   const [userInfo] = useState(JSON.parse(localStorage.getItem("userInfo")));
@@ -63,6 +65,7 @@ const ProfilePage = () => {
           )}
         </div>
       )}
+      {!acceptedCookies && <Cookies showCookies={true} />}
     </div>
   );
 };

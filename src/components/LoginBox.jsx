@@ -116,9 +116,17 @@ const LoginBox = () => {
         );
         localStorage.setItem("userInfo", JSON.stringify(userInfo));
         setLoading(false);
+        if (res.status === "DEACTIVATED") {
+          alert(
+            `Your account is deactivated. Please contact us at support@brod.com.au if you have concerns.`
+          );
+          localStorage.removeItem("userInfo");
+          window.location.reload();
+          return;
+        }
         if (res.status === "Declined") {
           alert(
-            `You are declined by the admin. Please contact us if you have concerns.`
+            `You are declined by the admin. Please contact us at support@brod.com.au if you have concerns.`
           );
           localStorage.removeItem("userInfo");
           window.location.reload();
@@ -136,7 +144,7 @@ const LoginBox = () => {
             await reactivate(res._id);
           } else {
             alert(
-              `You are suspended until ${dateSuspended}. Please contact us if you have concerns.`
+              `You are suspended until ${dateSuspended}. Please contact us at support@brod.com.au if you have concerns.`
             );
             localStorage.removeItem("userInfo");
             window.location.reload();

@@ -392,9 +392,69 @@
     text-decoration: underline;
     font-weight: 500;
   }
+
+  .signup-modal-container {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1;
+  }
+
+  .signup-modal {
+    width: 500px;
+    padding: 16px;
+    margin: 42px auto;
+    position: relative;
+    overflow: auto;
+    color: #242424;
+  }
+
+  .signup-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    cursor: pointer;
+  }
+}
+
+.signup-mt {
+  margin-top: 24px;
 }
 
 .signup-box-btn-disable {
   border: 1px solid #b3b2b5;
   background-color: #b3b2b5;
+}
+
+.signup-checkbox-container {
+  display: flex;
+  column-gap: 8px;
+  margin-bottom: 12px;
+}
+
+.signup-checkbox-text {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 19.36px;
+  color: #242424;
+}
+
+.signup-link-text {
+  color: #0000ee;
+  text-decoration: none;
+}
+
+.signup-optional {
+  font-size: 12px;
+  color: #595959;
+}
+
+.signup-modal-h1 {
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 38.73px;
+  text-align: center;
 }

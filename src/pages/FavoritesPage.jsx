@@ -7,8 +7,10 @@ import { getJobsByStatusClient } from "../action/clientActions";
 import { TailSpin } from "react-loading-icons";
 import { useMediaQuery } from "react-responsive";
 import { getJobPostDetails } from "../action/userActions";
+import Cookies from "../components/Cookies";
 
 const FavoritesPage = () => {
+  const acceptedCookies = document.cookie.includes("Brod");
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
 
   const [userInfo] = useState(JSON.parse(localStorage.getItem("userInfo")));
@@ -69,6 +71,7 @@ const FavoritesPage = () => {
         />
       )}
       <Footer />
+      {!acceptedCookies && <Cookies showCookies={true} />}
     </div>
   );
 };

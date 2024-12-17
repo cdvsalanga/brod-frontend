@@ -4,6 +4,7 @@ import logo from "../assets/logos/footer.png";
 import linkedin from "../assets/logos/linkedin.svg";
 import facebook from "../assets/logos/facebook.svg";
 import { useMediaQuery } from "react-responsive";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
@@ -13,9 +14,16 @@ const Footer = () => {
         <img src={logo} className="footer-logo" />
         <div className="footer-items">
           <div className="footer-links">
-            <div className="link">Privacy Policy</div>
+            <Link to={"/privacy-policy"} className="link link-none">
+              Privacy Policy
+            </Link>
             <div className="link">Terms of Use</div>
-            <div className="link">Terms & Conditions</div>
+            <Link
+              to={`/terms-and-conditions/client`}
+              className="link link-none"
+            >
+              Terms & Conditions
+            </Link>
             {!isMobile && (
               <div className="link link-copyright">© Brod 2024</div>
             )}

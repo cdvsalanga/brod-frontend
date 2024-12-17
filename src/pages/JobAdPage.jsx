@@ -9,8 +9,10 @@ import { useMediaQuery } from "react-responsive";
 import { MapPin, Star } from "lucide-react";
 import { TailSpin } from "react-loading-icons";
 import { getJobsByStatusClient } from "../action/clientActions";
+import Cookies from "../components/Cookies";
 
 const JobAdPage = () => {
+  const acceptedCookies = document.cookie.includes("Brod");
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
 
   const [userInfo] = useState(JSON.parse(localStorage.getItem("userInfo")));
@@ -177,6 +179,7 @@ const JobAdPage = () => {
           />
         </div>
       )}
+      {!acceptedCookies && <Cookies showCookies={true} />}
     </div>
   );
 };

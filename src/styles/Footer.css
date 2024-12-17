@@ -35,6 +35,7 @@
   .link {
     background-color: #1f1f23;
     margin-bottom: 12px;
+    display: block;
   }
 
   .link-copyright {

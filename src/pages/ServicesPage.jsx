@@ -7,8 +7,10 @@ import { getAllServices } from "../action/userActions";
 import { useNavigate } from "react-router-dom";
 import { TailSpin } from "react-loading-icons";
 import { getJobsByStatusClient } from "../action/clientActions";
+import Cookies from "../components/Cookies";
 
 const ServicesPage = () => {
+  const acceptedCookies = document.cookie.includes("Brod");
   const [userInfo] = useState(JSON.parse(localStorage.getItem("userInfo")));
   const [allServices, setAllServices] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -79,6 +81,7 @@ const ServicesPage = () => {
         </>
       )}
       <Footer />
+      {!acceptedCookies && <Cookies showCookies={true} />}
     </>
   );
 };

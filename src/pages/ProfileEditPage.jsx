@@ -9,8 +9,10 @@ import { ArrowLeft, Upload, X } from "lucide-react";
 import { updateTradieProfile } from "../action/tradieActions";
 import { useMediaQuery } from "react-responsive";
 import { TailSpin } from "react-loading-icons";
+import Cookies from "../components/Cookies";
 
 const ProfileEditPage = () => {
+  const acceptedCookies = document.cookie.includes("Brod");
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
 
   const [userInfo] = useState(JSON.parse(localStorage.getItem("userInfo")));
@@ -867,6 +869,7 @@ const ProfileEditPage = () => {
           )}
         </div>
       )}
+      {!acceptedCookies && <Cookies showCookies={true} />}
     </div>
   );
 };

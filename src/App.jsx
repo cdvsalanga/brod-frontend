@@ -23,6 +23,8 @@ import ApplicationDetailsPage from "./pages/ApplicationDetailsPage";
 import ProfileEditPage from "./pages/ProfileEditPage";
 import TradieJobAdsPage from "./pages/TradieJobAdsPage";
 import ChangePasswordPage from "./pages/ChangePasswordPage";
+import TermsAndConditionsPage from "./pages/TermsAndConditionsPage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -57,6 +59,11 @@ const router = createBrowserRouter(
       />
       <Route path="/profile/:id/:jobAds" element={<TradieJobAdsPage />} />
       <Route path="/change-password/:id" element={<ChangePasswordPage />} />
+      <Route
+        path="/terms-and-conditions/:role"
+        element={<TermsAndConditionsPage />}
+      />
+      <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
     </Route>
   )
 );

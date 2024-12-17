@@ -13,8 +13,10 @@ import { Eye, EyeOff } from "lucide-react";
 import { updateTradieProfile } from "../action/tradieActions";
 import { updateClientProfile } from "../action/clientActions";
 import ReactPasswordChecklist from "react-password-checklist";
+import Cookies from "../components/Cookies";
 
 const ChangePasswordPage = () => {
+  const acceptedCookies = document.cookie.includes("Brod");
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
 
   const [userInfo] = useState(JSON.parse(localStorage.getItem("userInfo")));
@@ -201,6 +203,7 @@ const ChangePasswordPage = () => {
           </form>
         </div>
       )}
+      {!acceptedCookies && <Cookies showCookies={true} />}
     </div>
   );
 };

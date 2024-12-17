@@ -5,8 +5,10 @@ import Header from "../components/Header";
 import ProfileContents from "../components/ProfileContents";
 import { getUserDetails } from "../action/userActions";
 import { TailSpin } from "react-loading-icons";
+import Cookies from "../components/Cookies";
 
 const TradieJobAdsPage = () => {
+  const acceptedCookies = document.cookie.includes("Brod");
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
 
   const [userInfo] = useState(JSON.parse(localStorage.getItem("userInfo")));
@@ -53,6 +55,7 @@ const TradieJobAdsPage = () => {
           profile={profileDetails}
         />
       )}
+      {!acceptedCookies && <Cookies showCookies={true} />}
     </div>
   );
 };

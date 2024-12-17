@@ -4,8 +4,10 @@ import Header from "../components/Header";
 import UnderReview from "../assets/images/under-review.svg";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
+import Cookies from "../components/Cookies";
 
 const ApplicationReviewPage = () => {
+  const acceptedCookies = document.cookie.includes("Brod");
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
 
   const navigate = useNavigate();
@@ -32,6 +34,7 @@ const ApplicationReviewPage = () => {
           </button>
         </div>
       </div>
+      {!acceptedCookies && <Cookies showCookies={true} />}
     </>
   );
 };

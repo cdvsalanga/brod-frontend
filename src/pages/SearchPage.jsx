@@ -11,8 +11,10 @@ import { ChevronDown, ChevronUp, ListFilter, X } from "lucide-react";
 import { getFilteredServices } from "../action/userActions";
 import { TailSpin } from "react-loading-icons";
 import { getJobsByStatusClient } from "../action/clientActions";
+import Cookies from "../components/Cookies";
 
 const SearchPage = () => {
+  const acceptedCookies = document.cookie.includes("Brod");
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
 
   const { search } = useLocation();
@@ -2629,6 +2631,7 @@ const SearchPage = () => {
         </div>
       </div>
       <Footer />
+      {!acceptedCookies && <Cookies showCookies={true} />}
     </>
   );
 };

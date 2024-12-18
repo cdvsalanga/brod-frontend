@@ -269,6 +269,8 @@ input[type="date"] {
   -webkit-appearance: none; /* Safari and Chrome */
   appearance: none;
   color: #242424;
+  height: 14px;
+  text-align: start;
 }
 
 .pos-relative {

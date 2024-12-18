@@ -191,6 +191,7 @@ const LoginBox = () => {
     await login(email, password).then((err) => {
       if (err) {
         setShowError(true);
+        setLoading(false);
       }
 
       setUserInfo(JSON.parse(localStorage.getItem("userInfo")));

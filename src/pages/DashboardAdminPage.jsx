@@ -924,7 +924,17 @@ const DashboardAdminPage = () => {
                           {dateFormat(user.lastActivityTimeStamp, "dd/mm/yyyy")}
                         </td>
                         <td className="admin-table-cell">
-                          {user.isSuspended ? (
+                          {user.status === "Deactivated" ? (
+                            // Show Reactivate button if user status is Deactivated
+                            <button
+                              type="button"
+                              className="admin-table-btn admin-table-btn-black pointer"
+                              onClick={() => reactivateHandler(user._id)}
+                            >
+                              Reactivate
+                            </button>
+                          ) : user.isSuspended ? (
+                            // Show Reactivate button if user is suspended
                             <button
                               type="button"
                               className="admin-table-btn admin-table-btn-black pointer"
@@ -933,6 +943,7 @@ const DashboardAdminPage = () => {
                               Reactivate
                             </button>
                           ) : (
+                            // Default Suspend button
                             <button
                               type="button"
                               className="admin-table-btn admin-table-btn-red pointer"

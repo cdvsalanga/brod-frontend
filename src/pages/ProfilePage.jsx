@@ -43,11 +43,7 @@ const ProfilePage = () => {
       <Header headerText={"My Account"} />
       {loading ? (
         <div className="loading loading-page">
-          <TailSpin
-            stroke="#1f1f23"
-            speed={1}
-            className={isMobile && "gray-bg"}
-          />
+          <TailSpin stroke="#1f1f23" speed={1} />
         </div>
       ) : (
         <div className="profile">

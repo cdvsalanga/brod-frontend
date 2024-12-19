@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/logos/header.png";
 import "../styles/Header.css";
 import {
@@ -56,6 +56,8 @@ const Header = ({ notHidden = true, headerText }) => {
   const [onMessage, setOnMessage] = useState();
 
   const navigate = useNavigate();
+
+  const route = useLocation();
 
   const divRef = useRef();
 
@@ -398,12 +400,27 @@ const Header = ({ notHidden = true, headerText }) => {
                       <Link
                         to={`/profile/${userInfo.userId}`}
                         className="link-none block mb-16"
+                        onClick={() => {
+                          if (
+                            route.pathname === `/profile/${userInfo.userId}`
+                          ) {
+                            setShowProfile(false);
+                          }
+                        }}
                       >
                         My Account
                       </Link>
                       <Link
                         to={`/change-password/${userInfo.userId}`}
                         className="link-none block mb-16"
+                        onClick={() => {
+                          if (
+                            route.pathname ===
+                            `/change-password/${userInfo.userId}`
+                          ) {
+                            setShowProfile(false);
+                          }
+                        }}
                       >
                         Change Password
                       </Link>
@@ -963,26 +980,36 @@ const Header = ({ notHidden = true, headerText }) => {
         <div className="header-menu-container scroll-lock">
           <div className="header-menu">
             <div className="flex-center gap-16 mb-24">
-              <img
-                src={
-                  userInfo.profilePicture
-                    ? profilePicture
-                    : DefaultProfilePicture
-                }
-                width={60}
-                height={60}
-                className="header-img"
-              />
               {userInfo.role === "Admin" ? (
-                <div className="header-name">Admin</div>
+                <>
+                  <img
+                    src={DefaultProfilePicture}
+                    width={60}
+                    height={60}
+                    className="header-img"
+                  />
+                  <div className="header-name">Admin</div>
+                </>
               ) : (
-                <div>
-                  <div className="header-name mb-4">{name}</div>
-                  <div className="header-loc flex-center gap-8">
-                    <MapPin width={20} height={20} color="#8C8C8C" />
-                    {postalCode}
+                <>
+                  <img
+                    src={
+                      userInfo.profilePicture
+                        ? profilePicture
+                        : DefaultProfilePicture
+                    }
+                    width={60}
+                    height={60}
+                    className="header-img"
+                  />
+                  <div>
+                    <div className="header-name mb-4">{name}</div>
+                    <div className="header-loc flex-center gap-8">
+                      <MapPin width={20} height={20} color="#8C8C8C" />
+                      {postalCode}
+                    </div>
                   </div>
-                </div>
+                </>
               )}
             </div>
             {userInfo.role !== "Admin" && (
@@ -990,6 +1017,11 @@ const Header = ({ notHidden = true, headerText }) => {
                 <Link
                   to={`/profile/${userInfo.userId}`}
                   className="link-none flex-center gap-12 mb-16"
+                  onClick={() => {
+                    if (route.pathname === `/profile/${userInfo.userId}`) {
+                      setShowMenu(false);
+                    }
+                  }}
                 >
                   <CircleUserRound color="#8C8C8C" />
                   My Account
@@ -998,6 +1030,11 @@ const Header = ({ notHidden = true, headerText }) => {
                   <Link
                     to={"/favorites"}
                     className="link-none flex-center gap-12 mb-16"
+                    onClick={() => {
+                      if (route.pathname === "/favorites") {
+                        setShowMenu(false);
+                      }
+                    }}
                   >
                     <Heart color="#8C8C8C" />
                     My Favorites
@@ -1006,6 +1043,13 @@ const Header = ({ notHidden = true, headerText }) => {
                   <Link
                     to={`/profile/${userInfo.userId}/job-ads`}
                     className="link-none flex-center gap-12 mb-16"
+                    onClick={() => {
+                      if (
+                        route.pathname === `/profile/${userInfo.userId}/job-ads`
+                      ) {
+                        setShowMenu(false);
+                      }
+                    }}
                   >
                     <Briefcase color="#8C8C8C" />
                     My Job Ads
@@ -1045,6 +1089,11 @@ const Header = ({ notHidden = true, headerText }) => {
             <Link
               to={`/change-password/${userInfo.userId}`}
               className="link-none block mb-16"
+              onClick={() => {
+                if (route.pathname === `/change-password/${userInfo.userId}`) {
+                  setShowMenu(false);
+                }
+              }}
             >
               Change Password
             </Link>

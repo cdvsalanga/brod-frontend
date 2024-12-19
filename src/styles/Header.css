@@ -121,6 +121,7 @@
   .notif-contents {
     width: 393px;
     margin: 8px auto;
+    overflow: auto;
   }
 
   .notif-h1 {
@@ -333,6 +334,7 @@
     padding: 24px 32px;
     flex-shrink: 0;
     width: 656px;
+    overflow: auto;
   }
 
   .notif-h1 {

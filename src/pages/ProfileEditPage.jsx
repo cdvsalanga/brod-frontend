@@ -31,7 +31,7 @@ const ProfileEditPage = () => {
   const [postalCode, setPostalCode] = useState();
   const [businessPostCode, setBusinessPostCode] = useState();
   const [proximityToWork, setProximityToWork] = useState("");
-  const [businessAddress, setBusinessAddress] = useState();
+  const [businessAddress, setBusinessAddress] = useState("");
   const [aboutMeDescription, setAboutMeDescription] = useState();
   const [services, setServices] = useState([]);
   const [website, setWebsite] = useState();
@@ -121,7 +121,7 @@ const ProfileEditPage = () => {
 
       await addNotification(userInfo.userId, content, picture, timeStamp).then(
         () => {
-          // window.location.reload();
+          window.location.reload();
         }
       );
     });
@@ -163,7 +163,6 @@ const ProfileEditPage = () => {
         return;
       } else if (res && res.message === "Network Error") {
         alert("File too big");
-        window.location.reload();
         return;
       }
 
@@ -183,7 +182,7 @@ const ProfileEditPage = () => {
 
       await addNotification(userInfo.userId, content, picture, timeStamp).then(
         () => {
-          // window.location.reload();
+          window.location.reload();
         }
       );
     });

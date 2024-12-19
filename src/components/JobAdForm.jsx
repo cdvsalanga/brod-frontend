@@ -84,6 +84,11 @@ const JobAdForm = () => {
     });
 
   const projectGalleryUpload = async (e) => {
+    if (e.target.files[0].size > 2097152) {
+      alert("File is too big. Maximum file size is 2MB");
+      return;
+    }
+
     const uploadedBase64 = [...projectGallery];
     const file = e.target.files[0];
 
@@ -499,11 +504,16 @@ const JobAdForm = () => {
                 className="none"
                 id="thumbnailImg"
                 accept="image/*"
-                onChange={(e) =>
+                onChange={(e) => {
+                  if (e.target.files[0].size > 2097152) {
+                    alert("File is too big. Maximum file size is 2MB");
+                    return;
+                  }
+
                   toBase64(e.target.files[0]).then((res) =>
                     setThumbnailImage(res)
-                  )
-                }
+                  );
+                }}
               />
             </>
           )}

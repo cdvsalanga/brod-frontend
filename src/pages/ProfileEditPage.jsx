@@ -162,7 +162,7 @@ const ProfileEditPage = () => {
         navigate("/login");
         return;
       } else if (res && res.message === "Network Error") {
-        alert("File too big");
+        alert(res.message + ". Contact brod@support.com.au for help.");
         return;
       }
 
@@ -197,12 +197,22 @@ const ProfileEditPage = () => {
     });
 
   const updateProfilePictureHandler = (e) => {
+    if (e.target.files[0].size > 2097152) {
+      alert("File is too big. Maximum file size is 2MB");
+      return;
+    }
+
     toBase64(e.target.files[0]).then((res) => {
       setProfilePicture(res);
     });
   };
 
   const fileHandler = async (e) => {
+    if (e.target.files[0].size > 5242880) {
+      alert("File is too big. Maximum file size is 5MB");
+      return;
+    }
+
     const uploaded = [...credentials];
     const uploadedBase64 = [...certificationFilesUploaded];
     const file = e.target.files[0];

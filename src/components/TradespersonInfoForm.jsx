@@ -115,6 +115,11 @@ const TradespersonInfoForm = ({ page }) => {
     });
 
   const fileHandler = async (e) => {
+    if (e.target.files[0].size > 5242880) {
+      alert("File is too big. Maximum file size is 5MB");
+      return;
+    }
+
     const uploadedBase64 = [...certificationFilesUploaded];
     const file = e.target.files[0];
 

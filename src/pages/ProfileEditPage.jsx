@@ -410,24 +410,37 @@ const ProfileEditPage = () => {
                   disabled={updateLoading}
                 />
               </div>
-              <button
-                type="submit"
-                className={
-                  updateLoading
-                    ? "profile-edit-btn link-disabled"
-                    : "profile-edit-btn pointer"
-                }
-              >
-                {updateLoading ? (
-                  <TailSpin
-                    stroke="#ffffff"
-                    speed={1}
-                    className="icon-bg-black loading-btn"
-                  />
-                ) : (
-                  "Save"
-                )}
-              </button>
+              <div className="flex-center gap-12">
+                <button
+                  type="button"
+                  className={
+                    updateLoading
+                      ? "profile-edit-btn profile-edit-btn-white link-disabled"
+                      : "profile-edit-btn profile-edit-btn-white pointer"
+                  }
+                  onClick={() => navigate(`/profile/${userInfo.userId}`)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className={
+                    updateLoading
+                      ? "profile-edit-btn link-disabled"
+                      : "profile-edit-btn pointer"
+                  }
+                >
+                  {updateLoading ? (
+                    <TailSpin
+                      stroke="#ffffff"
+                      speed={1}
+                      className="icon-bg-black loading-btn"
+                    />
+                  ) : (
+                    "Save"
+                  )}
+                </button>
+              </div>
             </form>
           ) : (
             <form onSubmit={editTradieProfileHandler}>
@@ -856,24 +869,37 @@ const ProfileEditPage = () => {
                 </div>
               </div>
 
-              <button
-                type="submit"
-                className={
-                  updateLoading
-                    ? "profile-edit-btn link-disabled"
-                    : "profile-edit-btn pointer"
-                }
-              >
-                {updateLoading ? (
-                  <TailSpin
-                    stroke="#ffffff"
-                    speed={1}
-                    className="icon-bg-black loading-btn"
-                  />
-                ) : (
-                  "Save"
-                )}
-              </button>
+              <div className="flex-center gap-12">
+                <button
+                  type="button"
+                  className={
+                    updateLoading
+                      ? "profile-edit-btn profile-edit-btn-white link-disabled"
+                      : "profile-edit-btn profile-edit-btn-white pointer"
+                  }
+                  onClick={() => navigate(`/profile/${userInfo.userId}`)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className={
+                    updateLoading
+                      ? "profile-edit-btn link-disabled"
+                      : "profile-edit-btn pointer"
+                  }
+                >
+                  {updateLoading ? (
+                    <TailSpin
+                      stroke="#ffffff"
+                      speed={1}
+                      className="icon-bg-black loading-btn"
+                    />
+                  ) : (
+                    "Save"
+                  )}
+                </button>
+              </div>
             </form>
           )}
         </div>

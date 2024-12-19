@@ -112,6 +112,11 @@
   color: #fff;
 }
 
+.profile-edit-btn-white {
+  background-color: #ffffff;
+  color: #242424;
+}
+
 .profile-edit-select {
   width: 100%;
   -moz-appearance: none; /* Firefox */

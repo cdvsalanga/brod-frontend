@@ -206,7 +206,16 @@ const JobAdForm = () => {
                 <h1 className="job-form-h1">Job Ad Details</h1>
               </div>
             ) : (
-              <h1 className="job-form-h1">Job Ad Details</h1>
+              <div className="mb-20">
+                <div
+                  className="flex-center gap-8 pointer mb-16"
+                  onClick={() => navigate(`/profile/${userInfo.userId}`)}
+                >
+                  <ArrowLeft color="#717171" />
+                  Back
+                </div>
+                <h1 className="job-form-h1">Job Ad Details</h1>
+              </div>
             )}
             <div className="job-form-status job-form-publish">Published</div>
           </div>
@@ -222,7 +231,16 @@ const JobAdForm = () => {
                 <h1 className="job-form-h1">Job Ad Details</h1>
               </div>
             ) : (
-              <h1 className="job-form-h1">Job Ad Details</h1>
+              <div className="mb-20">
+                <div
+                  className="flex-center gap-8 pointer mb-16"
+                  onClick={() => navigate(`/profile/${userInfo.userId}`)}
+                >
+                  <ArrowLeft color="#717171" />
+                  Back
+                </div>
+                <h1 className="job-form-h1">Job Ad Details</h1>
+              </div>
             )}
             <div className="job-form-status job-form-unpublish">
               Unpublished
@@ -238,7 +256,16 @@ const JobAdForm = () => {
             <h1 className="job-form-h1">Post a Job Ad</h1>
           </div>
         ) : (
-          <h1 className="job-form-h1 mb-20">Post a Job Ad</h1>
+          <div className="mb-20">
+            <div
+              className="flex-center gap-8 pointer mb-16"
+              onClick={() => navigate(-1)}
+            >
+              <ArrowLeft color="#717171" />
+              Back
+            </div>
+            <h1 className="job-form-h1">Post a Job Ad</h1>
+          </div>
         )}
         <div className={!isMobile && "flex-between mb-24"}>
           <div className={isMobile ? "mb-24" : "half-inputs"}>

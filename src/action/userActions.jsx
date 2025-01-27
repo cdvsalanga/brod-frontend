@@ -69,9 +69,9 @@ export const signup = async (
       publishedAds: 0,
       isSuspended: false,
       weeksSuspended: 0,
-      suspensionStartDate: "",
+      suspensionStartDate: null,
       timeStamp,
-      lastActivityTimeStamp: "",
+      lastActivityTimeStamp: new Date().toISOString(),
       lastActivity: "",
     });
 

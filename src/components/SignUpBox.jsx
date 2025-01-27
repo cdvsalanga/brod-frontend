@@ -201,7 +201,7 @@ const SignUpBox = ({ chosen }) => {
             timeStamp
           ).then((res) => {
             if (res && res.status === 400) {
-              alert("User already exists");
+              alert(res.message);
               window.location.reload();
             }
             setUserInfo(JSON.parse(localStorage.getItem("userInfo")));

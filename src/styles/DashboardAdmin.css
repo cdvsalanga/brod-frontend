@@ -25,7 +25,7 @@
   }
 
   .admin-data-container {
-    width: 303px;
+    width: 361px;
     font-weight: 400;
     font-size: 13px;
     line-height: 20.98px;
@@ -45,12 +45,39 @@
     margin: 0 8px;
   }
 
+  .admin-data-name {
+    width: 163px;
+  }
+
+  .admin-data-loc {
+    width: 54px;
+  }
+
   .admin-data-status {
+    width: 60px;
     padding: 3px 12px;
     font-weight: 500;
     font-size: 13px;
     line-height: 15.73px;
     border-radius: 99px;
+  }
+
+  .admin-data-user-name {
+    width: 94px;
+  }
+
+  .admin-data-role {
+    width: 40px;
+  }
+
+  .admin-data-btn {
+    width: 88px;
+    text-align: center;
+  }
+
+  .admin-data-del-btn {
+    width: 62px;
+    text-align: center;
   }
 
   .admin-filter {

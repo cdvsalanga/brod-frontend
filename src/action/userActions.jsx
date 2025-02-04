@@ -2,10 +2,13 @@ import axios from "axios";
 
 export const login = async (email, password) => {
   try {
-    const { data } = await axios.post("https://localhost:7127/api/Auth/login", {
-      email,
-      password,
-    });
+    const { data } = await axios.post(
+      "https://backendapi.brod.com.au/api/Auth/login",
+      {
+        email,
+        password,
+      }
+    );
 
     localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
@@ -33,7 +36,7 @@ export const signup = async (
   timeStamp
 ) => {
   try {
-    await axios.post("https://localhost:7127/api/Auth/signup", {
+    await axios.post("https://backendapi.brod.com.au/api/Auth/signup", {
       _id: "",
       username: "",
       email,
@@ -85,7 +88,7 @@ export const checkEmail = async (email) => {
   try {
     console.log(email);
     const { data } = await axios.post(
-      `https://localhost:7127/api/Auth/check-email`,
+      `https://backendapi.brod.com.au/api/Auth/check-email`,
       `"${email}"`,
       {
         headers: {
@@ -103,7 +106,7 @@ export const checkEmail = async (email) => {
 export const getUserDetails = async (userId) => {
   try {
     const { data } = await axios.get(
-      `https://localhost:7127/api/Auth/userDetails?id=${userId}`
+      `https://backendapi.brod.com.au/api/Auth/userDetails?id=${userId}`
     );
 
     return data;
@@ -115,7 +118,7 @@ export const getUserDetails = async (userId) => {
 export const getAllServices = async () => {
   try {
     const { data } = await axios.get(
-      `https://localhost:7127/api/Auth/allServices`
+      `https://backendapi.brod.com.au/api/Auth/allServices`
     );
 
     return data;
@@ -134,7 +137,7 @@ export const ssoClient = async (
 ) => {
   try {
     const { data } = await axios.post(
-      `https://localhost:7127/api/Auth/sso-client`,
+      `https://backendapi.brod.com.au/api/Auth/sso-client`,
       { email, email_verified, name, picture, given_name, family_name }
     );
 
@@ -155,7 +158,7 @@ export const ssoTradie = async (
 ) => {
   try {
     const { data } = await axios.post(
-      `https://localhost:7127/api/Auth/sso-tradie`,
+      `https://backendapi.brod.com.au/api/Auth/sso-tradie`,
       { email, email_verified, name, picture, given_name, family_name }
     );
 
@@ -176,7 +179,7 @@ export const ssoLoginCommon = async (
 ) => {
   try {
     const { data } = await axios.post(
-      `https://localhost:7127/api/Auth/sso-login-common`,
+      `https://backendapi.brod.com.au/api/Auth/sso-login-common`,
       { email, email_verified, name, picture, given_name, family_name }
     );
 
@@ -189,7 +192,7 @@ export const ssoLoginCommon = async (
 export const getJobPostDetails = async (id) => {
   try {
     const { data } = await axios.post(
-      "https://localhost:7127/api/Auth/JobPostDetails",
+      "https://backendapi.brod.com.au/api/Auth/JobPostDetails",
       {
         id,
       }
@@ -204,7 +207,7 @@ export const getJobPostDetails = async (id) => {
 export const getFilteredServices = async (filters) => {
   try {
     const { data } = await axios.post(
-      "https://localhost:7127/api/Auth/FilteredServices",
+      "https://backendapi.brod.com.au/api/Auth/FilteredServices",
       filters
     );
 
@@ -217,7 +220,7 @@ export const getFilteredServices = async (filters) => {
 export const smsOtp = async (phoneNumber) => {
   try {
     await axios.post(
-      `https://localhost:7127/api/Auth/sms-otp?phoneNumber=${phoneNumber}`,
+      `https://backendapi.brod.com.au/api/Auth/sms-otp?phoneNumber=${phoneNumber}`,
       ""
     );
   } catch (error) {
@@ -228,7 +231,7 @@ export const smsOtp = async (phoneNumber) => {
 export const emailOtp = async (email) => {
   try {
     await axios.post(
-      `https://localhost:7127/api/Auth/email-otp?email=${email}`,
+      `https://backendapi.brod.com.au/api/Auth/email-otp?email=${email}`,
       ""
     );
   } catch (error) {
@@ -239,7 +242,7 @@ export const emailOtp = async (email) => {
 export const smsVerifyOtp = async (phoneNumber, userEnteredOtp) => {
   try {
     await axios.post(
-      `https://localhost:7127/api/Auth/sms-verify-otp?phoneNumber=${phoneNumber}&userEnteredOtp=${userEnteredOtp}`,
+      `https://backendapi.brod.com.au/api/Auth/sms-verify-otp?phoneNumber=${phoneNumber}&userEnteredOtp=${userEnteredOtp}`,
       ""
     );
   } catch (error) {
@@ -250,7 +253,7 @@ export const smsVerifyOtp = async (phoneNumber, userEnteredOtp) => {
 export const emailVerifyOtp = async (email, userEnteredOtp) => {
   try {
     await axios.post(
-      `https://localhost:7127/api/Auth/email-verify-otp?email=${email}&userEnteredOtp=${userEnteredOtp}`,
+      `https://backendapi.brod.com.au/api/Auth/email-verify-otp?email=${email}&userEnteredOtp=${userEnteredOtp}`,
       ""
     );
   } catch (error) {
@@ -261,7 +264,7 @@ export const emailVerifyOtp = async (email, userEnteredOtp) => {
 export const getNotifications = async (userId) => {
   try {
     const { data } = await axios.post(
-      `https://localhost:7127/api/Auth/GetNotifications?userId=${userId}`,
+      `https://backendapi.brod.com.au/api/Auth/GetNotifications?userId=${userId}`,
       ""
     );
 
@@ -274,7 +277,7 @@ export const getNotifications = async (userId) => {
 export const getNotificationsNoUpdate = async (userId) => {
   try {
     const { data } = await axios.post(
-      `https://localhost:7127/api/Auth/GetNotificationsNoUpdate?userId=${userId}`,
+      `https://backendapi.brod.com.au/api/Auth/GetNotificationsNoUpdate?userId=${userId}`,
       ""
     );
 
@@ -291,14 +294,17 @@ export const addNotification = async (
   timeStamp
 ) => {
   try {
-    await axios.post(`https://localhost:7127/api/Auth/AddNotification`, {
-      _id: "",
-      userID,
-      content,
-      profilePicture,
-      timeStamp,
-      isRead: false,
-    });
+    await axios.post(
+      `https://backendapi.brod.com.au/api/Auth/AddNotification`,
+      {
+        _id: "",
+        userID,
+        content,
+        profilePicture,
+        timeStamp,
+        isRead: false,
+      }
+    );
   } catch (error) {
     return error;
   }
@@ -311,17 +317,20 @@ export const clientAddMessage = async (
   timeStamp
 ) => {
   try {
-    await axios.post(`https://localhost:7127/api/Auth/Client-AddMessage`, {
-      _id: "",
-      clientId,
-      tradieId,
-      tradieName: "",
-      tradielocation: "",
-      picture: "",
-      message,
-      timeStamp,
-      sentByClient: true,
-    });
+    await axios.post(
+      `https://backendapi.brod.com.au/api/Auth/Client-AddMessage`,
+      {
+        _id: "",
+        clientId,
+        tradieId,
+        tradieName: "",
+        tradielocation: "",
+        picture: "",
+        message,
+        timeStamp,
+        sentByClient: true,
+      }
+    );
   } catch (error) {
     return error;
   }
@@ -334,17 +343,20 @@ export const tradieAddMessage = async (
   timeStamp
 ) => {
   try {
-    await axios.post(`https://localhost:7127/api/Auth/Tradie-AddMessage`, {
-      _id: "",
-      clientId,
-      tradieId,
-      clientName: "",
-      clientlocation: "",
-      picture: "",
-      message,
-      timeStamp,
-      sentByTradie: true,
-    });
+    await axios.post(
+      `https://backendapi.brod.com.au/api/Auth/Tradie-AddMessage`,
+      {
+        _id: "",
+        clientId,
+        tradieId,
+        clientName: "",
+        clientlocation: "",
+        picture: "",
+        message,
+        timeStamp,
+        sentByTradie: true,
+      }
+    );
   } catch (error) {
     return error;
   }
@@ -353,7 +365,7 @@ export const tradieAddMessage = async (
 export const clientGetAllMessages = async (clientId) => {
   try {
     const { data } = await axios.post(
-      `https://localhost:7127/api/Auth/Client-GetAll-Messages`,
+      `https://backendapi.brod.com.au/api/Auth/Client-GetAll-Messages`,
       {
         clientId,
         tradieId: "",
@@ -369,7 +381,7 @@ export const clientGetAllMessages = async (clientId) => {
 export const tradieGetAllMessages = async (tradieId) => {
   try {
     const { data } = await axios.post(
-      `https://localhost:7127/api/Auth/Tradie-GetAll-Messages`,
+      `https://backendapi.brod.com.au/api/Auth/Tradie-GetAll-Messages`,
       {
         clientId: "",
         tradieId,
@@ -385,7 +397,7 @@ export const tradieGetAllMessages = async (tradieId) => {
 export const getMessagesById = async (clientId, tradieId) => {
   try {
     const { data } = await axios.post(
-      `https://localhost:7127/api/Auth/GetMessages-ByID`,
+      `https://backendapi.brod.com.au/api/Auth/GetMessages-ByID`,
       {
         clientId,
         tradieId,
@@ -401,7 +413,7 @@ export const getMessagesById = async (clientId, tradieId) => {
 export const reactivate = async (userId) => {
   try {
     await axios.put(
-      `https://localhost:7127/api/Auth/Reactivate?userId=${userId}`
+      `https://backendapi.brod.com.au/api/Auth/Reactivate?userId=${userId}`
     );
   } catch (error) {
     return error;
@@ -411,7 +423,7 @@ export const reactivate = async (userId) => {
 export const changePassword = async (email, oldPassword, newPassword) => {
   try {
     console.log({ email, oldPassword, newPassword });
-    await axios.put(`https://localhost:7127/api/Auth/ChangePassword`, {
+    await axios.put(`https://backendapi.brod.com.au/api/Auth/ChangePassword`, {
       email,
       oldPassword,
       newPassword,
@@ -425,7 +437,7 @@ export const deactivate = async (userId) => {
   try {
     console.log({ userId });
     await axios.put(
-      `https://localhost:7127/api/Auth/user/deactivate?userId=${userId}`
+      `https://backendapi.brod.com.au/api/Auth/user/deactivate?userId=${userId}`
     );
   } catch (error) {
     return error;
@@ -436,7 +448,7 @@ export const deleteUser = async (userId) => {
   try {
     console.log({ userId });
     await axios.put(
-      `https://localhost:7127/api/Auth/user/delete?userId=${userId}`
+      `https://backendapi.brod.com.au/api/Auth/user/delete?userId=${userId}`
     );
   } catch (error) {
     return error;

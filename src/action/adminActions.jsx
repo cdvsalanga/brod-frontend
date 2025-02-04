@@ -3,7 +3,7 @@ import axios from "axios";
 export const getTradies = async (token) => {
   try {
     const { data } = await axios.get(
-      "https://localhost:7127/api/Admin/tradies",
+      "https://backendapi.brod.com.au/api/Admin/tradies",
       {
         headers: {
           "Content-Type": "application/json",
@@ -21,7 +21,7 @@ export const getTradies = async (token) => {
 export const updateTradieStatus = async (id, status, token) => {
   try {
     await axios.put(
-      "https://localhost:7127/api/Admin/tradie/update-status",
+      "https://backendapi.brod.com.au/api/Admin/tradie/update-status",
       { id, status },
       {
         headers: {
@@ -37,12 +37,15 @@ export const updateTradieStatus = async (id, status, token) => {
 
 export const getUsers = async (token) => {
   try {
-    const { data } = await axios.get("https://localhost:7127/api/Admin/users", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const { data } = await axios.get(
+      "https://backendapi.brod.com.au/api/Admin/users",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     return data;
   } catch (error) {
@@ -60,7 +63,7 @@ export const getFilteredTradies = async (
 ) => {
   try {
     const { data } = await axios.post(
-      "https://localhost:7127/api/Admin/GetFilteredTradies",
+      "https://backendapi.brod.com.au/api/Admin/GetFilteredTradies",
       { typeOfWork, status, submissionDateFrom, submissionDateTo, keyword },
       {
         headers: {
@@ -86,7 +89,7 @@ export const getFilteredUsers = async (
 ) => {
   try {
     const { data } = await axios.post(
-      "https://localhost:7127/api/Admin/GetFilteredUsers",
+      "https://backendapi.brod.com.au/api/Admin/GetFilteredUsers",
       { typeOfWork, status, submissionDateFrom, submissionDateTo, keyword },
       {
         headers: {
@@ -110,7 +113,7 @@ export const suspendUser = async (
 ) => {
   try {
     await axios.put(
-      "https://localhost:7127/api/Admin/suspendUser",
+      "https://backendapi.brod.com.au/api/Admin/suspendUser",
       { userID, weeksSuspended, suspensionStartDate, isSuspended: true },
       {
         headers: {

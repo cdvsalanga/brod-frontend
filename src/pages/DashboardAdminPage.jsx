@@ -553,17 +553,21 @@ const DashboardAdminPage = () => {
                           : "flex-center"
                       }
                     >
-                      <span
-                        className={tradie.status === "New" && "admin-table-new"}
+                      <div
+                        className={
+                          tradie.status === "New"
+                            ? "admin-data-name admin-table-new"
+                            : "admin-data-name"
+                        }
                       >
                         {tradie.firstName + " " + tradie.lastName}
-                      </span>
+                      </div>
                       <span className="admin-data-separator" />
                       <div
                         className={
                           tradie.status === "New"
-                            ? "flex-center gap-4 admin-table-new"
-                            : "flex-center gap-4"
+                            ? "admin-data-loc flex-center gap-4 admin-table-new"
+                            : "admin-data-loc flex-center gap-4"
                         }
                       >
                         <MapPin
@@ -577,7 +581,7 @@ const DashboardAdminPage = () => {
                         {tradie.businessPostCode}
                       </div>
                       <span className="admin-data-separator" />
-                      <span
+                      <div
                         className={
                           tradie.status === "New"
                             ? "admin-data-status admin-data-status-new"
@@ -587,7 +591,7 @@ const DashboardAdminPage = () => {
                         }
                       >
                         {tradie.status}
-                      </span>
+                      </div>
                     </div>
                   </div>
                   {/* <EllipsisVertical
@@ -614,11 +618,13 @@ const DashboardAdminPage = () => {
                       {dateFormat(user.lastActivityTimeStamp, "dd/mm/yyyy")})
                     </div>
                     <div className="flex-center">
-                      <span>{user.firstName + " " + user.lastName}</span>
+                      <div className="admin-data-user-name">
+                        {user.firstName + " " + user.lastName}
+                      </div>
                       <span className="admin-data-separator" />
-                      <div className="flex-center gap-8">{user.role}</div>
+                      <div className="admin-data-role">{user.role}</div>
                       <span className="admin-data-separator" />
-                      <span>
+                      <div className="admin-data-btn">
                         {user.isSuspended ? (
                           <button
                             type="button"
@@ -639,9 +645,9 @@ const DashboardAdminPage = () => {
                             Suspend
                           </button>
                         )}
-                      </span>
+                      </div>
                       <span className="admin-data-separator" />
-                      <span>
+                      <div className="admin-data-del-btn">
                         <button
                           type="button"
                           className="admin-table-btn admin-table-btn-red pointer"
@@ -652,7 +658,7 @@ const DashboardAdminPage = () => {
                         >
                           Delete
                         </button>
-                      </span>
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -4,7 +4,7 @@ export const updateTradieProfile = async (user, token) => {
   try {
     console.log(user);
     await axios.put(
-      "https://localhost:7127/api/Tradie/update-tradie-profile",
+      "https://backendapi.brod.com.au/api/Tradie/update-tradie-profile",
       user,
       {
         headers: {
@@ -34,7 +34,7 @@ export const addTradieJobAd = async (
 ) => {
   try {
     await axios.post(
-      "https://localhost:7127/api/Tradie/add-tradie-job-ad",
+      "https://backendapi.brod.com.au/api/Tradie/add-tradie-job-ad",
       {
         _id: "",
         userID,
@@ -72,7 +72,7 @@ export const addTradieJobAd = async (
 export const getPublishedAds = async (userId, token) => {
   try {
     const { data } = await axios.get(
-      `https://localhost:7127/api/Tradie/publishedAds?userId=${userId}`,
+      `https://backendapi.brod.com.au/api/Tradie/publishedAds?userId=${userId}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -90,7 +90,7 @@ export const getPublishedAds = async (userId, token) => {
 export const getUnPublishedAds = async (userId, token) => {
   try {
     const { data } = await axios.get(
-      `https://localhost:7127/api/Tradie/unpublishedAds?userId=${userId}`,
+      `https://backendapi.brod.com.au/api/Tradie/unpublishedAds?userId=${userId}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -108,7 +108,7 @@ export const getUnPublishedAds = async (userId, token) => {
 export const getJobAdDetailsByServiceId = async (serviceID, token) => {
   try {
     const { data } = await axios.post(
-      "https://localhost:7127/api/Tradie/job-ad-getDetails-byServiceID",
+      "https://backendapi.brod.com.au/api/Tradie/job-ad-getDetails-byServiceID",
       {
         serviceID,
       },
@@ -129,7 +129,7 @@ export const getJobAdDetailsByServiceId = async (serviceID, token) => {
 export const updateIsActive = async (jobID, isActive, token) => {
   try {
     await axios.put(
-      "https://localhost:7127/api/Tradie/job-ads/update-isActive",
+      "https://backendapi.brod.com.au/api/Tradie/job-ads/update-isActive",
       {
         jobID,
         isActive,
@@ -149,7 +149,7 @@ export const updateIsActive = async (jobID, isActive, token) => {
 export const updateJobAdDetails = async (jobAdData, token) => {
   try {
     await axios.put(
-      "https://localhost:7127/api/Tradie/update-job-ad-Details",
+      "https://backendapi.brod.com.au/api/Tradie/update-job-ad-Details",
       jobAdData,
       {
         headers: {
@@ -166,7 +166,7 @@ export const updateJobAdDetails = async (jobAdData, token) => {
 export const getJobsByStatusTradie = async (userID, status, token) => {
   try {
     const { data } = await axios.post(
-      "https://localhost:7127/api/Tradie/GetJobsByStatus",
+      "https://backendapi.brod.com.au/api/Tradie/GetJobsByStatus",
       { userID, status },
       {
         headers: {
@@ -191,7 +191,7 @@ export const updateJobStatusTradie = async (
 ) => {
   try {
     await axios.put(
-      "https://localhost:7127/api/Tradie/UpdateJobStatus",
+      "https://backendapi.brod.com.au/api/Tradie/UpdateJobStatus",
       { tradieID, jobID, status, jobActionDate },
       {
         headers: {

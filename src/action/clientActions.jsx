@@ -4,7 +4,7 @@ export const updateClientProfile = async (profileDetails, token) => {
   try {
     console.log(profileDetails);
     await axios.put(
-      "https://localhost:7127/api/Client/update-profile",
+      "https://backendapi.brod.com.au/api/Client/update-profile",
       profileDetails,
       {
         headers: {
@@ -36,7 +36,7 @@ export const hireTradie = async (
 ) => {
   try {
     await axios.post(
-      "https://localhost:7127/api/Client/HireTradie",
+      "https://backendapi.brod.com.au/api/Client/HireTradie",
       {
         clientID,
         tradieID,
@@ -78,7 +78,7 @@ export const bookmarkJob = async (
 ) => {
   try {
     await axios.post(
-      "https://localhost:7127/api/Client/BookmarkJob",
+      "https://backendapi.brod.com.au/api/Client/BookmarkJob",
       {
         clientID,
         tradieID,
@@ -109,7 +109,7 @@ export const bookmarkJob = async (
 export const unBookmarkJob = async (bookmarkedJobId, token) => {
   try {
     await axios.post(
-      `https://localhost:7127/api/Client/UnBookmarkJob?bookmarkedJobId=${bookmarkedJobId}`,
+      `https://backendapi.brod.com.au/api/Client/UnBookmarkJob?bookmarkedJobId=${bookmarkedJobId}`,
       "",
       {
         headers: {
@@ -126,7 +126,7 @@ export const unBookmarkJob = async (bookmarkedJobId, token) => {
 export const getJobsByStatusClient = async (userID, status, token) => {
   try {
     const { data } = await axios.post(
-      "https://localhost:7127/api/Client/GetJobsByStatus",
+      "https://backendapi.brod.com.au/api/Client/GetJobsByStatus",
       { userID, status },
       {
         headers: {
@@ -151,7 +151,7 @@ export const updateJobStatusClient = async (
 ) => {
   try {
     await axios.put(
-      "https://localhost:7127/api/Client/UpdateJobStatus",
+      "https://backendapi.brod.com.au/api/Client/UpdateJobStatus",
       { tradieID, jobID, status, jobActionDate },
       {
         headers: {
@@ -177,7 +177,7 @@ export const addRating = async (
 ) => {
   try {
     await axios.post(
-      "https://localhost:7127/api/Client/AddRating",
+      "https://backendapi.brod.com.au/api/Client/AddRating",
       {
         _id: "",
         tradieId,

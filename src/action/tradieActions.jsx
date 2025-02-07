@@ -2,7 +2,6 @@ import axios from "axios";
 
 export const updateTradieProfile = async (user, token) => {
   try {
-    console.log(user);
     await axios.put(
       "https://backendapi.brod.com.au/api/Tradie/update-tradie-profile",
       user,

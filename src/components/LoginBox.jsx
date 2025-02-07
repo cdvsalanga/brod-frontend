@@ -11,11 +11,11 @@ import {
   ssoLoginCommon,
 } from "../action/userActions";
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
+// import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { TailSpin } from "react-loading-icons";
 import axios from "axios";
-import GoogleIcon from "../assets/icons/google.svg";
+// import GoogleIcon from "../assets/icons/google.svg";
 import dateFormat, { masks } from "dateformat";
 import { getJobsByStatusClient } from "../action/clientActions";
 import { getJobsByStatusTradie } from "../action/tradieActions";
@@ -37,8 +37,6 @@ const LoginBox = () => {
 
     await getJobsByStatusClient(userInfo.userId, status, userInfo.token).then(
       async (res) => {
-        console.log(res);
-
         for (const job of res) {
           const isTomJob = new Date(job.startDate);
           isTomJob.setDate(isTomJob.getDate() - 1);
@@ -63,8 +61,6 @@ const LoginBox = () => {
 
     await getJobsByStatusTradie(userInfo.userId, status, userInfo.token).then(
       async (res) => {
-        console.log(res);
-
         for (const job of res) {
           const isTomJob = new Date(job.startDate);
           isTomJob.setDate(isTomJob.getDate() - 1);
@@ -133,18 +129,27 @@ const LoginBox = () => {
           return;
         }
         if (res.isSuspended) {
-          const suspensionDate = new Date(res.suspensionStartDate);
-          suspensionDate.setDate(
-            suspensionDate.getDate() + res.weeksSuspended * 7
-          );
-          const dateSuspended = dateFormat(suspensionDate, "dd/mm/yyyy");
-          const dateNow = dateFormat(new Date(), "dd/mm/yyyy");
+          let dateSuspended, dateNow;
+          if (res.weeksSuspended === 9999999) {
+            dateSuspended = "permanently";
+          } else {
+            const suspensionDate = new Date(res.suspensionStartDate);
+            suspensionDate.setDate(
+              suspensionDate.getDate() + res.weeksSuspended * 7
+            );
+            dateSuspended = dateFormat(suspensionDate, "dd/mm/yyyy");
+            dateNow = dateFormat(new Date(), "dd/mm/yyyy");
+          }
 
           if (dateSuspended === dateNow) {
             await reactivate(res._id);
           } else {
             alert(
-              `You are suspended until ${dateSuspended}. Please contact us at support@brod.com.au if you have concerns.`
+              `You are suspended ${
+                dateSuspended === "permanently"
+                  ? dateSuspended
+                  : "until " + dateSuspended
+              }. Please contact us at support@brod.com.au if you have concerns.`
             );
             localStorage.removeItem("userInfo");
             window.location.reload();
@@ -198,55 +203,55 @@ const LoginBox = () => {
     });
   };
 
-  const googleLoginHandler = async (res) => {
-    setLoading(true);
+  // const googleLoginHandler = async (res) => {
+  //   setLoading(true);
 
-    await ssoLoginCommon(
-      res.email,
-      res.verified_email.toString(),
-      res.name,
-      res.picture,
-      res.given_name,
-      res.family_name
-    ).then(async (data) => {
-      if (data === "Please sign up as a new user") {
-        alert(data);
-        window.location.reload();
-        return;
-      } else {
-        await ssoClient(
-          res.email,
-          res.verified_email.toString(),
-          res.name,
-          res.picture,
-          res.given_name,
-          res.family_name
-        ).then((res) => {
-          setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
-        });
-      }
-    });
-  };
+  //   await ssoLoginCommon(
+  //     res.email,
+  //     res.verified_email.toString(),
+  //     res.name,
+  //     res.picture,
+  //     res.given_name,
+  //     res.family_name
+  //   ).then(async (data) => {
+  //     if (data === "Please sign up as a new user") {
+  //       alert(data);
+  //       window.location.reload();
+  //       return;
+  //     } else {
+  //       await ssoClient(
+  //         res.email,
+  //         res.verified_email.toString(),
+  //         res.name,
+  //         res.picture,
+  //         res.given_name,
+  //         res.family_name
+  //       ).then((res) => {
+  //         setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
+  //       });
+  //     }
+  //   });
+  // };
 
-  const googleLogin = useGoogleLogin({
-    onSuccess: (tokenResponse) => {
-      axios
-        .get(
-          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${tokenResponse.access_token}`,
-          {
-            headers: {
-              Authorization: `Bearer ${tokenResponse.access_token}`,
-              Accept: "application/json",
-            },
-          }
-        )
-        .then(async (res) => {
-          googleLoginHandler(res.data);
-        })
-        .catch((err) => console.log(err));
-    },
-    onError: () => alert("Login Failed"),
-  });
+  // const googleLogin = useGoogleLogin({
+  //   onSuccess: (tokenResponse) => {
+  //     axios
+  //       .get(
+  //         `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${tokenResponse.access_token}`,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${tokenResponse.access_token}`,
+  //             Accept: "application/json",
+  //           },
+  //         }
+  //       )
+  //       .then(async (res) => {
+  //         googleLoginHandler(res.data);
+  //       })
+  //       .catch((err) => console.log(err));
+  //   },
+  //   onError: () => alert("Login Failed"),
+  // });
 
   return (
     <div className="login-box">
@@ -300,6 +305,14 @@ const LoginBox = () => {
           )}
         </button>
       </form>
+      <div className="to-signup mb-24">
+        <Link
+          to={"/forgot-password"}
+          className={loading ? "signup-link link-disabled" : "signup-link"}
+        >
+          Forgot password?
+        </Link>{" "}
+      </div>
       <div className="to-signup">
         Don't have an account?{" "}
         <Link
@@ -309,7 +322,8 @@ const LoginBox = () => {
           Sign Up
         </Link>{" "}
       </div>
-      <div className="login-separator mb-32">
+
+      {/* <div className="login-separator mb-32">
         <div className="login-separator-line" />
         <div>OR</div>
         <div className="login-separator-line" />
@@ -321,7 +335,8 @@ const LoginBox = () => {
       >
         <img src={GoogleIcon} />
         Continue with Google
-      </button>
+      </button> */}
+
       {/* <GoogleLogin
         onSuccess={(res) => {
           googleLoginHandler(jwtDecode(res.credential));

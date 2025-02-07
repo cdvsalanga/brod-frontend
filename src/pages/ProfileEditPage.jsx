@@ -47,7 +47,6 @@ const ProfileEditPage = () => {
   const getProfileDetails = async () => {
     setLoading(true);
     const userDetails = await getUserDetails(id);
-    console.log(userDetails);
     setProfileDetails(userDetails);
     setProfilePicture(userDetails.profilePicture);
     setFirstName(userDetails.firstName);

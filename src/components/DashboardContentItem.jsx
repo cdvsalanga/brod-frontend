@@ -85,7 +85,6 @@ const DashboardContentItem = ({ item, data, userInfo }) => {
   };
 
   if (data) {
-    console.log(data);
     return loading ? (
       <div
         className={

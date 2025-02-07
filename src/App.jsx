@@ -25,6 +25,7 @@ import TradieJobAdsPage from "./pages/TradieJobAdsPage";
 import ChangePasswordPage from "./pages/ChangePasswordPage";
 import TermsAndConditionsPage from "./pages/TermsAndConditionsPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
+import ForgotPassword from "./pages/ForgotPassword";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -64,6 +65,7 @@ const router = createBrowserRouter(
         element={<TermsAndConditionsPage />}
       />
       <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
     </Route>
   )
 );

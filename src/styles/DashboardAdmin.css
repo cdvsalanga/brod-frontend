@@ -25,7 +25,7 @@
   }
 
   .admin-data-container {
-    width: 361px;
+    width: 303px;
     font-weight: 400;
     font-size: 13px;
     line-height: 20.98px;
@@ -46,7 +46,7 @@
   }
 
   .admin-data-name {
-    width: 163px;
+    width: 130px;
   }
 
   .admin-data-loc {
@@ -63,11 +63,15 @@
   }
 
   .admin-data-user-name {
-    width: 94px;
+    width: 100px;
   }
 
   .admin-data-role {
     width: 40px;
+  }
+
+  .admin-data-activity {
+    width: 127px;
   }
 
   .admin-data-btn {
@@ -410,4 +414,16 @@
 
 .admin-table-new {
   background-color: #fff4ec;
+}
+
+.admin-data-actions {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  border: 1px solid #fafafa;
+  border-radius: 4px;
+  padding: 16px 20px 16px 16px;
+  box-shadow: 0px 9px 28px 8px #0000000a;
+  box-shadow: 0px 6px 16px 0px #0000000a;
+  box-shadow: 0px 3px 6px -4px #0000000a;
 }

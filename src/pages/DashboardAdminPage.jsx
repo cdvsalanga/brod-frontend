@@ -37,6 +37,8 @@ const DashboardAdminPage = () => {
   const [showWorkFilter, setShowWorkFilter] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showModalDelete, setShowModalDelete] = useState(false);
+  const [showActions, setShowActions] = useState(false);
+  const [actionsId, setActionsId] = useState();
   const [allTradies, setAllTradies] = useState();
   const [tradies, setTradies] = useState();
   const [allUsers, setAllUsers] = useState();
@@ -67,8 +69,6 @@ const DashboardAdminPage = () => {
         navigate("/login");
         return;
       }
-      console.log(res);
-      // res.reverse();
       setAllTradies(res);
 
       const endOffset = itemOffset + itemsPerPage;
@@ -92,8 +92,6 @@ const DashboardAdminPage = () => {
         return;
       }
 
-      console.log(res);
-      // res.reverse();
       const filteredUsers = res.filter((user) => user.role !== "Admin");
 
       setAllUsers(filteredUsers);
@@ -518,17 +516,19 @@ const DashboardAdminPage = () => {
           {item === "Tradies"
             ? allTradies &&
               allTradies.map((tradie) => (
-                <Link
-                  to={`/admin/application-details/${tradie._id}`}
+                <div
+                  // to={`/admin/application-details/${tradie._id}`}
+                  // className={
+                  //   tradie.status === "New"
+                  //     ? "admin-data mb-8 pointer link-none admin-table-new"
+                  //     : "admin-data mb-8 pointer link-none"
+                  // }
                   className={
                     tradie.status === "New"
-                      ? "admin-data mb-8 pointer link-none admin-table-new"
-                      : "admin-data mb-8 pointer link-none"
+                      ? "admin-data mb-8 admin-table-new"
+                      : "admin-data mb-8"
                   }
                   key={tradie._id}
-                  // onClick={() =>
-                  //   navigate(`/admin/application-details/${tradie._id}`)
-                  // }
                 >
                   <div
                     className={
@@ -594,14 +594,76 @@ const DashboardAdminPage = () => {
                       </div>
                     </div>
                   </div>
-                  {/* <EllipsisVertical
-                  width={28}
-                  height={28}
-                  color="#717171"
-                  className="pointer"
-                  onClick={(e) => e.stopPropagation()}
-                /> */}
-                </Link>
+                  <div
+                    className={
+                      tradie.status === "New"
+                        ? "pos-relative admin-table-new"
+                        : "pos-relative"
+                    }
+                  >
+                    <EllipsisVertical
+                      width={28}
+                      height={28}
+                      color={actionsId === tradie._id ? "#000000" : "#8C8C8C"}
+                      className={
+                        tradie.status === "New"
+                          ? "pointer admin-table-new"
+                          : "pointer"
+                      }
+                      onClick={() => {
+                        if (actionsId !== tradie._id) {
+                          setActionsId(tradie._id);
+                          setShowActions(true);
+                        } else {
+                          setActionsId("");
+                          setShowActions(false);
+                        }
+                      }}
+                    />
+                    {showActions && actionsId === tradie._id && (
+                      <div className="admin-data-actions">
+                        <Link to={`/admin/application-details/${tradie._id}`}>
+                          <button
+                            type="button"
+                            className="admin-table-btn admin-table-btn-black mb-12 pointer"
+                          >
+                            Details
+                          </button>
+                        </Link>
+                        {tradie.isSuspended ? (
+                          <button
+                            type="button"
+                            className="admin-table-btn admin-table-btn-black mb-12 pointer"
+                            onClick={() => reactivateHandler(tradie._id)}
+                          >
+                            Reactivate
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            className="admin-table-btn admin-table-btn-red mb-12 pointer"
+                            onClick={() => {
+                              setSuspendingUser(tradie);
+                              setShowModal(true);
+                            }}
+                          >
+                            Suspend
+                          </button>
+                        )}
+                        <button
+                          type="button"
+                          className="admin-table-btn admin-table-btn-red pointer"
+                          onClick={() => {
+                            setDeletingUser(tradie);
+                            setShowModalDelete(true);
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
               ))
             : allUsers &&
               allUsers.map((user) => (
@@ -613,10 +675,7 @@ const DashboardAdminPage = () => {
                   // }
                 >
                   <div className="admin-data-container">
-                    <div className="admin-data-title mb-6">
-                      {user.email} (
-                      {dateFormat(user.lastActivityTimeStamp, "dd/mm/yyyy")})
-                    </div>
+                    <div className="admin-data-title mb-6">{user.email}</div>
                     <div className="flex-center">
                       <div className="admin-data-user-name">
                         {user.firstName + " " + user.lastName}
@@ -624,7 +683,12 @@ const DashboardAdminPage = () => {
                       <span className="admin-data-separator" />
                       <div className="admin-data-role">{user.role}</div>
                       <span className="admin-data-separator" />
-                      <div className="admin-data-btn">
+                      <div className="admin-data-activity">
+                        {user.lastActivity} (
+                        {dateFormat(user.lastActivityTimeStamp, "dd/mm/yyyy")})
+                      </div>
+
+                      {/* <div className="admin-data-btn">
                         {user.isSuspended ? (
                           <button
                             type="button"
@@ -658,8 +722,59 @@ const DashboardAdminPage = () => {
                         >
                           Delete
                         </button>
-                      </div>
+                      </div> */}
                     </div>
+                  </div>
+                  <div className="pos-relative">
+                    <EllipsisVertical
+                      width={28}
+                      height={28}
+                      color={actionsId === user._id ? "#000000" : "#8C8C8C"}
+                      className="pointer"
+                      onClick={() => {
+                        if (actionsId !== user._id) {
+                          setActionsId(user._id);
+                          setShowActions(true);
+                        } else {
+                          setActionsId("");
+                          setShowActions(false);
+                        }
+                      }}
+                    />
+                    {showActions && actionsId === user._id && (
+                      <div className="admin-data-actions">
+                        {user.isSuspended ? (
+                          <button
+                            type="button"
+                            className="admin-table-btn admin-table-btn-black mb-12 pointer"
+                            onClick={() => reactivateHandler(user._id)}
+                          >
+                            Reactivate
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            className="admin-table-btn admin-table-btn-red mb-12 pointer"
+                            onClick={() => {
+                              setSuspendingUser(user);
+                              setShowModal(true);
+                            }}
+                          >
+                            Suspend
+                          </button>
+                        )}
+                        <button
+                          type="button"
+                          className="admin-table-btn admin-table-btn-red pointer"
+                          onClick={() => {
+                            setDeletingUser(user);
+                            setShowModalDelete(true);
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
@@ -764,7 +879,10 @@ const DashboardAdminPage = () => {
                     <th className="admin-table-cell admin-table-head gray-bg">
                       Date Submitted
                     </th>
-                    <th className="admin-table-cell admin-table-head gray-bg">
+                    <th
+                      colSpan={2}
+                      className="admin-table-cell admin-table-head gray-bg"
+                    >
                       Status
                     </th>
                   </tr>
@@ -773,10 +891,10 @@ const DashboardAdminPage = () => {
                   tradies.map((tradie) => (
                     <tbody key={tradie._id}>
                       <tr
-                        className="pointer"
-                        onClick={() =>
-                          navigate(`/admin/application-details/${tradie._id}`)
-                        }
+                      // className="pointer"
+                      // onClick={() =>
+                      //   navigate(`/admin/application-details/${tradie._id}`)
+                      // }
                       >
                         <td
                           className={
@@ -869,6 +987,77 @@ const DashboardAdminPage = () => {
                             {tradie.status}
                           </span>
                         </td>
+                        <td
+                          className={
+                            tradie.status === "New"
+                              ? "pos-relative admin-table-cell admin-table-new"
+                              : "pos-relative admin-table-cell"
+                          }
+                        >
+                          <EllipsisVertical
+                            color={
+                              actionsId === tradie._id ? "#000000" : "#8C8C8C"
+                            }
+                            className={
+                              tradie.status === "New"
+                                ? "pointer admin-table-new"
+                                : "pointer"
+                            }
+                            onClick={() => {
+                              if (actionsId !== tradie._id) {
+                                setActionsId(tradie._id);
+                                setShowActions(true);
+                              } else {
+                                setActionsId("");
+                                setShowActions(false);
+                              }
+                            }}
+                          />
+                          {showActions && actionsId === tradie._id && (
+                            <div className="admin-data-actions">
+                              <Link
+                                to={`/admin/application-details/${tradie._id}`}
+                              >
+                                <button
+                                  type="button"
+                                  className="admin-table-btn admin-table-btn-black mb-12 pointer"
+                                >
+                                  Details
+                                </button>
+                              </Link>
+                              {tradie.isSuspended ? (
+                                <button
+                                  type="button"
+                                  className="admin-table-btn admin-table-btn-black mb-12 pointer"
+                                  onClick={() => reactivateHandler(tradie._id)}
+                                >
+                                  Reactivate
+                                </button>
+                              ) : (
+                                <button
+                                  type="button"
+                                  className="admin-table-btn admin-table-btn-red mb-12 pointer"
+                                  onClick={() => {
+                                    setSuspendingUser(tradie);
+                                    setShowModal(true);
+                                  }}
+                                >
+                                  Suspend
+                                </button>
+                              )}
+                              <button
+                                type="button"
+                                className="admin-table-btn admin-table-btn-red pointer"
+                                onClick={() => {
+                                  setDeletingUser(tradie);
+                                  setShowModalDelete(true);
+                                }}
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          )}
+                        </td>
                       </tr>
                     </tbody>
                   ))}
@@ -901,15 +1090,18 @@ const DashboardAdminPage = () => {
                     <th className="admin-table-cell admin-table-head gray-bg">
                       Last Activity
                     </th>
-                    <th className="admin-table-cell admin-table-head gray-bg">
-                      Date of Last Activity
-                    </th>
                     <th
                       colSpan={2}
                       className="admin-table-cell admin-table-head gray-bg"
                     >
-                      Actions
+                      Date of Last Activity
                     </th>
+                    {/* <th
+                      colSpan={2}
+                      className="admin-table-cell admin-table-head gray-bg"
+                    >
+                      Actions
+                    </th> */}
                   </tr>
                 </thead>
                 {users &&
@@ -929,7 +1121,58 @@ const DashboardAdminPage = () => {
                         <td className="admin-table-cell">
                           {dateFormat(user.lastActivityTimeStamp, "dd/mm/yyyy")}
                         </td>
-                        <td className="admin-table-cell">
+                        <td className="pos-relative">
+                          <EllipsisVertical
+                            color={
+                              actionsId === user._id ? "#000000" : "#8C8C8C"
+                            }
+                            className="pointer"
+                            onClick={() => {
+                              if (actionsId !== user._id) {
+                                setActionsId(user._id);
+                                setShowActions(true);
+                              } else {
+                                setActionsId("");
+                                setShowActions(false);
+                              }
+                            }}
+                          />
+                          {showActions && actionsId === user._id && (
+                            <div className="admin-data-actions">
+                              {user.isSuspended ? (
+                                <button
+                                  type="button"
+                                  className="admin-table-btn admin-table-btn-black mb-12 pointer"
+                                  onClick={() => reactivateHandler(user._id)}
+                                >
+                                  Reactivate
+                                </button>
+                              ) : (
+                                <button
+                                  type="button"
+                                  className="admin-table-btn admin-table-btn-red mb-12 pointer"
+                                  onClick={() => {
+                                    setSuspendingUser(user);
+                                    setShowModal(true);
+                                  }}
+                                >
+                                  Suspend
+                                </button>
+                              )}
+                              <button
+                                type="button"
+                                className="admin-table-btn admin-table-btn-red pointer"
+                                onClick={() => {
+                                  setDeletingUser(user);
+                                  setShowModalDelete(true);
+                                }}
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          )}
+                        </td>
+                        {/* <td className="admin-table-cell">
                           {user.status === "Deactivated" ? (
                             // Show Reactivate button if user status is Deactivated
                             <button
@@ -973,7 +1216,7 @@ const DashboardAdminPage = () => {
                           >
                             Delete
                           </button>
-                        </td>
+                        </td> */}
                       </tr>
                     </tbody>
                   ))}

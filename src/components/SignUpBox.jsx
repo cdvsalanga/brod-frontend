@@ -17,10 +17,10 @@ import {
 } from "../action/userActions";
 import ActiveRadio from "../assets/icons/active-radio.svg";
 import OTPInput from "react-otp-input";
-import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
+// import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { TailSpin } from "react-loading-icons";
-import GoogleIcon from "../assets/icons/google.svg";
+// import GoogleIcon from "../assets/icons/google.svg";
 import axios from "axios";
 import ReactPasswordChecklist from "react-password-checklist";
 
@@ -247,8 +247,6 @@ const SignUpBox = ({ chosen }) => {
     // });
 
     await checkEmail(email).then((res) => {
-      console.log(res);
-
       if (res.status === 400 && res.response.data === "Email already used!") {
         setShowError(true);
         setSignupLoading(false);
@@ -272,85 +270,86 @@ const SignUpBox = ({ chosen }) => {
     // }
   };
 
-  const googleLoginHandler = async (res) => {
-    setLoading(true);
+  // const googleLoginHandler = async (res) => {
+  //   setLoading(true);
 
-    if (chosen === "client") {
-      await ssoLoginCommon(
-        res.email,
-        res.verified_email.toString(),
-        res.name,
-        res.picture,
-        res.given_name,
-        res.family_name
-      ).then(async (data) => {
-        if (data === "Please sign up as a new user") {
-          await ssoClient(
-            res.email,
-            res.verified_email.toString(),
-            res.name,
-            res.picture,
-            res.given_name,
-            res.family_name
-          ).then((data) => {
-            setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
-          });
-        } else {
-          alert("User already exists");
-          window.location.reload();
-          return;
-        }
-      });
-    } else {
-      await ssoLoginCommon(
-        res.email,
-        res.verified_email.toString(),
-        res.name,
-        res.picture,
-        res.given_name,
-        res.family_name
-      ).then(async (data) => {
-        if (data === "Please sign up as a new user") {
-          await ssoTradie(
-            res.email,
-            res.verified_email.toString(),
-            res.name,
-            res.picture,
-            res.given_name,
-            res.family_name
-          ).then((data) => {
-            data.role = "Tradie";
-            data.status = "New";
-            localStorage.setItem("userInfo", JSON.stringify(data));
-            navigate(`/signup/${data.userId}`);
-          });
-        } else {
-          alert("User already exists");
-          window.location.reload();
-          return;
-        }
-      });
-    }
-  };
-  const googleLogin = useGoogleLogin({
-    onSuccess: (tokenResponse) => {
-      axios
-        .get(
-          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${tokenResponse.access_token}`,
-          {
-            headers: {
-              Authorization: `Bearer ${tokenResponse.access_token}`,
-              Accept: "application/json",
-            },
-          }
-        )
-        .then(async (res) => {
-          googleLoginHandler(res.data);
-        })
-        .catch((err) => console.log(err));
-    },
-    onError: () => alert("Login Failed"),
-  });
+  //   if (chosen === "client") {
+  //     await ssoLoginCommon(
+  //       res.email,
+  //       res.verified_email.toString(),
+  //       res.name,
+  //       res.picture,
+  //       res.given_name,
+  //       res.family_name
+  //     ).then(async (data) => {
+  //       if (data === "Please sign up as a new user") {
+  //         await ssoClient(
+  //           res.email,
+  //           res.verified_email.toString(),
+  //           res.name,
+  //           res.picture,
+  //           res.given_name,
+  //           res.family_name
+  //         ).then((data) => {
+  //           setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
+  //         });
+  //       } else {
+  //         alert("User already exists");
+  //         window.location.reload();
+  //         return;
+  //       }
+  //     });
+  //   } else {
+  //     await ssoLoginCommon(
+  //       res.email,
+  //       res.verified_email.toString(),
+  //       res.name,
+  //       res.picture,
+  //       res.given_name,
+  //       res.family_name
+  //     ).then(async (data) => {
+  //       if (data === "Please sign up as a new user") {
+  //         await ssoTradie(
+  //           res.email,
+  //           res.verified_email.toString(),
+  //           res.name,
+  //           res.picture,
+  //           res.given_name,
+  //           res.family_name
+  //         ).then((data) => {
+  //           data.role = "Tradie";
+  //           data.status = "New";
+  //           localStorage.setItem("userInfo", JSON.stringify(data));
+  //           navigate(`/signup/${data.userId}`);
+  //         });
+  //       } else {
+  //         alert("User already exists");
+  //         window.location.reload();
+  //         return;
+  //       }
+  //     });
+  //   }
+  // };
+
+  // const googleLogin = useGoogleLogin({
+  //   onSuccess: (tokenResponse) => {
+  //     axios
+  //       .get(
+  //         `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${tokenResponse.access_token}`,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${tokenResponse.access_token}`,
+  //             Accept: "application/json",
+  //           },
+  //         }
+  //       )
+  //       .then(async (res) => {
+  //         googleLoginHandler(res.data);
+  //       })
+  //       .catch((err) => console.log(err));
+  //   },
+  //   onError: () => alert("Login Failed"),
+  // });
 
   const detailsHandler = (e) => {
     e.preventDefault();
@@ -433,7 +432,6 @@ const SignUpBox = ({ chosen }) => {
             value={password}
             valueAgain={confirmPassword}
             onChange={(isValid) => {
-              console.log(isValid, passCheck);
               if (isValid) {
                 setPassCheck(true);
               } else {
@@ -559,7 +557,8 @@ const SignUpBox = ({ chosen }) => {
             Log in
           </Link>
         </div>
-        <div className="signup-separator">
+
+        {/* <div className="signup-separator">
           <div className="signup-separator-line" />
           <div>OR</div>
           <div className="signup-separator-line" />
@@ -571,7 +570,7 @@ const SignUpBox = ({ chosen }) => {
         >
           <img src={GoogleIcon} />
           Sign up with Google
-        </button>
+        </button> */}
       </div>
     );
   } else if (page === "clientDetails") {

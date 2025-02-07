@@ -86,7 +86,6 @@ export const signup = async (
 
 export const checkEmail = async (email) => {
   try {
-    console.log(email);
     const { data } = await axios.post(
       `https://backendapi.brod.com.au/api/Auth/check-email`,
       `"${email}"`,
@@ -422,7 +421,6 @@ export const reactivate = async (userId) => {
 
 export const changePassword = async (email, oldPassword, newPassword) => {
   try {
-    console.log({ email, oldPassword, newPassword });
     await axios.put(`https://backendapi.brod.com.au/api/Auth/ChangePassword`, {
       email,
       oldPassword,
@@ -435,7 +433,6 @@ export const changePassword = async (email, oldPassword, newPassword) => {
 
 export const deactivate = async (userId) => {
   try {
-    console.log({ userId });
     await axios.put(
       `https://backendapi.brod.com.au/api/Auth/user/deactivate?userId=${userId}`
     );
@@ -446,10 +443,24 @@ export const deactivate = async (userId) => {
 
 export const deleteUser = async (userId) => {
   try {
-    console.log({ userId });
     await axios.put(
       `https://backendapi.brod.com.au/api/Auth/user/delete?userId=${userId}`
     );
+  } catch (error) {
+    return error;
+  }
+};
+
+export const forgotPassword = async (email) => {
+  try {
+    const { data } = await axios.put(
+      `https://backendapi.brod.com.au/api/Auth/forgotPassword`,
+      {
+        email,
+      }
+    );
+
+    return data;
   } catch (error) {
     return error;
   }

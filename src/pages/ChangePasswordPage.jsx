@@ -40,7 +40,6 @@ const ChangePasswordPage = () => {
   const getUser = async () => {
     setLoading(true);
     await getUserDetails(id).then((res) => {
-      console.log(res);
       setUser(res);
       setLoading(false);
     });
@@ -56,8 +55,6 @@ const ChangePasswordPage = () => {
 
   const changePasswordHandler = async (e) => {
     e.preventDefault();
-
-    console.log({ currentPassword, newPassword, newConfirmPassword });
 
     if (currentPassword === user.password) {
       setShowError(false);
@@ -173,7 +170,6 @@ const ChangePasswordPage = () => {
               value={newPassword}
               valueAgain={newConfirmPassword}
               onChange={(isValid) => {
-                console.log(isValid, disableBtn);
                 if (isValid) {
                   setDisableBtn(false);
                 } else {

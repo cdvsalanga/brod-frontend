@@ -2,7 +2,6 @@ import axios from "axios";
 
 export const updateClientProfile = async (profileDetails, token) => {
   try {
-    console.log(profileDetails);
     await axios.put(
       "https://backendapi.brod.com.au/api/Client/update-profile",
       profileDetails,

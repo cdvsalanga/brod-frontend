@@ -190,6 +190,14 @@ body:has(.scroll-lock) {
   padding: 16px;
 }
 
+.show-success {
+  font-weight: 400;
+  font-size: 14px;
+  color: #326d20;
+  background-color: #edffeb;
+  padding: 16px;
+}
+
 .link-none {
   text-decoration: none;
   color: inherit;

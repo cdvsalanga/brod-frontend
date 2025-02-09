@@ -284,6 +284,12 @@
   color: #242424;
 }
 
+.admin-form-pcode {
+  padding: 12px;
+  width: calc(100% - 26px);
+  color: #242424;
+}
+
 .admin-form-filter-box {
   display: flex;
   align-items: end;

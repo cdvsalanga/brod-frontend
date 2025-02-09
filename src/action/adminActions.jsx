@@ -59,12 +59,20 @@ export const getFilteredTradies = async (
   submissionDateFrom,
   submissionDateTo,
   keyword,
+  postalCode,
   token
 ) => {
   try {
     const { data } = await axios.post(
       "https://backendapi.brod.com.au/api/Admin/GetFilteredTradies",
-      { typeOfWork, status, submissionDateFrom, submissionDateTo, keyword },
+      {
+        typeOfWork,
+        status,
+        submissionDateFrom,
+        submissionDateTo,
+        keyword,
+        postalCode,
+      },
       {
         headers: {
           "Content-Type": "application/json",
@@ -85,12 +93,20 @@ export const getFilteredUsers = async (
   submissionDateFrom,
   submissionDateTo,
   keyword,
+  postalCode,
   token
 ) => {
   try {
     const { data } = await axios.post(
       "https://backendapi.brod.com.au/api/Admin/GetFilteredUsers",
-      { typeOfWork, status, submissionDateFrom, submissionDateTo, keyword },
+      {
+        typeOfWork,
+        status,
+        submissionDateFrom,
+        submissionDateTo,
+        keyword,
+        postalCode,
+      },
       {
         headers: {
           "Content-Type": "application/json",

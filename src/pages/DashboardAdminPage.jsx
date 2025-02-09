@@ -35,6 +35,7 @@ const DashboardAdminPage = () => {
   const [showFilter, setShowFilter] = useState(false);
   const [showStatusFilter, setShowStatusFilter] = useState(false);
   const [showWorkFilter, setShowWorkFilter] = useState(false);
+  const [showPostalCode, setShowPostalCode] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showModalDelete, setShowModalDelete] = useState(false);
   const [showActions, setShowActions] = useState(false);
@@ -52,6 +53,7 @@ const DashboardAdminPage = () => {
   const [submissionDateTo, setSubmissionDateTo] = useState("");
   const [status, setStatus] = useState("");
   const [keyword, setKeyword] = useState("");
+  const [postalCode, setPostalCode] = useState("");
   const [item, setItem] = useState("Tradies");
   const [isFiltering, setIsFiltering] = useState(false);
   const [weeks, setWeeks] = useState(1);
@@ -121,6 +123,7 @@ const DashboardAdminPage = () => {
         dateFrom,
         dateTo,
         keyword,
+        postalCode,
         userInfo.token
       ).then((res) => {
         if (res && res.status === 401) {
@@ -142,6 +145,7 @@ const DashboardAdminPage = () => {
         dateFrom,
         dateTo,
         keyword,
+        postalCode,
         userInfo.token
       ).then((res) => {
         if (res && res.status === 401) {
@@ -168,6 +172,7 @@ const DashboardAdminPage = () => {
     setSubmissionDateTo("");
     setStatus("");
     setKeyword("");
+    setPostalCode("");
     itemOffset = 0;
     activePage = 1;
 
@@ -468,6 +473,15 @@ const DashboardAdminPage = () => {
     </select>
   );
 
+  const postalCodeElements = () => (
+    <input
+      value={postalCode}
+      onChange={(e) => setPostalCode(e.target.value)}
+      type="text"
+      className="admin-form-inputs admin-form-pcode"
+    />
+  );
+
   return (
     <>
       <Header headerText={"Admin Dashboard"} />
@@ -498,7 +512,10 @@ const DashboardAdminPage = () => {
               className={
                 item === "Tradies" ? "admin-nav admin-nav-active" : "admin-nav"
               }
-              onClick={() => setItem("Tradies")}
+              onClick={() => {
+                setItem("Tradies");
+                clearHandler();
+              }}
             >
               Tradepersons
             </div>
@@ -508,7 +525,10 @@ const DashboardAdminPage = () => {
                   ? "admin-nav admin-nav-active"
                   : "admin-nav"
               }
-              onClick={() => setItem("All Users")}
+              onClick={() => {
+                setItem("All Users");
+                clearHandler();
+              }}
             >
               All Users
             </div>
@@ -578,7 +598,7 @@ const DashboardAdminPage = () => {
                             tradie.status === "New" && "admin-table-new"
                           }
                         />
-                        {tradie.businessPostCode}
+                        {tradie.postalCode}
                       </div>
                       <span className="admin-data-separator" />
                       <div
@@ -801,6 +821,10 @@ const DashboardAdminPage = () => {
                   <label className="block mb-12">Status</label>
                   {statusElements()}
                 </div>
+                <div className="admin-form-input-box">
+                  <label className="block mb-12">Postal Code</label>
+                  {postalCodeElements()}
+                </div>
                 <div className="admin-form-filter-box">
                   <button
                     type="button"
@@ -836,7 +860,10 @@ const DashboardAdminPage = () => {
                     ? "admin-nav admin-nav-active"
                     : "admin-nav"
                 }
-                onClick={() => setItem("Tradies")}
+                onClick={() => {
+                  setItem("Tradies");
+                  clearHandler();
+                }}
               >
                 Tradepersons
               </div>
@@ -846,7 +873,10 @@ const DashboardAdminPage = () => {
                     ? "admin-nav admin-nav-active"
                     : "admin-nav"
                 }
-                onClick={() => setItem("All Users")}
+                onClick={() => {
+                  setItem("All Users");
+                  clearHandler();
+                }}
               >
                 All Users
               </div>
@@ -859,7 +889,7 @@ const DashboardAdminPage = () => {
                       ID
                     </th>
                     <th className="admin-table-cell admin-table-head gray-bg">
-                      Business Postcode
+                      Postal Code
                     </th>
                     <th className="admin-table-cell admin-table-head gray-bg">
                       Type of Work
@@ -912,7 +942,7 @@ const DashboardAdminPage = () => {
                               : "admin-table-cell"
                           }
                         >
-                          {tradie.businessPostCode}
+                          {tradie.postalCode}
                         </td>
                         <td
                           className={
@@ -1380,6 +1410,25 @@ const DashboardAdminPage = () => {
                 )}
               </div>
               {showWorkFilter && typeOfWorkElements()}
+            </div>
+            <div className="mb-16">
+              <div className="flex-center flex-between mb-16">
+                Postal Code
+                {showPostalCode ? (
+                  <ChevronUp
+                    color="#717171"
+                    className="pointer"
+                    onClick={() => setShowPostalCode(false)}
+                  />
+                ) : (
+                  <ChevronDown
+                    color="#717171"
+                    className="pointer"
+                    onClick={() => setShowPostalCode(true)}
+                  />
+                )}
+              </div>
+              {showPostalCode && postalCodeElements()}
             </div>
             <div className="mb-16">
               <div className="mb-16">Submission Date From - To</div>

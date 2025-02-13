@@ -103,8 +103,8 @@ const SignUpBox = ({ chosen }) => {
     });
 
   const fileHandler = async (e) => {
-    if (e.target.files[0].size > 5242880) {
-      alert("File is too big. Maximum file size is 5MB");
+    if (e.target.files[0].size > 1048576) {
+      alert("File is too big. Maximum file size is 1MB");
       return;
     }
 

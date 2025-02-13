@@ -32,7 +32,7 @@ export const addTradieJobAd = async (
   isActive
 ) => {
   try {
-    await axios.post(
+    const { data } = await axios.post(
       "https://backendapi.brod.com.au/api/Tradie/add-tradie-job-ad",
       {
         _id: "",
@@ -63,6 +63,7 @@ export const addTradieJobAd = async (
         },
       }
     );
+    return data;
   } catch (error) {
     return error;
   }

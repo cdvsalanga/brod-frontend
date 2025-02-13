@@ -10,6 +10,7 @@ import {
 import { ArrowLeft, Upload, X } from "lucide-react";
 import { useMediaQuery } from "react-responsive";
 import { TailSpin } from "react-loading-icons";
+import Resizer from "react-image-file-resizer";
 
 const JobAdForm = () => {
   const isMobile = useMediaQuery({ query: "(max-width:768px)" });
@@ -75,6 +76,22 @@ const JobAdForm = () => {
     }
   }, []);
 
+  const resizeFile = (file) =>
+    new Promise((resolve) => {
+      Resizer.imageFileResizer(
+        file,
+        300,
+        300,
+        "JPEG",
+        100,
+        0,
+        (uri) => {
+          resolve(uri);
+        },
+        "base64"
+      );
+    });
+
   const toBase64 = (file) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -84,19 +101,26 @@ const JobAdForm = () => {
     });
 
   const projectGalleryUpload = async (e) => {
-    if (e.target.files[0].size > 2097152) {
-      alert("File is too big. Maximum file size is 2MB");
+    if (e.target.files[0].size > 1048576) {
+      alert("File is too big. Maximum file size is 1MB");
       return;
     }
-
     const uploadedBase64 = [...projectGallery];
-    const file = e.target.files[0];
 
-    await toBase64(file).then((res) => {
-      if (!uploadedBase64.includes(res)) {
-        uploadedBase64.push(res);
-      }
-    });
+    const file = e.target.files[0];
+    const image = await resizeFile(file);
+
+    if (!uploadedBase64.includes(image)) {
+      uploadedBase64.push(image);
+    }
+
+    // const file = e.target.files[0];
+
+    // await toBase64(file).then((res) => {
+    //   if (!uploadedBase64.includes(res)) {
+    //     uploadedBase64.push(res);
+    //   }
+    // });
 
     setProjectGallery(uploadedBase64);
   };
@@ -111,6 +135,21 @@ const JobAdForm = () => {
 
   const AddJobHandler = async (isActive) => {
     setLoading(true);
+
+    if (
+      jobCategory === "" ||
+      jobAdTitle === "" ||
+      descriptionOfService === "" ||
+      thumbnailImage === "" ||
+      pricingOption === "" ||
+      pricingStartsAt === "" ||
+      projectGallery.length === 0
+    ) {
+      alert("Please complete the required information.");
+      setLoading(false);
+      return;
+    }
+
     await addTradieJobAd(
       userID,
       businessPostcode,
@@ -129,6 +168,10 @@ const JobAdForm = () => {
         alert("Your session expired, please login again.");
         localStorage.removeItem("userInfo");
         navigate("/login");
+        return;
+      } else if (res && res.status === 404) {
+        alert(res.response.data.message);
+        window.location.reload();
         return;
       }
       alert(`Job Ad ${jobAdTitle} posted!`);
@@ -456,10 +499,7 @@ const JobAdForm = () => {
         </div>
         <div className={!isMobile && "flex-between mb-24"}>
           <div className={isMobile ? "mb-24" : "half-inputs"}>
-            <label className="block mb-12">
-              Pricing option{" "}
-              <span className="job-form-optional">(optional)</span>
-            </label>
+            <label className="block mb-12">Pricing option</label>
             <select
               defaultValue={pricingOption}
               className="job-form-input job-form-select"
@@ -474,10 +514,7 @@ const JobAdForm = () => {
             </select>
           </div>
           <div className={isMobile ? "mb-24" : "half-inputs"}>
-            <label className="block mb-12">
-              Your Pricing Starts at{" "}
-              <span className="job-form-optional">(optional)</span>
-            </label>
+            <label className="block mb-12">Your Pricing Starts at</label>
             <div className="job-form-price">
               <input
                 type="text"
@@ -531,25 +568,23 @@ const JobAdForm = () => {
                 className="none"
                 id="thumbnailImg"
                 accept="image/*"
-                onChange={(e) => {
-                  if (e.target.files[0].size > 2097152) {
-                    alert("File is too big. Maximum file size is 2MB");
+                onChange={async (e) => {
+                  if (e.target.files[0].size > 1048576) {
+                    alert("File is too big. Maximum file size is 1MB");
                     return;
                   }
 
-                  toBase64(e.target.files[0]).then((res) =>
-                    setThumbnailImage(res)
-                  );
+                  const file = e.target.files[0];
+                  const image = await resizeFile(file);
+
+                  setThumbnailImage(image);
                 }}
               />
             </>
           )}
         </div>
         <div className="job-form-files flex-center">
-          <label>
-            Project Gallery{" "}
-            <span className="job-form-optional">(optional)</span>
-          </label>
+          <label>Project Gallery</label>
           {status !== "publish" && (
             <>
               <label

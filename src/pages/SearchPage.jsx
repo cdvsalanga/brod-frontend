@@ -189,20 +189,13 @@ const SearchPage = () => {
     if (showPostcode) {
       return (
         <div>
-          <select
+          <input
             value={postcode}
-            className="search-select"
+            type="text"
+            placeholder="0000"
+            className="search-text"
             onChange={(e) => setPostcode(e.target.value)}
-          >
-            <option value={""} disabled hidden>
-              Select Postcode
-            </option>
-            <option>1000</option>
-            <option>2000</option>
-            <option>3000</option>
-            <option>4000</option>
-            <option>5000</option>
-          </select>
+          />
         </div>
       );
     }

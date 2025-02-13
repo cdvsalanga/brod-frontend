@@ -54,7 +54,7 @@ const DashboardAdminPage = () => {
   const [status, setStatus] = useState("");
   const [keyword, setKeyword] = useState("");
   const [postalCode, setPostalCode] = useState("");
-  const [item, setItem] = useState("Tradies");
+  let [item, setItem] = useState("Tradies");
   const [isFiltering, setIsFiltering] = useState(false);
   const [weeks, setWeeks] = useState(1);
   const [suspendingUser, setSuspendingUser] = useState();
@@ -175,7 +175,7 @@ const DashboardAdminPage = () => {
     setPostalCode("");
     itemOffset = 0;
     activePage = 1;
-
+    setActivePage(1);
     if (item === "Tradies") {
       getAllTradies();
     } else {
@@ -229,7 +229,7 @@ const DashboardAdminPage = () => {
     } else {
       navigate("/login");
     }
-  }, [itemOffset, item]);
+  }, [itemOffset]);
 
   const pageClickHandler = (i) => {
     const clickedPage = i + 1;
@@ -473,15 +473,14 @@ const DashboardAdminPage = () => {
     </select>
   );
 
-  const postalCodeElements = () => (
-    <input
-      value={postalCode}
-      onChange={(e) => setPostalCode(e.target.value)}
-      type="text"
-      className="admin-form-inputs admin-form-pcode"
-    />
-  );
-
+  // const postalCodeElements = () => (
+  //   <input
+  //     value={postalCode}
+  //     onChange={(e) => setPostalCode(e.target.value)}
+  //     type="text"
+  //     className="admin-form-inputs admin-form-pcode"
+  //   />
+  // );
   return (
     <>
       <Header headerText={"Admin Dashboard"} />
@@ -821,10 +820,10 @@ const DashboardAdminPage = () => {
                   <label className="block mb-12">Status</label>
                   {statusElements()}
                 </div>
-                <div className="admin-form-input-box">
+                {/* <div className="admin-form-input-box">
                   <label className="block mb-12">Postal Code</label>
                   {postalCodeElements()}
-                </div>
+                </div> */}
                 <div className="admin-form-filter-box">
                   <button
                     type="button"
@@ -861,6 +860,7 @@ const DashboardAdminPage = () => {
                     : "admin-nav"
                 }
                 onClick={() => {
+                  item = "Tradies";
                   setItem("Tradies");
                   clearHandler();
                 }}
@@ -874,6 +874,7 @@ const DashboardAdminPage = () => {
                     : "admin-nav"
                 }
                 onClick={() => {
+                  item = "All Users";
                   setItem("All Users");
                   clearHandler();
                 }}
@@ -1411,7 +1412,7 @@ const DashboardAdminPage = () => {
               </div>
               {showWorkFilter && typeOfWorkElements()}
             </div>
-            <div className="mb-16">
+            {/* <div className="mb-16">
               <div className="flex-center flex-between mb-16">
                 Postal Code
                 {showPostalCode ? (
@@ -1429,7 +1430,7 @@ const DashboardAdminPage = () => {
                 )}
               </div>
               {showPostalCode && postalCodeElements()}
-            </div>
+            </div> */}
             <div className="mb-16">
               <div className="mb-16">Submission Date From - To</div>
               <div className="flex-between">

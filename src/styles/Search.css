@@ -84,6 +84,14 @@
     resize: none;
   }
 
+  .search-text {
+    border: 1px solid #b3b2b5;
+    border-radius: 4px;
+    width: 216px;
+    padding: 10px 12px;
+    font-weight: 400;
+  }
+
   .search-btn-container {
     text-align: end;
   }
@@ -141,6 +149,14 @@
     padding: 10px 12px;
     font-weight: 400;
     resize: none;
+  }
+
+  .search-text {
+    border: 1px solid #b3b2b5;
+    border-radius: 4px;
+    width: 176px;
+    padding: 10px 12px;
+    font-weight: 400;
   }
 }
 

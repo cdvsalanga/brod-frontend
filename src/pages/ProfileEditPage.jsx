@@ -10,6 +10,7 @@ import { updateTradieProfile } from "../action/tradieActions";
 import { useMediaQuery } from "react-responsive";
 import { TailSpin } from "react-loading-icons";
 import Cookies from "../components/Cookies";
+import Resizer from "react-image-file-resizer";
 
 const ProfileEditPage = () => {
   const acceptedCookies = document.cookie.includes("Brod");
@@ -80,6 +81,22 @@ const ProfileEditPage = () => {
     }
   }, []);
 
+  const resizeFile = (file) =>
+    new Promise((resolve) => {
+      Resizer.imageFileResizer(
+        file,
+        300,
+        300,
+        "JPEG",
+        100,
+        0,
+        (uri) => {
+          resolve(uri);
+        },
+        "base64"
+      );
+    });
+
   const editClientProfileHandler = async (e) => {
     e.preventDefault();
 
@@ -101,6 +118,10 @@ const ProfileEditPage = () => {
         alert("Your session expired, please login again.");
         localStorage.removeItem("userInfo");
         navigate("/login");
+        return;
+      } else if (res && res.message === "Network Error") {
+        alert(res.message + ". Contact brod@support.com.au for help.");
+        window.location.reload();
         return;
       }
 
@@ -162,6 +183,7 @@ const ProfileEditPage = () => {
         return;
       } else if (res && res.message === "Network Error") {
         alert(res.message + ". Contact brod@support.com.au for help.");
+        window.location.reload();
         return;
       }
 
@@ -195,20 +217,20 @@ const ProfileEditPage = () => {
       reader.onerror = reject;
     });
 
-  const updateProfilePictureHandler = (e) => {
-    if (e.target.files[0].size > 2097152) {
-      alert("File is too big. Maximum file size is 2MB");
+  const updateProfilePictureHandler = async (e) => {
+    if (e.target.files[0].size > 1048576) {
+      alert("File is too big. Maximum file size is 1MB");
       return;
     }
+    const file = e.target.files[0];
+    const image = await resizeFile(file);
 
-    toBase64(e.target.files[0]).then((res) => {
-      setProfilePicture(res);
-    });
+    setProfilePicture(image);
   };
 
   const fileHandler = async (e) => {
-    if (e.target.files[0].size > 5242880) {
-      alert("File is too big. Maximum file size is 5MB");
+    if (e.target.files[0].size > 1048576) {
+      alert("File is too big. Maximum file size is 1MB");
       return;
     }
 

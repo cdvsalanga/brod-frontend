@@ -175,7 +175,11 @@ const JobAdForm = () => {
         return;
       }
       alert(`Job Ad ${jobAdTitle} posted!`);
-      window.location.reload();
+      if (isMobile) {
+        navigate(`/profile/${userInfo.userId}/job-ads`);
+      } else {
+        navigate(`/profile/${userInfo.userId}`);
+      }
     });
   };
 
